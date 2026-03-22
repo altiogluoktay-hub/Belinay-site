@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay 💖</title>
-
 <style>
 body {
   margin: 0;
@@ -13,8 +12,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 #tanitim {
@@ -91,11 +90,25 @@ button {
 .left { left: 20px; }
 .right { right: 20px; }
 
-#icerik, #quizAlan { display: none; }
+#icerik, #quizAlan, #arkadasAlan, #degerlendir, #sonucKart { display: none; }
+
+#sonucKart {
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1;}
+}
+
+#sonucKart img {
+  width: 200px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
 iframe { display: none; }
 </style>
 </head>
-
 <body>
 
 <div id="tanitim">
@@ -105,15 +118,7 @@ iframe { display: none; }
   </div>
 </div>
 
-<!-- YOUTUBE MÜZİK -->
-<iframe id="ytMuzik"
-width="0"
-height="0"
-src=""
-frameborder="0"
-allow="autoplay">
-</iframe>
-
+<iframe id="ytMuzik" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
 <button onclick="muzikKontrol()">🔊 Müzik Aç / Kapat</button>
 
 <div class="card" id="giris">
@@ -129,6 +134,8 @@ allow="autoplay">
   <div class="gallery" id="galeri"></div>
 
   <button onclick="quizAc()">🎮 Quiz Başlat</button>
+  <button onclick="arkadasAc()">👯 En Sevdiğin Arkadaş</button>
+  <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
   <button onclick="cikis()">Çıkış</button>
 </div>
 
@@ -137,6 +144,19 @@ allow="autoplay">
   <p id="soru"></p>
   <button onclick="cevap('evet')">Evet</button>
   <button onclick="cevap('hayir')">Hayır</button>
+</div>
+
+<div class="card" id="arkadasAlan">
+  <h3>En sevdiğin arkadaşın kim? 💖</h3>
+  <button onclick="arkadasSecildi()">Oktay</button>
+  <button onclick="arkadasSecildi()">Oktay</button>
+</div>
+
+<div class="card" id="sonucKart">
+  <h3>Tahminim: Rengoku 💖</h3>
+  <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" alt="Rengoku">
+  <p>Harika bir seçim yaptın! 💖</p>
+  <button onclick="geriIcerik()">Geri Dön</button>
 </div>
 
 <div id="lightbox">
@@ -149,156 +169,131 @@ allow="autoplay">
 let galeri = document.getElementById("galeri");
 let ytMuzik = document.getElementById("ytMuzik");
 let muzikAcik = false;
-
 let fotolar = [];
+let sabitFotolar = [
+  "https://i.postimg.cc/5tL9NShp/foto1.jpg",
+  "https://i.postimg.cc/3N8LMR3S/foto2.jpg"
+];
 let currentIndex = 0;
 
-function basla() {
+// Başlat
+function basla(){
   tanitim.style.display = "none";
-  muzikKontrol(); // başta otomatik başlat
+  muzikKontrol();
+  sabitFotolar.forEach(src => ekranaEkle(src));
+  fotolar = [...sabitFotolar];
 }
 
-function muzikKontrol() {
-  if (muzikAcik) {
+// Müzik
+function muzikKontrol(){
+  if(muzikAcik){
     ytMuzik.src = "";
-    muzikAcik = false;
-  } else {
-    ytMuzik.src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";
-    muzikAcik = true;
+    muzikAcik=false;
+  }else{
+    ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";
+    muzikAcik=true;
   }
 }
 
-// GİRİŞ
-function kontrol() {
-  if (kullanici.value === "Belinay Altın" && sifre.value === "belinay123") {
-    giris.style.display = "none";
-    icerik.style.display = "block";
-  } else {
+// Giriş
+function kontrol(){
+  if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){
+    giris.style.display="none";
+    icerik.style.display="block";
+  }else{
     alert("Hatalı!");
   }
 }
 
-// FOTO
-function fotoEkle(e) {
-  for (let f of e.target.files) {
-    let reader = new FileReader();
-    reader.onload = function(ev) {
+// Foto
+function fotoEkle(e){
+  for(let f of e.target.files){
+    let reader=new FileReader();
+    reader.onload=function(ev){
       fotolar.push(ev.target.result);
       ekranaEkle(ev.target.result);
-    };
+    }
     reader.readAsDataURL(f);
   }
 }
 
-function ekranaEkle(src) {
-  let img = document.createElement("img");
-  img.src = src;
-  img.onclick = () => acLightbox(src);
+function ekranaEkle(src){
+  let img=document.createElement("img");
+  img.src=src;
+  img.onclick=()=>acLightbox(src);
   galeri.appendChild(img);
 }
 
-// LIGHTBOX
-function acLightbox(src) {
+// Lightbox
+function acLightbox(src){
   currentIndex = fotolar.indexOf(src);
-  buyukFoto.src = src;
-  lightbox.style.display = "flex";
+  buyukFoto.src=src;
+  lightbox.style.display="flex";
 }
 
-function next() {
-  currentIndex = (currentIndex + 1) % fotolar.length;
-  buyukFoto.src = fotolar[currentIndex];
+function next(){
+  currentIndex=(currentIndex+1)%fotolar.length;
+  buyukFoto.src=fotolar[currentIndex];
 }
 
-function prev() {
-  currentIndex = (currentIndex - 1 + fotolar.length) % fotolar.length;
-  buyukFoto.src = fotolar[currentIndex];
+function prev(){
+  currentIndex=(currentIndex-1+fotolar.length)%fotolar.length;
+  buyukFoto.src=fotolar[currentIndex];
 }
 
-lightbox.onclick = (e) => {
-  if (e.target === lightbox) lightbox.style.display = "none";
-};
+lightbox.onclick=(e)=>{if(e.target===lightbox)lightbox.style.display="none";}
 
-// QUIZ
-let adim = 0;
-
-let sorular = [
-  "Kadın mı?",
-  "Renkli saçlı mı?",
-  "Neşeli mi?",
-  "Soğukkanlı mı?",
-  "Güçlü mü?"
-];
-
-let karakterler = {
-  "Mitsuri": 0,
-  "Shinobu": 0,
-  "Rengoku": 0,
-  "Giyu": 0
-};
-
-function quizAc() {
-  icerik.style.display = "none";
-  quizAlan.style.display = "block";
-  adim = 0;
-
-  for (let k in karakterler) karakterler[k] = 0;
-
-  soru.innerText = sorular[0];
+// Quiz
+let adim=0;
+let sorular=["Kadın mı?","Renkli saçlı mı?","Neşeli mi?","Soğukkanlı mı?","Güçlü mü?"];
+function quizAc(){
+  icerik.style.display="none";
+  quizAlan.style.display="block";
+  adim=0;
+  soru.innerText=sorular[0];
 }
 
-function cevap(c) {
-  if (adim === 0 && c === "evet") {
-    karakterler["Mitsuri"] += 2;
-    karakterler["Shinobu"] += 2;
-  }
-
-  if (adim === 1 && c === "evet") {
-    karakterler["Mitsuri"] += 2;
-  }
-
-  if (adim === 2 && c === "evet") {
-    karakterler["Mitsuri"] += 1;
-    karakterler["Rengoku"] += 2;
-  }
-
-  if (adim === 3 && c === "evet") {
-    karakterler["Giyu"] += 3;
-    karakterler["Shinobu"] += 1;
-  }
-
-  if (adim === 4 && c === "evet") {
-    karakterler["Rengoku"] += 3;
-    karakterler["Giyu"] += 2;
-  }
-
+function cevap(c){
   adim++;
-
-  if (adim < sorular.length) {
-    soru.innerText = sorular[adim];
-  } else {
-    tahmin();
+  if(adim<sorular.length){
+    soru.innerText=sorular[adim];
+  }else{
+    quizAlan.style.display="none";
+    sonucKart.style.display="block";
   }
 }
 
-function tahmin() {
-  let en = 0;
-  let secilen = "";
-
-  for (let k in karakterler) {
-    if (karakterler[k] > en) {
-      en = karakterler[k];
-      secilen = k;
-    }
-  }
-
-  alert("Tahminim: " + secilen + " 💖");
-
-  quizAlan.style.display = "none";
-  icerik.style.display = "block";
+function geriIcerik(){
+  sonucKart.style.display="none";
+  icerik.style.display="block";
 }
 
-// ÇIKIŞ
-function cikis() {
+// Arkadaş seçimi
+function arkadasAc(){
+  icerik.style.display="none";
+  arkadasAlan.style.display="block";
+}
+
+function arkadasSecildi(){
+  alert("Seni sevdiğini biliyordum, çok iyi bir arkadaşsın 💖");
+  arkadasAlan.style.display="none";
+  icerik.style.display="block";
+}
+
+// Site değerlendirme
+function degerlendirmeAc(){
+  let deger=prompt("Siteyi değerlendirin (10 üzerinden kaç?):");
+  if(!deger) return;
+  deger=parseInt(deger);
+  if(deger>=8){
+    alert(`Teşekkürler! Minnettarlığımı belirtiyorum 💖\nSenin emeğin ve desteğin çok değerli!`);
+  }else{
+    alert("Tirip at! Daha çok uğraşmalısın 😡");
+  }
+}
+
+// Çıkış
+function cikis(){
   location.reload();
 }
 </script>
