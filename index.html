@@ -5,113 +5,131 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay 💖</title>
 <style>
+/* Genel Tasarım */
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff9ab5, #ffc3d9);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   min-height: 100vh;
-}
-
-#tanitim {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: #000000dd;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 999;
+  padding-bottom: 60px;
 }
 
 .card {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
   padding: 20px;
   border-radius: 20px;
   width: 90%;
-  max-width: 400px;
+  max-width: 450px;
   text-align: center;
   color: white;
   backdrop-filter: blur(10px);
-  margin-bottom: 20px;
+  margin: 20px auto;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 button {
   margin-top: 10px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   width: 100%;
   background: #ff4f8b;
   color: white;
   cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
 }
 
+button:hover {
+  background: #ff2a70;
+  transform: scale(1.05);
+}
+
+/* Profil Kartı */
+#profilKart {
+  background: linear-gradient(135deg, #ff9ab5, #ffc3d9);
+}
+#profilKart img {
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  cursor:pointer;
+  margin-bottom:10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#profilKart img:hover{
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+#profilKart input[type=file]{
+  margin-top:10px;
+  padding:8px;
+  border-radius:12px;
+  border:none;
+  width:80%;
+  background:#ff4f8b;
+  color:white;
+  cursor:pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+#profilKart input[type=file]:hover{
+  background:#ff2a70;
+  transform: scale(1.05);
+}
+
+/* Foto Galeri */
 .gallery {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
-
 .gallery img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: transform 0.3s;
+}
+.gallery img:hover {
+  transform: scale(1.05);
 }
 
+/* Lightbox */
 #lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000000ee;
-  display: none;
-  justify-content: center;
-  align-items: center;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000000ee;
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
-
 #lightbox img {
   max-width: 90%;
   max-height: 80%;
 }
-
 .arrow {
-  position: absolute;
-  top: 50%;
+  position:absolute;
+  top:50%;
   font-size: 40px;
-  color: white;
-  cursor: pointer;
+  color:white;
+  cursor:pointer;
 }
+.left{ left: 20px;}
+.right{ right: 20px;}
 
-.left { left: 20px; }
-.right { right: 20px; }
-
-#icerik, #quizAlan, #arkadasAlan, #degerlendir, #sonucKart { display: none; }
-
-#sonucKart {
-  animation: fadeIn 1s;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity:1;}
-}
-
-#sonucKart img {
-  width: 200px;
-  border-radius: 20px;
-  margin-top: 10px;
-}
-
-iframe { display: none; }
-
+/* Footer */
 footer {
   text-align:center;
   padding:15px;
@@ -123,20 +141,35 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+/* Oyun Canvasları */
+canvas { 
+  display:block; 
+  margin: 10px auto;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+}
+
+/* Animasyon */
+#sonucKart {
+  animation: fadeIn 1s;
+}
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 </style>
 </head>
 <body>
 
-<div id="tanitim">
-  <div>
-    <h2>💖 Hoşgeldin Belinay 💖</h2>
-    <button onclick="basla()">Başla</button>
-  </div>
+<!-- Tanıtım -->
+<div id="tanitim" class="card">
+  <h2>💖 Hoşgeldin Belinay 💖</h2>
+  <button onclick="basla()">Başla</button>
 </div>
 
+<!-- Müzik -->
 <iframe id="ytMuzik" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
 <button onclick="muzikKontrol()">🔊 Müzik Aç / Kapat</button>
 
+<!-- Giriş -->
 <div class="card" id="giris">
   <h2>🎉 Doğum günün kutlu olsun 🎉</h2>
   <input type="text" id="kullanici" placeholder="Kullanıcı adı">
@@ -144,17 +177,30 @@ footer {
   <button onclick="kontrol()">Giriş</button>
 </div>
 
+<!-- Profil Kartı -->
+<div class="card" id="profilKart">
+  <h3 style="color:#fff;text-shadow:1px 1px 2px #000;">👤 Profil</h3>
+  <img id="profilFoto" src="https://i.postimg.cc/5tL9NShp/foto1.jpg" alt="Profil Foto">
+  <p style="color:#fff;font-weight:bold;font-size:18px;text-shadow:1px 1px 2px #000;">Belinay Altın</p>
+  <p style="color:#fff;font-size:16px;text-shadow:1px 1px 2px #000;">Doğum Tarihi: 05.02.2011</p>
+  <input type="file" accept="image/*" id="profilSec">
+</div>
+
+<!-- İçerik -->
 <div class="card" id="icerik">
   <h2>📸 Anılarımız 💖</h2>
   <div class="gallery" id="galeri"></div>
-
   <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
+  
   <button onclick="quizAc()">🎮 Quiz Başlat</button>
   <button onclick="arkadasAc()">👯 En Sevdiğin Arkadaş</button>
   <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
+  <button onclick="pacmanAc()">👾 Mini Pacman</button>
+  <button onclick="flappyAc()">🐦 Mini Flappy Bird</button>
   <button onclick="cikis()">Çıkış</button>
 </div>
 
+<!-- Quiz -->
 <div class="card" id="quizAlan">
   <h3>Demon Slayer karakterini buluyorum 💖</h3>
   <p id="soru"></p>
@@ -162,12 +208,14 @@ footer {
   <button onclick="cevap('hayir')">Hayır</button>
 </div>
 
+<!-- Arkadaş -->
 <div class="card" id="arkadasAlan">
   <h3>En sevdiğin arkadaşın kim? 💖</h3>
   <button onclick="arkadasSecildi()">Oktay</button>
   <button onclick="arkadasSecildi()">Oktay</button>
 </div>
 
+<!-- Sonuç -->
 <div class="card" id="sonucKart">
   <h3>Tahminim: Rengoku 💖</h3>
   <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" alt="Rengoku">
@@ -175,17 +223,54 @@ footer {
   <button onclick="geriIcerik()">Geri Dön</button>
 </div>
 
+<!-- Lightbox -->
 <div id="lightbox">
   <span class="arrow left" onclick="prev()">❮</span>
   <img id="buyukFoto">
   <span class="arrow right" onclick="next()">❯</span>
 </div>
 
+<!-- Mini Pacman -->
+<div class="card" id="pacmanCard" style="display:none;">
+  <h3>👾 Mini Pacman</h3>
+  <canvas id="pacmanCanvas" width="300" height="300"></canvas>
+  <button onclick="geriIcerik()">Geri Dön</button>
+</div>
+
+<!-- Mini Flappy Bird -->
+<div class="card" id="flappyCard" style="display:none;">
+  <h3>🐦 Mini Flappy Bird</h3>
+  <canvas id="flappyCanvas" width="300" height="400"></canvas>
+  <button onclick="geriIcerik()">Geri Dön</button>
+</div>
+
+<!-- Footer -->
 <footer>
   Bu web sitesi, Belinay’a ithafen Oktay tarafından hazırlanmıştır. Lütfen Oktay’a nazik ve iyi davranmayı unutmayın 💖
 </footer>
 
 <script>
+// Profil fotoğrafı kalıcı
+let profilFoto = document.getElementById("profilFoto");
+let profilSec = document.getElementById("profilSec");
+window.onload = function(){
+  let savedProfile = localStorage.getItem("profilFoto");
+  if(savedProfile){ profilFoto.src = savedProfile; }
+  basla();
+};
+profilSec.onchange = function(e){
+  let file = e.target.files[0];
+  if(file){
+    let reader = new FileReader();
+    reader.onload = function(ev){
+      profilFoto.src = ev.target.result;
+      localStorage.setItem("profilFoto", ev.target.result);
+    }
+    reader.readAsDataURL(file);
+  }
+};
+
+// Galeri ve diğer mevcut kodlar
 let galeri = document.getElementById("galeri");
 let ytMuzik = document.getElementById("ytMuzik");
 let muzikAcik = false;
@@ -196,127 +281,68 @@ let sabitFotolar = [
 ];
 let currentIndex = 0;
 
-// Başlat
 function basla(){
-  tanitim.style.display = "none";
+  tanitim.style.display="none";
   muzikKontrol();
   sabitFotolar.forEach(src => ekranaEkle(src));
   fotolar = [...sabitFotolar];
 }
-
-// Müzik
 function muzikKontrol(){
-  if(muzikAcik){
-    ytMuzik.src = "";
-    muzikAcik=false;
-  }else{
-    ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";
-    muzikAcik=true;
-  }
+  if(muzikAcik){ ytMuzik.src=""; muzikAcik=false; } 
+  else{ ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4"; muzikAcik=true; }
 }
-
-// Giriş
 function kontrol(){
-  if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){
-    giris.style.display="none";
-    icerik.style.display="block";
-  }else{
-    alert("Hatalı!");
-  }
+  if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){ giris.style.display="none"; icerik.style.display="block"; }
+  else{ alert("Hatalı!"); }
 }
+function fotoEkle(e){ for(let f of e.target.files){ let reader=new FileReader(); reader.onload=function(ev){ fotolar.push(ev.target.result); ekranaEkle(ev.target.result);} reader.readAsDataURL(f); } }
+function ekranaEkle(src){ let img=document.createElement("img"); img.src=src; img.onclick=()=>acLightbox(src); galeri.appendChild(img); }
+function acLightbox(src){ currentIndex = fotolar.indexOf(src); buyukFoto.src=src; lightbox.style.display="flex"; }
+function next(){ currentIndex=(currentIndex+1)%fotolar.length; buyukFoto.src=fotolar[currentIndex]; }
+function prev(){ currentIndex=(currentIndex-1+fotolar.length)%fotolar.length; buyukFoto.src=fotolar[currentIndex]; }
+lightbox.onclick=(e)=>{ if(e.target===lightbox) lightbox.style.display="none"; }
 
-// Foto
-function fotoEkle(e){
-  for(let f of e.target.files){
-    let reader=new FileReader();
-    reader.onload=function(ev){
-      fotolar.push(ev.target.result);
-      ekranaEkle(ev.target.result);
-    }
-    reader.readAsDataURL(f);
-  }
-}
-
-function ekranaEkle(src){
-  let img=document.createElement("img");
-  img.src=src;
-  img.onclick=()=>acLightbox(src);
-  galeri.appendChild(img);
-}
-
-// Lightbox
-function acLightbox(src){
-  currentIndex = fotolar.indexOf(src);
-  buyukFoto.src=src;
-  lightbox.style.display="flex";
-}
-
-function next(){
-  currentIndex=(currentIndex+1)%fotolar.length;
-  buyukFoto.src=fotolar[currentIndex];
-}
-
-function prev(){
-  currentIndex=(currentIndex-1+fotolar.length)%fotolar.length;
-  buyukFoto.src=fotolar[currentIndex];
-}
-
-lightbox.onclick=(e)=>{if(e.target===lightbox)lightbox.style.display="none";}
-
-// Quiz
 let adim=0;
 let sorular=["Kadın mı?","Renkli saçlı mı?","Neşeli mi?","Soğukkanlı mı?","Güçlü mü?"];
-function quizAc(){
-  icerik.style.display="none";
-  quizAlan.style.display="block";
-  adim=0;
-  soru.innerText=sorular[0];
+function quizAc(){ icerik.style.display="none"; quizAlan.style.display="block"; adim=0; soru.innerText=sorular[0]; }
+function cevap(c){ adim++; if(adim<sorular.length){ soru.innerText=sorular[adim]; } else{ quizAlan.style.display="none"; sonucKart.style.display="block"; } }
+function geriIcerik(){ sonucKart.style.display="none"; icerik.style.display="block"; pacmanCard.style.display="none"; flappyCard.style.display="none"; }
+
+function arkadasAc(){ icerik.style.display="none"; arkadasAlan.style.display="block"; }
+function arkadasSecildi(){ alert("Seni sevdiğini biliyordum, çok iyi bir arkadaşsın 💖"); arkadasAlan.style.display="none"; icerik.style.display="block"; }
+function degerlendirmeAc(){ let deger=prompt("Siteyi değerlendirin (10 üzerinden kaç?):"); if(!deger) return; deger=parseInt(deger); if(deger>=8){ alert(`Teşekkürler! Minnettarlığımı belirtiyorum 💖\nSenin emeğin ve desteğin çok değerli!`);} else{ alert("Tirip at! Daha çok uğraşmalısın 😡"); } }
+function cikis(){ location.reload(); }
+
+// Mini Pacman
+function pacmanAc(){ 
+  icerik.style.display="none"; pacmanCard.style.display="block";
+  const canvas = document.getElementById("pacmanCanvas"); 
+  const ctx = canvas.getContext("2d"); 
+  let x=150, y=150, r=10; 
+  let dots=[{x:50,y:50},{x:250,y:50},{x:50,y:250},{x:250,y:250}];
+  document.onkeydown=(e)=>{ if(e.key==="ArrowUp") y-=10; if(e.key==="ArrowDown") y+=10; if(e.key==="ArrowLeft") x-=10; if(e.key==="ArrowRight") x+=10; }
+  function draw(){ ctx.clearRect(0,0,300,300); ctx.fillStyle="yellow"; ctx.beginPath(); ctx.arc(x,y,r,0,2*Math.PI); ctx.fill();
+    ctx.fillStyle="white"; dots.forEach(d=>{ ctx.beginPath(); ctx.arc(d.x,d.y,5,0,2*Math.PI); ctx.fill(); }); requestAnimationFrame(draw);
+  } draw();
 }
 
-function cevap(c){
-  adim++;
-  if(adim<sorular.length){
-    soru.innerText=sorular[adim];
-  }else{
-    quizAlan.style.display="none";
-    sonucKart.style.display="block";
-  }
-}
-
-function geriIcerik(){
-  sonucKart.style.display="none";
-  icerik.style.display="block";
-}
-
-// Arkadaş seçimi
-function arkadasAc(){
-  icerik.style.display="none";
-  arkadasAlan.style.display="block";
-}
-
-function arkadasSecildi(){
-  alert("Seni sevdiğini biliyordum, çok iyi bir arkadaşsın 💖");
-  arkadasAlan.style.display="none";
-  icerik.style.display="block";
-}
-
-// Site değerlendirme
-function degerlendirmeAc(){
-  let deger=prompt("Siteyi değerlendirin (10 üzerinden kaç?):");
-  if(!deger) return;
-  deger=parseInt(deger);
-  if(deger>=8){
-    alert(`Teşekkürler! Minnettarlığımı belirtiyorum 💖\nSenin emeğin ve desteğin çok değerli!`);
-  }else{
-    alert("Tirip at! Daha çok uğraşmalısın 😡");
-  }
-}
-
-// Çıkış
-function cikis(){
-  location.reload();
+// Mini Flappy Bird
+function flappyAc(){
+  icerik.style.display="none"; flappyCard.style.display="block";
+  const canvas=document.getElementById("flappyCanvas"); const ctx=canvas.getContext("2d");
+  let bird={x:50,y:200,vy:0}; let gravity=0.6, jump=-10;
+  let pipes=[{x:300,y:100,height:100},{x:500,y:150,height:120}];
+  document.onkeydown=(e)=>{ if(e.key===" "){ bird.vy=jump; } }
+  function draw(){
+    ctx.clearRect(0,0,300,400);
+    bird.vy+=gravity; bird.y+=bird.vy;
+    ctx.fillStyle="yellow"; ctx.fillRect(bird.x,bird.y,20,20);
+    ctx.fillStyle="green";
+    pipes.forEach(p=>{ p.x-=2; ctx.fillRect(p.x,0,30,p.y); ctx.fillRect(p.x,p.y+p.height,30,400-(p.y+p.height)); });
+    pipes.forEach(p=>{ if(p.x<-30){ p.x=300; p.y=Math.random()*200+50; p.height=100+Math.random()*50; }});
+    requestAnimationFrame(draw);
+  } draw();
 }
 </script>
-
 </body>
 </html>
