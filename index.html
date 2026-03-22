@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +17,6 @@ body {
   flex-direction: column;
 }
 
-/* TANITIM */
 #tanitim {
   position: fixed;
   width: 100%;
@@ -29,10 +28,8 @@ body {
   align-items: center;
   text-align: center;
   z-index: 999;
-  animation: fadeIn 1s;
 }
 
-/* KART */
 .card {
   background: rgba(255,255,255,0.2);
   padding: 20px;
@@ -42,12 +39,6 @@ body {
   text-align: center;
   color: white;
   backdrop-filter: blur(10px);
-  animation: fadeIn 1s;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 button {
@@ -69,37 +60,62 @@ button {
 .gallery img {
   width: 100%;
   border-radius: 10px;
+  cursor: pointer;
 }
 
-#icerik, #quiz { display: none; }
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000ee;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 80%;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
+}
+
+.left { left: 20px; }
+.right { right: 20px; }
+
+#icerik, #quizAlan { display: none; }
+iframe { display: none; }
 </style>
 </head>
 
 <body>
 
-<!-- TANITIM -->
 <div id="tanitim">
   <div>
     <h2>💖 Hoşgeldin Belinay 💖</h2>
-    <p>
-    Bu site senin için hazırlandı 🎉<br><br>
-    ➤ Giriş yap<br>
-    ➤ Küçük testi çöz<br>
-    ➤ Anılarımıza bak 📸<br><br>
-    Müzik açmak için butona bas 🎵
-    </p>
     <button onclick="basla()">Başla</button>
   </div>
 </div>
 
-<!-- MÜZİK -->
-<audio id="muzik" loop>
-  <source src="muzik.mp3" type="audio/mpeg">
-</audio>
+<!-- YOUTUBE MÜZİK -->
+<iframe id="ytMuzik"
+width="0"
+height="0"
+src=""
+frameborder="0"
+allow="autoplay">
+</iframe>
 
 <button onclick="muzikKontrol()">🔊 Müzik Aç / Kapat</button>
 
-<!-- GİRİŞ -->
 <div class="card" id="giris">
   <h2>🎉 Doğum günün kutlu olsun 🎉</h2>
   <input type="text" id="kullanici" placeholder="Kullanıcı adı">
@@ -107,89 +123,69 @@ button {
   <button onclick="kontrol()">Giriş</button>
 </div>
 
-<!-- QUIZ -->
-<div class="card" id="quiz">
+<div class="card" id="icerik">
+  <h2>📸 Anılarımız</h2>
+  <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
+  <div class="gallery" id="galeri"></div>
+
+  <button onclick="quizAc()">🎮 Quiz Başlat</button>
+  <button onclick="cikis()">Çıkış</button>
+</div>
+
+<div class="card" id="quizAlan">
+  <h3>Demon Slayer karakterini buluyorum 💖</h3>
   <p id="soru"></p>
   <button onclick="cevap('evet')">Evet</button>
   <button onclick="cevap('hayir')">Hayır</button>
 </div>
 
-<!-- İÇERİK -->
-<div class="card" id="icerik">
-  <h2>📸 Anılarımız</h2>
-  <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
-  <div class="gallery" id="galeri"></div>
-  <button onclick="cikis()">Çıkış</button>
+<div id="lightbox">
+  <span class="arrow left" onclick="prev()">❮</span>
+  <img id="buyukFoto">
+  <span class="arrow right" onclick="next()">❯</span>
 </div>
 
 <script>
 let galeri = document.getElementById("galeri");
-let muzik = document.getElementById("muzik");
+let ytMuzik = document.getElementById("ytMuzik");
+let muzikAcik = false;
 
-// FOTO (senin attığın foto buraya base64 koyarsın)
-const varsayilanFoto = "data:image/jpeg;base64,{{BASE64}}";
+let fotolar = [];
+let currentIndex = 0;
 
-// TANITIM BAŞLAT
 function basla() {
-  document.getElementById("tanitim").style.display = "none";
+  tanitim.style.display = "none";
+  muzikKontrol(); // başta otomatik başlat
 }
 
-// MÜZİK KONTROL
 function muzikKontrol() {
-  if (muzik.paused) {
-    muzik.play();
+  if (muzikAcik) {
+    ytMuzik.src = "";
+    muzikAcik = false;
   } else {
-    muzik.pause();
-  }
-}
-
-// SAYFA
-window.onload = function() {
-  let kayitli = JSON.parse(localStorage.getItem("fotolar")) || [];
-
-  if (kayitli.length === 0) {
-    kayitli = [varsayilanFoto];
-    localStorage.setItem("fotolar", JSON.stringify(kayitli));
-  }
-
-  kayitli.forEach(src => ekranaEkle(src));
-
-  if (localStorage.getItem("girisYapildi") === "true") {
-    giris.style.display = "none";
-    quiz.style.display = "block";
-    baslatQuiz();
+    ytMuzik.src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";
+    muzikAcik = true;
   }
 }
 
 // GİRİŞ
 function kontrol() {
-  let k = kullanici.value;
-  let s = sifre.value;
-
-  if (k === "Belinay Altın" && s === "belinay123") {
-    localStorage.setItem("girisYapildi", "true");
+  if (kullanici.value === "Belinay Altın" && sifre.value === "belinay123") {
     giris.style.display = "none";
-    quiz.style.display = "block";
-    baslatQuiz();
+    icerik.style.display = "block";
   } else {
     alert("Hatalı!");
   }
 }
 
 // FOTO
-function fotoEkle(event) {
-  let files = event.target.files;
-  let kayitli = JSON.parse(localStorage.getItem("fotolar")) || [];
-
-  for (let f of files) {
+function fotoEkle(e) {
+  for (let f of e.target.files) {
     let reader = new FileReader();
-
-    reader.onload = function(e) {
-      kayitli.push(e.target.result);
-      localStorage.setItem("fotolar", JSON.stringify(kayitli));
-      ekranaEkle(e.target.result);
+    reader.onload = function(ev) {
+      fotolar.push(ev.target.result);
+      ekranaEkle(ev.target.result);
     };
-
     reader.readAsDataURL(f);
   }
 }
@@ -197,28 +193,33 @@ function fotoEkle(event) {
 function ekranaEkle(src) {
   let img = document.createElement("img");
   img.src = src;
-
-  img.onclick = function() {
-    let kayitli = JSON.parse(localStorage.getItem("fotolar"));
-
-    if (src === kayitli[0]) {
-      alert("Bu foto silinemez 💖");
-      return;
-    }
-
-    if (confirm("Sil?")) {
-      img.remove();
-      kayitli = kayitli.filter(f => f !== src);
-      localStorage.setItem("fotolar", JSON.stringify(kayitli));
-    }
-  };
-
+  img.onclick = () => acLightbox(src);
   galeri.appendChild(img);
 }
 
+// LIGHTBOX
+function acLightbox(src) {
+  currentIndex = fotolar.indexOf(src);
+  buyukFoto.src = src;
+  lightbox.style.display = "flex";
+}
+
+function next() {
+  currentIndex = (currentIndex + 1) % fotolar.length;
+  buyukFoto.src = fotolar[currentIndex];
+}
+
+function prev() {
+  currentIndex = (currentIndex - 1 + fotolar.length) % fotolar.length;
+  buyukFoto.src = fotolar[currentIndex];
+}
+
+lightbox.onclick = (e) => {
+  if (e.target === lightbox) lightbox.style.display = "none";
+};
+
 // QUIZ
 let adim = 0;
-let cevaplar = [];
 
 let sorular = [
   "Kadın mı?",
@@ -228,14 +229,48 @@ let sorular = [
   "Güçlü mü?"
 ];
 
-function baslatQuiz() {
+let karakterler = {
+  "Mitsuri": 0,
+  "Shinobu": 0,
+  "Rengoku": 0,
+  "Giyu": 0
+};
+
+function quizAc() {
+  icerik.style.display = "none";
+  quizAlan.style.display = "block";
   adim = 0;
-  cevaplar = [];
+
+  for (let k in karakterler) karakterler[k] = 0;
+
   soru.innerText = sorular[0];
 }
 
 function cevap(c) {
-  cevaplar.push(c);
+  if (adim === 0 && c === "evet") {
+    karakterler["Mitsuri"] += 2;
+    karakterler["Shinobu"] += 2;
+  }
+
+  if (adim === 1 && c === "evet") {
+    karakterler["Mitsuri"] += 2;
+  }
+
+  if (adim === 2 && c === "evet") {
+    karakterler["Mitsuri"] += 1;
+    karakterler["Rengoku"] += 2;
+  }
+
+  if (adim === 3 && c === "evet") {
+    karakterler["Giyu"] += 3;
+    karakterler["Shinobu"] += 1;
+  }
+
+  if (adim === 4 && c === "evet") {
+    karakterler["Rengoku"] += 3;
+    karakterler["Giyu"] += 2;
+  }
+
   adim++;
 
   if (adim < sorular.length) {
@@ -246,14 +281,24 @@ function cevap(c) {
 }
 
 function tahmin() {
-  alert("Tahminim: Mitsuri 💖");
-  quiz.style.display = "none";
+  let en = 0;
+  let secilen = "";
+
+  for (let k in karakterler) {
+    if (karakterler[k] > en) {
+      en = karakterler[k];
+      secilen = k;
+    }
+  }
+
+  alert("Tahminim: " + secilen + " 💖");
+
+  quizAlan.style.display = "none";
   icerik.style.display = "block";
 }
 
 // ÇIKIŞ
 function cikis() {
-  localStorage.removeItem("girisYapildi");
   location.reload();
 }
 </script>
