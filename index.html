@@ -24,7 +24,6 @@ button:hover{background:#ff2a70;transform:scale(1.05);}
 footer{text-align:center;padding:15px;background:rgba(255,255,255,0.2);color:white;border-top:1px solid #fff;backdrop-filter:blur(5px);position:fixed;bottom:0;width:100%;}
 canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-radius:15px;}
 #sonucKart{animation:fadeIn 1s;}
-/* Başlangıçta giriş görünür olacak, diğer alanlar gizli */
 #icerik,#profilKart,#quizAlan,#arkadasAlan,#pacmanCard,#flappyCard,#arabaCard,#sonucKart{display:none;}
 </style>
 </head>
@@ -67,7 +66,31 @@ canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-ra
   <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
   <button onclick="pacmanAc()">👾 Mini Pacman</button>
   <button onclick="flappyAc()">🐦 Mini Flappy Bird</button>
+  <button onclick="arabaAc()">🏎 Mini Araba Yarışı</button>
   <button onclick="cikis()">Çıkış</button>
+</div>
+
+<!-- Quiz -->
+<div class="card" id="quizAlan">
+  <h3>Belinay’ın en sevdiği Demon Slayer karakterini bulmaya çalışıyorum 💖</h3>
+  <p id="soru"></p>
+  <button onclick="cevap('evet')">Evet</button>
+  <button onclick="cevap('hayir')">Hayır</button>
+</div>
+
+<!-- Arkadaş -->
+<div class="card" id="arkadasAlan">
+  <h3>En sevdiğin arkadaşın kim? 💖</h3>
+  <button onclick="arkadasSecildi()">Oktay</button>
+  <button onclick="arkadasSecildi()">Oktay</button>
+</div>
+
+<!-- Sonuç -->
+<div class="card" id="sonucKart">
+  <h3>Tahminim: Rengoku 💖</h3>
+  <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" alt="Rengoku">
+  <p>Harika bir seçim yaptın! 💖</p>
+  <button onclick="geriIcerik()">Geri Dön</button>
 </div>
 
 <!-- Lightbox -->
@@ -75,6 +98,27 @@ canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-ra
   <span class="arrow left" onclick="prev()">❮</span>
   <img id="buyukFoto">
   <span class="arrow right" onclick="next()">❯</span>
+</div>
+
+<!-- Mini Pacman -->
+<div class="card" id="pacmanCard">
+  <h3>👾 Mini Pacman</h3>
+  <canvas id="pacmanCanvas" width="300" height="300"></canvas>
+  <button onclick="geriIcerik()">Geri Dön</button>
+</div>
+
+<!-- Mini Flappy Bird -->
+<div class="card" id="flappyCard">
+  <h3>🐦 Mini Flappy Bird</h3>
+  <canvas id="flappyCanvas" width="300" height="400"></canvas>
+  <button onclick="geriIcerik()">Geri Dön</button>
+</div>
+
+<!-- Mini Araba Yarışı -->
+<div class="card" id="arabaCard">
+  <h3>🏎 Mini Araba Yarışı</h3>
+  <canvas id="arabaCanvas" width="300" height="300"></canvas>
+  <button onclick="geriIcerik()">Geri Dön</button>
 </div>
 
 <footer>
@@ -166,6 +210,55 @@ function kontrol(){
 }
 function basla(){tanitim.style.display="none"; giris.style.display="block";}
 function cikis(){location.reload();}
+
+// ---------------- Quiz ----------------
+let adim=0;
+let sorular=["Kadın mı?","Renkli saçlı mı?","Neşeli mi?","Soğukkanlı mı?","Güçlü mü?"];
+function quizAc(){icerik.style.display="none"; quizAlan.style.display="block"; adim=0; soru.innerText=sorular[0];}
+function cevap(c){adim++; if(adim<sorular.length){soru.innerText=sorular[adim];}else{quizAlan.style.display="none"; sonucKart.style.display="block";}}
+
+// ---------------- Arkadaş ----------------
+function arkadasAc(){icerik.style.display="none"; arkadasAlan.style.display="block";}
+function arkadasSecildi(){alert("Seni sevdiğini biliyordum, çok iyi bir arkadaşsın 💖"); arkadasAlan.style.display="none"; icerik.style.display="block";}
+
+// ---------------- Site Değerlendirme ----------------
+function degerlendirmeAc(){let deger=prompt("Siteyi değerlendirin (10 üzerinden kaç?):"); if(!deger) return; deger=parseInt(deger); if(deger>=8){alert(`Teşekkürler! Minnettarlığımı belirtiyorum 💖\nSenin emeğin ve desteğin çok değerli!`);}else{alert("Tirip at! Daha çok uğraşmalısın 😡");}}
+
+// ---------------- Geri ----------------
+function geriIcerik(){sonucKart.style.display="none"; icerik.style.display="block"; pacmanCard.style.display="none"; flappyCard.style.display="none"; arabaCard.style.display="none";}
+
+// ---------------- Mini Pacman ----------------
+function pacmanAc(){
+  icerik.style.display="none"; pacmanCard.style.display="block";
+  const canvas=document.getElementById("pacmanCanvas"); const ctx=canvas.getContext("2d");
+  let x=150,y=150,r=10,dots=[{x:50,y:50},{x:250,y:50},{x:50,y:250},{x:250,y:250}];
+  document.onkeydown=(e)=>{if(e.key==="ArrowUp")y=Math.max(0,y-10);if(e.key==="ArrowDown")y=Math.min(300,y+10);if(e.key==="ArrowLeft")x=Math.max(0,x-10);if(e.key==="ArrowRight")x=Math.min(300,x+10);}
+  function draw(){ctx.clearRect(0,0,300,300);ctx.fillStyle="yellow";ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill();ctx.fillStyle="white";dots.forEach(d=>{ctx.beginPath();ctx.arc(d.x,d.y,5,0,2*Math.PI);ctx.fill();});requestAnimationFrame(draw);}
+  draw();
+}
+
+// ---------------- Mini Flappy ----------------
+function flappyAc(){
+  icerik.style.display="none"; flappyCard.style.display="block";
+  const canvas=document.getElementById("flappyCanvas"); const ctx=canvas.getContext("2d");
+  let bird={x:50,y:200,vy:0},gravity=0.6,jump=-10,pipes=[{x:300,y:100,height:100},{x:500,y:150,height:120}];
+  document.onkeydown=(e)=>{if(e.key===" "){bird.vy=jump;}}
+  function draw(){ctx.clearRect(0,0,300,400);bird.vy+=gravity;bird.y+=bird.vy;ctx.fillStyle="yellow";ctx.fillRect(bird.x,bird.y,20,20);ctx.fillStyle="green";pipes.forEach(p=>{p.x-=2;ctx.fillRect(p.x,0,30,p.y);ctx.fillRect(p.x,p.y+p.height,30,400-(p.y+p.height));});pipes.forEach(p=>{if(p.x<-30){p.x=300;p.y=Math.random()*200+50;p.height=100+Math.random()*50;}});requestAnimationFrame(draw);}
+  draw();
+}
+
+// ---------------- Mini Araba ----------------
+function arabaAc(){
+  icerik.style.display="none"; arabaCard.style.display="block";
+  const canvas=document.getElementById("arabaCanvas"); const ctx=canvas.getContext("2d");
+  let car={x:140,y:250}, road=[];
+  document.onkeydown=(e)=>{if(e.key==="ArrowLeft")car.x=Math.max(0,car.x-10);if(e.key==="ArrowRight")car.x=Math.min(280,car.x+10);}
+  function draw(){
+    ctx.clearRect(0,0,300,300);ctx.fillStyle="#888";ctx.fillRect(0,0,300,300);
+    ctx.fillStyle="blue";ctx.fillRect(car.x,car.y,20,40);
+    requestAnimationFrame(draw);
+  }draw();
+}
 </script>
 </body>
 </html>
