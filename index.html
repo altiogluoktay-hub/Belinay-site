@@ -231,4 +231,4 @@ function arabaAc(){
     frame++;
     ctx.fillStyle="red"; for(let i=obstacles.length-1;i>=0;i--){let o=obstacles[i]; o.y+=3; ctx.fillRect(o.x,o.y,o.w,o.h);
       if(carX<o.x+o.w && carX+carWidth>o.x && carY<o.y+o.h && carY+carHeight>o.y){alert("Çarpışma! Skor: "+score); geriIcerik(); return;}
-      if(o.y>carY && !o.passed){score++; o.passed=true; document
+      if(o.y>carY && !o.passed){score++; o.passed=true; docume
