@@ -17,17 +17,19 @@ body {
   flex-direction: column;
 }
 
-/* SOL ÜST YAZI */
-.badge {
+/* TANITIM */
+#tanitim {
   position: fixed;
-  top: 10px;
-  left: 10px;
-  background: rgba(255,255,255,0.3);
+  width: 100%;
+  height: 100%;
+  background: #000000dd;
   color: white;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 12px;
-  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 999;
+  animation: fadeIn 1s;
 }
 
 /* KART */
@@ -40,120 +42,219 @@ body {
   text-align: center;
   color: white;
   backdrop-filter: blur(10px);
+  animation: fadeIn 1s;
 }
 
-input, button {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+button {
   margin-top: 10px;
   padding: 10px;
   border-radius: 10px;
   border: none;
   width: 100%;
-}
-
-button {
   background: #ff4f8b;
   color: white;
 }
-
-/* İÇERİK */
-#icerik { display: none; }
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-top: 15px;
 }
 
 .gallery img {
   width: 100%;
   border-radius: 10px;
 }
+
+#icerik, #quiz { display: none; }
 </style>
 </head>
 
 <body>
 
-<!-- SOL ÜST -->
-<div class="badge">
-  Oktay tarafından Belinay’a yapılmış bir hediyedir doğum günün kutlu olsun nice mutlu senelere 💖
+<!-- TANITIM -->
+<div id="tanitim">
+  <div>
+    <h2>💖 Hoşgeldin Belinay 💖</h2>
+    <p>
+    Bu site senin için hazırlandı 🎉<br><br>
+    ➤ Giriş yap<br>
+    ➤ Küçük testi çöz<br>
+    ➤ Anılarımıza bak 📸<br><br>
+    Müzik açmak için butona bas 🎵
+    </p>
+    <button onclick="basla()">Başla</button>
+  </div>
 </div>
+
+<!-- MÜZİK -->
+<audio id="muzik" loop>
+  <source src="muzik.mp3" type="audio/mpeg">
+</audio>
+
+<button onclick="muzikKontrol()">🔊 Müzik Aç / Kapat</button>
 
 <!-- GİRİŞ -->
 <div class="card" id="giris">
-  <h2>💖Senin için bir sürpriz umarım beğenirsin
-    İyiki doğdun Belinay💖</h2>
+  <h2>🎉 Doğum günün kutlu olsun 🎉</h2>
   <input type="text" id="kullanici" placeholder="Kullanıcı adı">
   <input type="password" id="sifre" placeholder="Şifre">
-
   <button onclick="kontrol()">Giriş</button>
+</div>
+
+<!-- QUIZ -->
+<div class="card" id="quiz">
+  <p id="soru"></p>
+  <button onclick="cevap('evet')">Evet</button>
+  <button onclick="cevap('hayir')">Hayır</button>
 </div>
 
 <!-- İÇERİK -->
 <div class="card" id="icerik">
   <h2>📸 Anılarımız</h2>
-
   <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
-  
   <div class="gallery" id="galeri"></div>
-
-  <button onclick="cikis()">Çıkış Yap</button>
+  <button onclick="cikis()">Çıkış</button>
 </div>
 
 <script>
 let galeri = document.getElementById("galeri");
+let muzik = document.getElementById("muzik");
 
-// FOTOĞRAFLARI YÜKLE
-window.onload = function() {
-  let kayitli = JSON.parse(localStorage.getItem("fotolar")) || [];
-  kayitli.forEach(src => ekranaEkle(src));
+// FOTO (senin attığın foto buraya base64 koyarsın)
+const varsayilanFoto = "data:image/jpeg;base64,{{BASE64}}";
+
+// TANITIM BAŞLAT
+function basla() {
+  document.getElementById("tanitim").style.display = "none";
 }
 
-// GİRİŞ KONTROL
-function kontrol() {
-  let kullanici = document.getElementById("kullanici").value;
-  let sifre = document.getElementById("sifre").value;
-
-  if (kullanici === "Belinay Altın" && sifre === "belinay123") {
-    giris.style.display = "none";
-    icerik.style.display = "block";
+// MÜZİK KONTROL
+function muzikKontrol() {
+  if (muzik.paused) {
+    muzik.play();
   } else {
-    alert("Kullanıcı adı veya şifre yanlış!");
+    muzik.pause();
   }
 }
 
-// ÇIKIŞ
-function cikis() {
-  giris.style.display = "block";
-  icerik.style.display = "none";
+// SAYFA
+window.onload = function() {
+  let kayitli = JSON.parse(localStorage.getItem("fotolar")) || [];
+
+  if (kayitli.length === 0) {
+    kayitli = [varsayilanFoto];
+    localStorage.setItem("fotolar", JSON.stringify(kayitli));
+  }
+
+  kayitli.forEach(src => ekranaEkle(src));
+
+  if (localStorage.getItem("girisYapildi") === "true") {
+    giris.style.display = "none";
+    quiz.style.display = "block";
+    baslatQuiz();
+  }
 }
 
-// FOTO EKLE (kalıcı)
+// GİRİŞ
+function kontrol() {
+  let k = kullanici.value;
+  let s = sifre.value;
+
+  if (k === "Belinay Altın" && s === "belinay123") {
+    localStorage.setItem("girisYapildi", "true");
+    giris.style.display = "none";
+    quiz.style.display = "block";
+    baslatQuiz();
+  } else {
+    alert("Hatalı!");
+  }
+}
+
+// FOTO
 function fotoEkle(event) {
   let files = event.target.files;
   let kayitli = JSON.parse(localStorage.getItem("fotolar")) || [];
 
-  for (let i = 0; i < files.length; i++) {
+  for (let f of files) {
     let reader = new FileReader();
 
     reader.onload = function(e) {
-      let src = e.target.result;
-
-      kayitli.push(src);
+      kayitli.push(e.target.result);
       localStorage.setItem("fotolar", JSON.stringify(kayitli));
-
-      ekranaEkle(src);
+      ekranaEkle(e.target.result);
     };
 
-    reader.readAsDataURL(files[i]);
+    reader.readAsDataURL(f);
   }
 }
 
-// EKRANA BAS
 function ekranaEkle(src) {
   let img = document.createElement("img");
   img.src = src;
+
+  img.onclick = function() {
+    let kayitli = JSON.parse(localStorage.getItem("fotolar"));
+
+    if (src === kayitli[0]) {
+      alert("Bu foto silinemez 💖");
+      return;
+    }
+
+    if (confirm("Sil?")) {
+      img.remove();
+      kayitli = kayitli.filter(f => f !== src);
+      localStorage.setItem("fotolar", JSON.stringify(kayitli));
+    }
+  };
+
   galeri.appendChild(img);
+}
+
+// QUIZ
+let adim = 0;
+let cevaplar = [];
+
+let sorular = [
+  "Kadın mı?",
+  "Renkli saçlı mı?",
+  "Neşeli mi?",
+  "Soğukkanlı mı?",
+  "Güçlü mü?"
+];
+
+function baslatQuiz() {
+  adim = 0;
+  cevaplar = [];
+  soru.innerText = sorular[0];
+}
+
+function cevap(c) {
+  cevaplar.push(c);
+  adim++;
+
+  if (adim < sorular.length) {
+    soru.innerText = sorular[adim];
+  } else {
+    tahmin();
+  }
+}
+
+function tahmin() {
+  alert("Tahminim: Mitsuri 💖");
+  quiz.style.display = "none";
+  icerik.style.display = "block";
+}
+
+// ÇIKIŞ
+function cikis() {
+  localStorage.removeItem("girisYapildi");
+  location.reload();
 }
 </script>
 
