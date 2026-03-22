@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -38,6 +38,7 @@ body {
   text-align: center;
   color: white;
   backdrop-filter: blur(10px);
+  margin-bottom: 20px;
 }
 
 button {
@@ -48,12 +49,14 @@ button {
   width: 100%;
   background: #ff4f8b;
   color: white;
+  cursor: pointer;
 }
 
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .gallery img {
@@ -106,7 +109,20 @@ button {
   border-radius: 20px;
   margin-top: 10px;
 }
+
 iframe { display: none; }
+
+footer {
+  text-align:center;
+  padding:15px;
+  background: rgba(255,255,255,0.2);
+  color:white;
+  border-top: 1px solid #fff;
+  backdrop-filter: blur(5px);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 </style>
 </head>
 <body>
@@ -129,10 +145,10 @@ iframe { display: none; }
 </div>
 
 <div class="card" id="icerik">
-  <h2>📸 Anılarımız</h2>
-  <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
+  <h2>📸 Anılarımız 💖</h2>
   <div class="gallery" id="galeri"></div>
 
+  <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
   <button onclick="quizAc()">🎮 Quiz Başlat</button>
   <button onclick="arkadasAc()">👯 En Sevdiğin Arkadaş</button>
   <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
@@ -164,6 +180,10 @@ iframe { display: none; }
   <img id="buyukFoto">
   <span class="arrow right" onclick="next()">❯</span>
 </div>
+
+<footer>
+  Bu web sitesi, Belinay’a ithafen Oktay tarafından hazırlanmıştır. Lütfen Oktay’a nazik ve iyi davranmayı unutmayın 💖
+</footer>
 
 <script>
 let galeri = document.getElementById("galeri");
