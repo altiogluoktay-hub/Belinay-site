@@ -24,8 +24,8 @@ button:hover{background:#ff2a70;transform:scale(1.05);}
 footer{text-align:center;padding:15px;background:rgba(255,255,255,0.2);color:white;border-top:1px solid #fff;backdrop-filter:blur(5px);position:fixed;bottom:0;width:100%;}
 canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-radius:15px;}
 #sonucKart{animation:fadeIn 1s;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-#icerik,#profilKart,#quizAlan,#arkadasAlan,#pacmanCard,#flappyCard,#arabaCard,#sonucKart,#giris{display:none;}
+/* Başlangıçta giriş görünür olacak, diğer alanlar gizli */
+#icerik,#profilKart,#quizAlan,#arkadasAlan,#pacmanCard,#flappyCard,#arabaCard,#sonucKart{display:none;}
 </style>
 </head>
 <body>
@@ -67,31 +67,7 @@ canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-ra
   <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
   <button onclick="pacmanAc()">👾 Mini Pacman</button>
   <button onclick="flappyAc()">🐦 Mini Flappy Bird</button>
-  <button onclick="arabaAc()">🏎 Mini Araba Yarışı</button>
   <button onclick="cikis()">Çıkış</button>
-</div>
-
-<!-- Quiz -->
-<div class="card" id="quizAlan">
-  <h3>Demon Slayer karakterini buluyorum 💖</h3>
-  <p id="soru"></p>
-  <button onclick="cevap('evet')">Evet</button>
-  <button onclick="cevap('hayir')">Hayır</button>
-</div>
-
-<!-- Arkadaş -->
-<div class="card" id="arkadasAlan">
-  <h3>En sevdiğin arkadaşın kim? 💖</h3>
-  <button onclick="arkadasSecildi()">Oktay</button>
-  <button onclick="arkadasSecildi()">Oktay</button>
-</div>
-
-<!-- Sonuç -->
-<div class="card" id="sonucKart">
-  <h3>Tahminim: Rengoku 💖</h3>
-  <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" alt="Rengoku">
-  <p>Harika bir seçim yaptın! 💖</p>
-  <button onclick="geriIcerik()">Geri Dön</button>
 </div>
 
 <!-- Lightbox -->
@@ -101,50 +77,28 @@ canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-ra
   <span class="arrow right" onclick="next()">❯</span>
 </div>
 
-<!-- Mini Pacman -->
-<div class="card" id="pacmanCard">
-  <h3>👾 Mini Pacman</h3>
-  <p>Skor: <span id="pacmanSkor">0</span></p>
-  <canvas id="pacmanCanvas" width="300" height="300"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<!-- Mini Flappy Bird -->
-<div class="card" id="flappyCard">
-  <h3>🐦 Mini Flappy Bird</h3>
-  <p>Skor: <span id="flappySkor">0</span></p>
-  <canvas id="flappyCanvas" width="300" height="400"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<!-- Mini Araba Yarışı -->
-<div class="card" id="arabaCard">
-  <h3>🏎 Mini Araba Yarışı</h3>
-  <p>Skor: <span id="arabaSkor">0</span></p>
-  <canvas id="arabaCanvas" width="300" height="400"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
 <footer>
   Bu web sitesi, Belinay’a ithafen Oktay tarafından hazırlanmıştır. Lütfen Oktay’a nazik ve iyi davranmayı unutmayın 💖
 </footer>
 
 <script>
-// -------------------------- Profiller ve Galeri --------------------------
-let profilFoto=document.getElementById("profilFoto"), profilSec=document.getElementById("profilSec");
+// ---------------- Profiller ve Galeri ----------------
+let profilFoto=document.getElementById("profilFoto");
+let profilSec=document.getElementById("profilSec");
 let galeri=document.getElementById("galeri");
 let fotolar=[], sabitFotolar=["https://i.postimg.cc/5tL9NShp/foto1.jpg","https://i.postimg.cc/3N8LMR3S/foto2.jpg"];
 let currentIndex=0;
 
-// -------------------------- Başlangıç ve Giriş --------------------------
+// ---------------- Başlangıç ve Giriş ----------------
 window.onload=function(){
   // Profili yükle
-  let savedProfile = localStorage.getItem("profilFoto");
-  if(savedProfile) profilFoto.src = savedProfile;
+  let savedProfile=localStorage.getItem("profilFoto");
+  if(savedProfile) profilFoto.src=savedProfile;
+
   // Galeriyi yükle
-  let savedFotos = JSON.parse(localStorage.getItem("galeriFotos")) || [];
-  fotolar = [...sabitFotolar, ...savedFotos];
-  fotolar.forEach(src => ekranaEkle());
+  let savedFotos=JSON.parse(localStorage.getItem("galeriFotos"))||[];
+  fotolar=[...sabitFotolar,...savedFotos];
+  fotolar.forEach(src=>ekranaEkle(src));
 
   // 2 saniye sonra tanıtım kaybolur, giriş açılır
   setTimeout(()=>{tanitim.style.display="none"; giris.style.display="block";},2000);
@@ -190,100 +144,28 @@ function fotoEkle(e){
   }
 }
 
-// -------------------------- Lightbox --------------------------
+// ---------------- Lightbox ----------------
 function acLightbox(src){currentIndex=fotolar.indexOf(src);buyukFoto.src=src;lightbox.style.display="flex";}
 function next(){currentIndex=(currentIndex+1)%fotolar.length;buyukFoto.src=fotolar[currentIndex];}
 function prev(){currentIndex=(currentIndex-1+fotolar.length)%fotolar.length;buyukFoto.src=fotolar[currentIndex];}
 lightbox.onclick=(e)=>{if(e.target===lightbox) lightbox.style.display="none";}
 
-// -------------------------- Müzik --------------------------
+// ---------------- Müzik ----------------
 let muzikAcik=false;
 let ytMuzik=document.getElementById("ytMuzik");
-function muzikKontrol(){ if(muzikAcik){ytMuzik.src="";muzikAcik=false;} else{ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";muzikAcik=true;} }
+function muzikKontrol(){if(muzikAcik){ytMuzik.src="";muzikAcik=false;}else{ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";muzikAcik=true;}}
 
-// -------------------------- Giriş Kontrol --------------------------
+// ---------------- Giriş Kontrol ----------------
 function kontrol(){
   if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){
     giris.style.display="none";
     icerik.style.display="block";
     profilKart.style.display="block";
     muzikKontrol();
-  } else {
-    alert("Kullanıcı adı veya şifre hatalı!");
-  }
+  } else alert("Kullanıcı adı veya şifre hatalı!");
 }
 function basla(){tanitim.style.display="none"; giris.style.display="block";}
 function cikis(){location.reload();}
-
-// -------------------------- Quiz --------------------------
-let adim=0,sorular=["Kadın mı?","Renkli saçlı mı?","Neşeli mi?","Soğukkanlı mı?","Güçlü mü?"];
-function quizAc(){icerik.style.display="none"; quizAlan.style.display="block"; adim=0; soru.innerText=sorular[0];}
-function cevap(c){adim++; if(adim<sorular.length){soru.innerText=sorular[adim];} else{quizAlan.style.display="none"; sonucKart.style.display="block";}}
-function geriIcerik(){sonucKart.style.display="none"; icerik.style.display="block"; pacmanCard.style.display="none"; flappyCard.style.display="none"; arabaCard.style.display="none";}
-function arkadasAc(){icerik.style.display="none"; arkadasAlan.style.display="block";}
-function arkadasSecildi(){alert("Seni sevdiğini biliyordum 💖"); arkadasAlan.style.display="none"; icerik.style.display="block";}
-function degerlendirmeAc(){let d=prompt("Siteyi değerlendirin (10 üzerinden kaç?):"); if(!d)return; d=parseInt(d); if(d>=8)alert("Teşekkürler! Minnettarlığımı belirtiyorum 💖"); else alert("Tirip at! Daha çok uğraşmalısın 😡");}
-
-// -------------------------- Mini Pacman --------------------------
-function pacmanAc(){
-  icerik.style.display="none"; pacmanCard.style.display="block";
-  const canvas=document.getElementById("pacmanCanvas");
-  const ctx=canvas.getContext("2d");
-  let x=150, y=150, r=15;
-  let dots=[{x:50,y:50},{x:250,y:50},{x:50,y:250},{x:250,y:250}];
-  let skor=0;
-  document.getElementById("pacmanSkor").innerText=skor;
-  document.onkeydown=(e)=>{
-    if(e.key==="ArrowUp") y=Math.max(r,y-15);
-    if(e.key==="ArrowDown") y=Math.min(canvas.height-r,y+15);
-    if(e.key==="ArrowLeft") x=Math.max(r,x-15);
-    if(e.key==="ArrowRight") x=Math.min(canvas.width-r,x+15);
-  }
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="yellow"; ctx.beginPath(); ctx.arc(x,y,r,0,2*Math.PI); ctx.fill();
-    ctx.fillStyle="white";
-    for(let i=dots.length-1;i>=0;i--){
-      let d=dots[i];
-      ctx.beginPath(); ctx.arc(d.x,d.y,5,0,2*Math.PI); ctx.fill();
-      if(Math.hypot(x-d.x,y-d.y)<r+5){dots.splice(i,1); skor+=10; document.getElementById("pacmanSkor").innerText=skor;}
-    }
-    requestAnimationFrame(draw);
-  } draw();
-}
-
-// -------------------------- Mini Flappy Bird --------------------------
-function flappyAc(){
-  icerik.style.display="none"; flappyCard.style.display="block";
-  const canvas=document.getElementById("flappyCanvas"); const ctx=canvas.getContext("2d");
-  let bird={x:50,y:200,vy:0}; let gravity=0.5, jump=-10;
-  let pipes=[{x:300,y:Math.random()*200+50,height:100}];
-  let skor=0; document.getElementById("flappySkor").innerText=skor;
-  document.onkeydown=(e)=>{if(e.key===" "){bird.vy=jump;}}
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    bird.vy+=gravity; bird.y+=bird.vy;
-    ctx.fillStyle="yellow"; ctx.fillRect(bird.x,bird.y,20,20);
-    ctx.fillStyle="green";
-    for(let p of pipes){p.x-=2; ctx.fillRect(p.x,0,30,p.y); ctx.fillRect(p.x,p.y+p.height,30,canvas.height-(p.y+p.height));}
-    if(pipes[pipes.length-1].x<canvas.width-150){pipes.push({x:canvas.width,y:Math.random()*200+50,height:100});}
-    pipes=pipes.filter(p=>p.x+30>0);
-    for(let p of pipes){if(bird.x+20>p.x && bird.x<p.x+30 && (bird.y<p.y || bird.y>p.y+p.height)){bird.y=200; bird.vy=0; skor=0;}}
-    skor++; document.getElementById("flappySkor").innerText=skor;
-    requestAnimationFrame(draw);
-  } draw();
-}
-
-// -------------------------- Mini Araba Yarışı --------------------------
-function arabaAc(){
-  icerik.style.display="none"; arabaCard.style.display="block";
-  const canvas=document.getElementById("arabaCanvas"); const ctx=canvas.getContext("2d");
-  let car={x:130,y:300,width:40,height:60}; let obstacles=[]; let skor=0;
-  document.getElementById("arabaSkor").innerText=skor;
-  document.onkeydown=(e)=>{if(e.key==="ArrowLeft") car.x=Math.max(0,car.x-20); if(e.key==="ArrowRight") car.x=Math.min(canvas.width-car.width,car.x+20);}
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="blue"; ctx.fillRect(car.x,car.y,car.width,car.height);
-    if(Math.random()<0.02) obstacles.push({x:Math.random()*(canvas.width-30),y:-30,width:30,height:30});
-    ctx.fillStyle="red";
-    for(let i=obstacles.length-1;i>=0;i--){
+</script>
+</body>
+</html>
