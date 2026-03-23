@@ -91,4 +91,115 @@
 
 <div id="animeQuiz" class="card">
     <h2 style="color: var(--pink); font-family: 'Orbitron';">ANİME TESTİ</h2>
-    <div id="qBox" style
+    <div id="qBox" style="margin: 20px 0; font-weight: bold; color: var(--gold);"></div>
+    <button onclick="nextQ()">EVET</button>
+    <button onclick="nextQ()">HAYIR</button>
+    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
+</div>
+
+<div id="friendQuiz" class="card">
+    <h3 style="color: var(--gold); font-family: 'Orbitron';">EN SEVDİĞİN ARKADAŞIN?</h3>
+    <button onclick="friendWin()">A) Oktay</button>
+    <button onclick="friendWin()">B) OKTAY</button>
+    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
+</div>
+
+<div id="f1Game" class="card">
+    <h3 style="margin:0;">SKOR: <span id="f1Score">0</span></h3>
+    <canvas id="f1Canvas" width="300" height="350" style="background:#000; width:100%; border-radius:15px; border: 2px solid var(--pink);"></canvas>
+    <button class="back-btn" onclick="f1On = false; goHome();">ANA MENÜYE DÖN</button>
+</div>
+
+<div id="puanAlan" class="card">
+    <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUAN VER</h2>
+    <div class="stars">
+        <span class="star" onclick="setStar(1)">★</span><span class="star" onclick="setStar(2)">★</span><span class="star" onclick="setStar(3)">★</span><span class="star" onclick="setStar(4)">★</span><span class="star" onclick="setStar(5)">★</span>
+    </div>
+    <button onclick="saveRating()">GÖNDER</button>
+    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
+</div>
+
+<div id="gallery" class="card">
+    <h2 style="font-family: 'Orbitron'; color: var(--gold);">ANILAR</h2>
+    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100%; border-radius:10px;">
+    <button class="back-btn" onclick="updateTask('gal'); goHome();">ANA MENÜYE DÖN</button>
+</div>
+
+<div id="cortisolHUD" style="display:none;">
+    <div style="font-size:10px; color:var(--gold); font-family:'Orbitron';">CORTISOL SEVİYESİ</div>
+    <canvas id="meterCanvas" width="280" height="100"></canvas>
+    <div id="stressStatus" style="font-weight:900; color:red;">DURUM: KRİTİK 🚨</div>
+</div>
+
+<script>
+    let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [];
+    const audio = document.getElementById("bgMusic");
+
+    function toggleMusic() {
+        if (audio.paused) { audio.play(); document.getElementById("playBtn").innerText = "⏸️"; }
+        else { audio.pause(); document.getElementById("playBtn").innerText = "▶️"; }
+    }
+
+    function checkAccess() {
+        if (document.getElementById("uName").value.toLowerCase() === "belinay") {
+            document.getElementById("login-screen").style.display = "none";
+            document.getElementById("music-box").style.display = "flex";
+            document.getElementById("mainMenu").style.display = "block";
+            document.getElementById("cortisolHUD").style.display = "block";
+            drawMeter();
+        } else { alert("Hatalı Giriş!"); }
+    }
+
+    function setStar(n) { document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('active', i < n)); }
+    function saveRating() { alert("Puanın İçin Teşekkürler! ❤️"); updateTask('puan'); goHome(); }
+
+    function show(id) { document.querySelectorAll('.card').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
+    function goHome() { f1On = false; show("mainMenu"); }
+
+    function updateTask(id) {
+        if(!activeTasks.includes(id)) {
+            activeTasks.push(id);
+            angle = 60 - (activeTasks.length * 40);
+            if(activeTasks.length >= 3) { document.getElementById("stressStatus").innerText = "DURUM: HARİKA 😊"; document.getElementById("stressStatus").style.color = "#00ff88"; angle = -60; }
+            drawMeter();
+        }
+    }
+
+    function drawMeter() {
+        const ctx = document.getElementById("meterCanvas").getContext("2d");
+        ctx.clearRect(0,0,300,100);
+        const colors = ["#00ff88", "#f1c40f", "#ff1493"];
+        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v, i) => {
+            ctx.beginPath(); ctx.arc(140, 90, 60, v, v + Math.PI*0.33);
+            ctx.lineWidth = 12; ctx.strokeStyle = colors[i]; ctx.stroke();
+        });
+        ctx.save(); ctx.translate(140, 90); ctx.rotate(angle * Math.PI / 180);
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-4, -50); ctx.lineTo(4, -50);
+        ctx.fillStyle = "white"; ctx.fill(); ctx.restore();
+    }
+
+    function friendWin() { alert("DOĞRU! En iyi arkadaşın Oktay! ✨"); updateTask('friend'); goHome(); }
+
+    let qIdx = 0; const qs = ["Karakterin Hashira mı?", "Ateş mi kullanıyor?", "'Umai!' der mi?", "Turuncu saçlı mı?"];
+    function startAnimeQuiz() { qIdx = 0; show('animeQuiz'); nextQ(); }
+    function nextQ() { if(qIdx < qs.length) { document.getElementById("qBox").innerText = qs[qIdx++]; } else { alert("RUH İKİZİN: KYOJURO RENGOKU! 🔥"); updateTask('anime'); goHome(); } }
+
+    function startF1() { show('f1Game'); f1On = true; score = 0; enemies = []; runF1(); }
+    function runF1() {
+        if(!f1On) return;
+        const ctx = document.getElementById("f1Canvas").getContext("2d");
+        ctx.fillStyle = "#000"; ctx.fillRect(0,0,300,400);
+        ctx.fillStyle = "hotpink"; ctx.fillRect(carX, 280, 30, 50);
+        if(Math.random() < 0.05) enemies.push({x: Math.random()*260, y: -50});
+        enemies.forEach((en, i) => {
+            en.y += 7; ctx.fillStyle = "gold"; ctx.fillRect(en.x, en.y, 25, 40);
+            if(en.y > 400) { enemies.splice(i,1); score++; document.getElementById("f1Score").innerText = score; }
+            if(en.y+40 > 280 && en.y < 330 && en.x+25 > carX && en.x < carX+30) { f1On = false; alert("Kaza! Skor: " + score); goHome(); }
+        });
+        if(score >= 20) updateTask('f1');
+        requestAnimationFrame(runF1);
+    }
+    document.getElementById("f1Canvas").addEventListener("touchstart", (e) => { carX = (e.touches[0].clientX - e.target.getBoundingClientRect().left < 150) ? 50 : 220; });
+</script>
+</body>
+</html>
