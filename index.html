@@ -58,4 +58,216 @@
         .flip-back { background: linear-gradient(45deg, var(--pink), var(--gold)); transform: rotateY(180deg); color: #000; }
 
         /* --- BUTONLAR & INPUTLAR --- */
-        input { width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid var(--light-pink); color: white; border-radius: 15px; margin-bottom: 15px; outline: none; font-size:
+        input { width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid var(--light-pink); color: white; border-radius: 15px; margin-bottom: 15px; outline: none; font-size: 1.1em; }
+        
+        button { 
+            background: linear-gradient(45deg, var(--pink), var(--gold)); 
+            color: #000; border: none; padding: 18px; border-radius: 50px; 
+            width: 100%; margin: 10px 0; cursor: pointer; font-weight: 900; 
+            font-family: 'Orbitron'; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            font-size: 1em; text-transform: uppercase;
+        }
+        button:hover { transform: translateY(-3px) scale(1.02); filter: brightness(1.2); }
+        .back-btn { background: #1a000d !important; color: white !important; border: 2px solid var(--gold) !important; margin-top: 20px !important; }
+
+        /* --- CORTISOL HUD --- */
+        #cortisolHUD {
+            position: fixed; bottom: 0; width: 100%; background: rgba(30, 0, 15, 0.95);
+            border-top: 5px solid var(--gold); padding: 15px 0; z-index: 998; text-align: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+        canvas#meterCanvas { width: 280px; height: 120px; }
+
+        .option-btn { background: rgba(255, 77, 148, 0.1); border: 2px solid var(--gold); color: var(--gold); text-align: center; padding: 15px; margin: 8px 0; }
+        .option-btn:hover { background: var(--gold); color: black; }
+    </style>
+</head>
+<body>
+
+<div id="klavuzModal">
+    <div class="card" style="display: block; border-color: var(--gold);">
+        <h2 style="font-family: 'Dancing Script'; color: var(--gold); font-size: 2.8em; margin: 0;">Selam Belinay! ✨</h2>
+        <div id="guideContent" style="margin: 25px 0; font-size: 1.2em; line-height: 1.5; font-weight: 600;"></div>
+        <button onclick="nextStep()" style="background: var(--gold);">ANLADIM, DEVAM! ➡️</button>
+    </div>
+</div>
+
+<div id="login-screen">
+    <div class="card" style="display: block;">
+        <h1 style="font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 15px var(--pink); font-size: 2.5em;">B.A. PORTAL</h1>
+        <p style="color: white; letter-spacing: 2px;">HOŞ GELDİN PRENSES!</p>
+        <input id="uName" type="text" placeholder="Kullanıcı Adı">
+        <input id="uPass" type="password" placeholder="Şifre">
+        <button onclick="checkAccess()">SİSTEME GİRİŞ YAP 💖</button>
+    </div>
+</div>
+
+<div id="mainMenu" class="card">
+    <div style="position: relative; display: inline-block;">
+        <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:120px; height:120px; border-radius:50%; border:5px solid var(--pink); object-fit: cover; box-shadow: 0 0 20px var(--pink);">
+        <div style="position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: black; padding: 4px 15px; border-radius: 20px; font-size: 0.85em; font-weight: 900; border: 2px solid white; white-space: nowrap;">
+            05.02.2011 🎂
+        </div>
+    </div>
+    <h2 style="font-family: 'Orbitron'; margin-top: 30px; color: var(--light-pink); font-size: 1.8em;">Belinay Altın</h2>
+    <p style="font-weight: bold; color: var(--gold);">GÖREVLER: <span id="taskCount">0</span>/5</p>
+    <hr style="border:0; border-top:2px solid var(--glass); margin: 20px 0;">
+    <button onclick="show('personality')">👤 KİŞİLİK KARTI (3D)</button>
+    <button onclick="show('friendQuiz')">🌟 EN SEVDİĞİM ARKADAŞIM?</button>
+    <button onclick="startF1()">🏎️ TEAM IMPALA YARIŞI</button>
+    <button onclick="startAnimeQuiz()">🔥 ANİME TESTİ (RENGOKU)</button>
+    <button onclick="show('puanAlan')">⭐ SİTEYİ PUANLA</button>
+</div>
+
+<div id="personality" class="card">
+    <div class="flip-container" id="fCard">
+        <div class="flip-inner" onclick="document.getElementById('fCard').classList.toggle('flipped'); updateTask('card');">
+            <div class="flip-front">
+                <h2 style="color:var(--pink); font-family:'Orbitron'; font-size: 2em;">BELİNAY ID</h2>
+                <div style="text-align: left; margin: 20px auto; width: 80%;">
+                    <p><b>Burç:</b> Kova ♒</p>
+                    <p><b>Fav Oyun:</b> Roblox 🎮</p>
+                    <p><b>Takım:</b> Team Impala 🏎️</p>
+                </div>
+                <p style="font-size:0.8em; margin-top:40px; color:var(--gold); font-weight: bold;">(Çevirmek için Tıkla! ✨)</p>
+            </div>
+            <div class="flip-back">
+                <h2 style="font-family: 'Dancing Script'; font-size: 2.5em; margin: 0;">Ruh Analizi</h2>
+                <p style="font-weight: 600; line-height: 1.4;">Sen Belinay Altın'sın! <br><br> Neşeli, komik ve çevresine enerji saçan bir lidersin. Roblox'ta ustasın ve arkadaşlıkta bir numarasın!</p>
+                <div style="font-weight: 900; margin-top: 20px; font-size: 1.1em;">BOĞA GÜCÜ AKTİF! 💪</div>
+            </div>
+        </div>
+    </div>
+    <button class="back-btn" onclick="goHome()">ANA SAYFAYA DÖN</button>
+</div>
+
+<div id="friendQuiz" class="card">
+    <h3 style="color: var(--gold); font-family: 'Orbitron';">🌟 EN SEVDİĞİN ARKADAŞIN KİM?</h3>
+    <button class="option-btn" onclick="friendWin('A')">A) Oktay</button>
+    <button class="option-btn" onclick="friendWin('B')">B) OKTAY</button>
+    <button class="option-btn" onclick="friendWin('C')">C) Oktay Altıoğlu</button>
+    <button class="option-btn" onclick="friendWin('D')">D) OKTAY ALTIOĞLU</button>
+    <button class="back-btn" onclick="goHome()">VAZGEÇ</button>
+</div>
+
+<div id="animeQuiz" class="card">
+    <h2 style="color: var(--pink); font-family: 'Orbitron';">ANİME ANALİZ</h2>
+    <div id="qBox" style="font-size: 1.3em; margin: 30px 0; min-height: 80px; font-weight: bold; color: var(--gold);"></div>
+    <div style="display: flex; gap: 15px;">
+        <button onclick="nextQ()" style="background: #00ff88;">EVET ✅</button>
+        <button onclick="nextQ()" style="background: #ff4d4d;">HAYIR ❌</button>
+    </div>
+</div>
+
+<div id="puanAlan" class="card">
+    <h2 style="color: var(--gold); font-family: 'Orbitron';">SİSTEMİ PUANLA ⭐</h2>
+    <p style="font-weight: bold;">Oktay'ın bu çalışmasını nasıl buldun?</p>
+    <button onclick="alert('Harikasın Belinay! ❤️'); updateTask('puan'); goHome();">MÜKEMMEL! 😍</button>
+    <button onclick="alert('Teşekkürler Prenses! 😊'); updateTask('puan'); goHome();">ÇOK İYİ 👍</button>
+    <button class="back-btn" onclick="goHome()">KAPAT</button>
+</div>
+
+<div id="f1Game" class="card">
+    <h3 style="margin:0; font-family: 'Orbitron';">SKOR: <span id="f1Score" style="color: var(--gold);">0</span> / 20</h3>
+    <canvas id="f1Canvas" width="300" height="400"></canvas>
+    <button class="back-btn" onclick="f1On = false; goHome();">OYUNDAN ÇIK</button>
+</div>
+
+<div id="cortisolHUD" style="display:none;">
+    <div style="font-size:12px; color:var(--gold); font-family:'Orbitron'; font-weight: bold;">CORTISOL ANALİZ SİSTEMİ</div>
+    <canvas id="meterCanvas" width="300" height="120"></canvas>
+    <div id="stressStatus" style="font-weight:900; color:#ff4d4d; letter-spacing: 1px;">DURUM: KRİTİK SEVİYE 🚨</div>
+</div>
+
+<script>
+    let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [], step = 0;
+    const guideMsgs = [
+        "Hoş geldin Belinay! Bu senin özel dijital portalın.",
+        "Şu an Cortisol (stres) seviyen çok yüksek! (Alttaki göstergeye bak).",
+        "Menüdeki 5 görevi tamamlayarak stresi sıfırlaman lazım.",
+        "Oktay senin için her şeyi hazırladı. Hadi başlayalım!"
+    ];
+
+    function nextStep() {
+        if(step < guideMsgs.length) {
+            document.getElementById("guideContent").innerText = guideMsgs[step];
+            step++;
+        } else { document.getElementById("klavuzModal").style.display = "none"; }
+    }
+
+    function checkAccess() {
+        const u = document.getElementById("uName").value.toLowerCase();
+        const p = document.getElementById("uPass").value;
+        if ((u === "belinay" || u === "belinay altın") && p === "belinay123") {
+            document.getElementById("login-screen").style.display = "none";
+            document.getElementById("klavuzModal").style.display = "flex";
+            document.getElementById("mainMenu").style.display = "block";
+            document.getElementById("cortisolHUD").style.display = "block";
+            nextStep(); drawMeter();
+        } else { alert("Yanlış Giriş! (Kullanıcı: belinay | Şifre: belinay123)"); }
+    }
+
+    function show(id) {
+        document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
+    function goHome() { f1On = false; show("mainMenu"); }
+
+    function updateTask(id) {
+        if(!activeTasks.includes(id)) {
+            activeTasks.push(id);
+            document.getElementById("taskCount").innerText = activeTasks.length;
+            angle = 60 - (activeTasks.length * 30);
+            if(activeTasks.length >= 3) { setStatus("STABİL 😐", "yellow"); }
+            if(activeTasks.length >= 5) { setStatus("HARİKA 😊", "#00ff88"); angle = -60; }
+            drawMeter();
+        }
+    }
+    function setStatus(t, c) { const s = document.getElementById("stressStatus"); s.innerText = "DURUM: " + t; s.style.color = c; }
+
+    function drawMeter() {
+        const c = document.getElementById("meterCanvas"), ctx = c.getContext("2d");
+        ctx.clearRect(0,0,300,120);
+        const colors = ["#00ff88", "#f1c40f", "#ff1493"];
+        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v, i) => {
+            ctx.beginPath(); ctx.arc(150, 110, 80, v, v + Math.PI*0.33);
+            ctx.lineWidth = 18; ctx.strokeStyle = colors[i]; ctx.stroke();
+        });
+        ctx.save(); ctx.translate(150, 110); ctx.rotate(angle * Math.PI / 180);
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-6, -75); ctx.lineTo(6, -75);
+        ctx.fillStyle = "white"; ctx.fill(); ctx.restore();
+    }
+
+    function friendWin(ans) {
+        alert("KESİNLİKLE DOĞRU! En iyi arkadaşın Oktay! ✨");
+        updateTask('friend'); goHome();
+    }
+
+    let qIdx = 0; const qs = ["Karakterin Hashira mı?", "Ateş mi kullanıyor?", "'Umai!' der mi?", "Turuncu saçlı mı?"];
+    function startAnimeQuiz() { qIdx = 0; show('animeQuiz'); nextQ(); }
+    function nextQ() {
+        if(qIdx < qs.length) { document.getElementById("qBox").innerText = qs[qIdx]; qIdx++; }
+        else { alert("RUH İKİZİN: KYOJURO RENGOKU! 🔥🔥"); updateTask('anime'); goHome(); }
+    }
+
+    function startF1() { show('f1Game'); f1On = true; score = 0; enemies = []; runF1(); }
+    document.getElementById("f1Canvas").addEventListener("touchstart", (e) => {
+        let x = e.touches[0].clientX - e.target.getBoundingClientRect().left;
+        carX = (x < 150) ? Math.max(10, carX - 60) : Math.min(250, carX + 60);
+    });
+    function runF1() {
+        if(!f1On) return;
+        const ctx = document.getElementById("f1Canvas").getContext("2d");
+        ctx.fillStyle = "#000"; ctx.fillRect(0,0,300,400);
+        ctx.fillStyle = "#ff1493"; ctx.fillRect(carX, 330, 35, 55);
+        if(Math.random() < 0.05) enemies.push({x: Math.random()*260, y: -50});
+        enemies.forEach((en, i) => {
+            en.y += 8; ctx.fillStyle = "#ffd700"; ctx.fillRect(en.x, en.y, 30, 45);
+            if(en.y > 400) { enemies.splice(i,1); score++; document.getElementById("f1Score").innerText = score; if(score==20) updateTask('f1'); }
+            if(en.y+45 > 330 && en.y < 385 && en.x+30 > carX && en.x < carX+35) { f1On = false; alert("Kaza! Skor: " + score); goHome(); }
+        });
+        requestAnimationFrame(runF1);
+    }
+</script>
+</body>
+</html>
