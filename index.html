@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay'ın Dünyası 💖</title>
 <style>
-/* --- GENEL VE ANİMASYON --- */
+/* --- ANA STİLLER --- */
 @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+@keyframes slideUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+
 body {
     margin:0; font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(-45deg, #ff7eb3, #ff758c, #8e44ad, #2c3e50);
@@ -17,7 +19,7 @@ body {
     background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
     padding: 20px; border-radius: 20px; width: 90%; max-width: 400px;
     text-align: center; margin: 15px auto; border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.5s ease;
 }
 button {
     background: #ff4f8b; color: white; border: none; padding: 12px;
@@ -25,25 +27,25 @@ button {
 }
 button:hover { transform: scale(1.02); background: #ff1f6b; }
 
-/* --- SES PANELİ --- */
-#volPanel { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.7); padding: 8px 12px; border-radius: 12px; display: flex; align-items: center; gap: 8px; z-index: 2000; }
-#volPanel input { width: 70px; cursor: pointer; }
+/* --- WINDOWS SES PANELİ --- */
+#volPanel { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 12px; display: flex; align-items: center; gap: 8px; z-index: 2000; border: 1px solid rgba(255,255,255,0.2); }
+#volPanel input { width: 80px; cursor: pointer; }
 
-/* --- EN SEVİLEN ARKADAŞ BÖLÜMÜ --- */
-#oktayBölümü { display: none; }
-.cevap-btn { background: #6c5ce7; font-size: 1.1em; }
-
-/* --- GALERİ & LIGHTBOX --- */
-.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; }
-.gallery img { width: 75px; height: 75px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid white; }
+/* --- GALERİ VE LIGHTBOX --- */
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 15px; }
+.gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid white; }
 #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
-#lightbox img { max-width: 85%; max-height: 75%; border-radius: 10px; border: 3px solid white; }
+#lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; border: 3px solid white; }
 
-/* --- F1 YARIŞI --- */
-#f1Canvas { background: #444; border-radius: 10px; border: 3px solid #ff4f8b; width: 100%; max-width: 300px; display: block; margin: 0 auto; }
+/* --- F1 OYUNU --- */
+#f1Canvas { background: #333; border-radius: 10px; border: 3px solid #ff4f8b; width: 100%; max-width: 300px; display: block; margin: 10px auto; touch-action: none; }
 
-footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); padding: 15px; text-align: center; backdrop-filter: blur(5px); z-index: 100; font-size: 14px; }
-#icerik, #profilKart, #f1Alan, #quizAlan, #sonucKart, #ratingAlan, #oktayBölümü { display: none; }
+/* --- PUANLAMA --- */
+.star { font-size: 2em; cursor: pointer; color: #ccc; }
+.star.active { color: #ffeb3b; }
+
+footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.6); padding: 15px; text-align: center; backdrop-filter: blur(5px); z-index: 100; font-size: 14px; }
+#icerik, #profilKart, #f1Alan, #quizAlan, #sonucKart, #ratingAlan, #oktayBolumu { display: none; }
 </style>
 </head>
 <body>
@@ -55,7 +57,8 @@ footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); p
 </div>
 
 <div id="giris" class="card">
-    <h2>🎁 Belinay'ın Dünyası</h2>
+    <h1>✨ Belinay ✨</h1>
+    <p>Giriş yap ve dünyanı keşfet!</p>
     <input id="kullanici" placeholder="Adın Soyadın" style="padding:10px; width:85%; border-radius:8px; border:none; margin-bottom:10px;">
     <input id="sifre" type="password" placeholder="Şifre" style="padding:10px; width:85%; border-radius:8px; border:none;">
     <button onclick="girisYap()">Giriş Yap 🎵</button>
@@ -67,68 +70,69 @@ footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); p
 </div>
 
 <div id="icerik" class="card">
-    <h3>Neler Yapalım? ✨</h3>
+    <h3>Sana Özel Köşe 💖</h3>
     <button onclick="oktayAc()">🌟 En Sevdiğin Arkadaşın Kim?</button>
     <button onclick="f1Baslat()">🏎️ Mini F1 Yarışı</button>
     <button onclick="quizAc()">🔥 Karakter Tahmini</button>
     <button onclick="ratingAc()">⭐ Siteyi Puanla</button>
     
     <div class="gallery">
-        <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg" onclick="openLB(0)">
-        <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg" onclick="openLB(1)">
+        <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg" onclick="openLB(this.src)">
+        <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg" onclick="openLB(this.src)">
     </div>
-    <button onclick="location.reload()" style="background:#555; margin-top:15px;">Çıkış Yap</button>
+    <button onclick="location.reload()" style="background:#555; margin-top:20px;">Çıkış Yap</button>
 </div>
 
-<div id="oktayBölümü" class="card">
+<div id="oktayBolumu" class="card">
     <h2 style="color: #ffeb3b;">Zor Soru! 🤔</h2>
-    <p style="font-size: 1.2em;">En sevdiğin arkadaşın kim?</p>
-    <button class="cevap-btn" onclick="oktayMesaj()">Oktay</button>
-    <button class="cevap-btn" onclick="oktayMesaj()">Tabii ki Oktay</button>
-    <div id="oktaySonuç" style="margin-top:20px; display:none; animation: slideUp 0.5s;">
-        <p style="font-size: 1.3em; font-weight: bold;">Çok naziksin, teşekkür ederim! 😊💖</p>
-        <button onclick="anaMenu()" style="background:#ff4f8b; margin-top:10px;">Geri Dön</button>
+    <p>En sevdiğin arkadaşın kim?</p>
+    <button onclick="oktayMesaj()">Oktay</button>
+    <button onclick="oktayMesaj()">Tabii ki Oktay</button>
+    <div id="oktayMesajKutusu" style="display:none; margin-top:20px;">
+        <p style="font-size: 1.2em; font-weight: bold;">Çok naziksin, teşekkür ederim! 😊💖</p>
+        <button onclick="anaMenu()">Geri Dön</button>
     </div>
 </div>
 
 <div id="f1Alan" class="card">
     <h3 id="f1Score">Skor: 0</h3>
     <canvas id="f1Canvas" width="300" height="400"></canvas>
+    <p style="font-size: 0.8em;">(Sağa/Sola tıkla/dokun!)</p>
     <button onclick="anaMenu()">Yarışı Bitir</button>
 </div>
 
 <div id="quizAlan" class="card">
-    <h3 id="soruMetni">Soru Yükleniyor...</h3>
+    <h3 id="soruMetni">Yükleniyor...</h3>
     <button onclick="quizCevap()">Evet</button>
     <button onclick="quizCevap()">Hayır</button>
 </div>
 
 <div id="sonucKart" class="card">
     <h2 style="color: #ffeb3b;">🔥 TAHMİNİM: RENGOKU 🔥</h2>
-    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px;">
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px; border: 2px solid white;">
+    <p>"Kalbini ateşle yak!"</p>
     <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
 <div id="ratingAlan" class="card">
-    <h3>Puanın? 😍</h3>
+    <h3>Puan Ver ⭐</h3>
     <div id="stars">
-        <span onclick="rate(1)">⭐</span><span onclick="rate(2)">⭐</span>
-        <span onclick="rate(3)">⭐</span><span onclick="rate(4)">⭐</span><span onclick="rate(5)">⭐</span>
+        <span class="star" onclick="rate(1)">⭐</span><span class="star" onclick="rate(2)">⭐</span>
+        <span class="star" onclick="rate(3)">⭐</span><span class="star" onclick="rate(4)">⭐</span><span class="star" onclick="rate(5)">⭐</span>
     </div>
     <p id="rateMsg"></p>
     <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
-<div id="lightbox">
+<div id="lightbox" onclick="this.style.display='none'">
     <img id="lbImg" src="">
-    <span onclick="this.parentElement.style.display='none'" style="position:absolute; top:20px; right:30px; font-size:40px; cursor:pointer;">×</span>
 </div>
 
 <iframe id="muzikPlayer" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
-<footer>Belinay'a doğum günü için yapılmıştır. 💖</footer>
+<footer>Belinay Altın için Oktay tarafından yapılmıştır. 💖</footer>
 
 <script>
-// --- SES ---
+// --- SES SİSTEMİ ---
 function changeVol(v) {
     document.getElementById("volVal").innerText = v + "%";
     document.getElementById("muzikPlayer").contentWindow.postMessage('{"event":"command","func":"setVolume","args":['+v+']}', '*');
@@ -136,4 +140,66 @@ function changeVol(v) {
 
 // --- GİRİŞ ---
 function girisYap() {
-    let k = document.getElementById("kullanici").value, s = document
+    let k = document.getElementById("kullanici").value, s = document.getElementById("sifre").value;
+    if(k === "Belinay Altın" && s === "belinay123") {
+        document.getElementById("giris").style.display = "none";
+        document.getElementById("icerik").style.display = "block";
+        document.getElementById("profilKart").style.display = "block";
+        document.getElementById("muzikPlayer").src = "https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1&autoplay=1";
+    } else { alert("Hata! ❤️"); }
+}
+
+// --- OKTAY BÖLÜMÜ ---
+function oktayAc() {
+    document.getElementById("icerik").style.display = "none";
+    document.getElementById("oktayBolumu").style.display = "block";
+    document.getElementById("oktayMesajKutusu").style.display = "none";
+    document.querySelectorAll("#oktayBolumu button").forEach(b => b.style.display = "block");
+}
+function oktayMesaj() {
+    document.querySelectorAll("#oktayBolumu button").forEach(b => b.style.display = "none");
+    document.getElementById("oktayMesajKutusu").style.display = "block";
+}
+
+// --- GALERİ ---
+function openLB(src) { document.getElementById("lbImg").src = src; document.getElementById("lightbox").style.display = "flex"; }
+
+// --- QUIZ ---
+let adim = 0;
+const sorular = ["Karakter bir Demon Slayer mı?","Bir Hashira mı?","Saçları güneş gibi mi?","Gülümser mi?","'Umai!' der mi?","Ateş kullanır mı?","Mugen Train'de miydi?","En sevdiğin mi?"];
+function quizAc() { adim=0; document.getElementById("icerik").style.display="none"; document.getElementById("quizAlan").style.display="block"; soruGuncelle(); }
+function soruGuncelle() { document.getElementById("soruMetni").innerText = `${adim+1}. Soru: ${sorular[adim]}`; }
+function quizCevap() { adim++; if(adim < 8) soruGuncelle(); else { document.getElementById("quizAlan").style.display="none"; document.getElementById("sonucKart").style.display="block"; } }
+
+// --- F1 OYUNU ---
+let fCtx = document.getElementById("f1Canvas").getContext("2d"), carX = 135, fScore = 0, ens = [], fActive = false;
+function f1Baslat() { document.getElementById("icerik").style.display="none"; document.getElementById("f1Alan").style.display="block"; fActive=true; ens=[]; fScore=0; fLoop(); }
+document.getElementById("f1Canvas").addEventListener("pointerdown", (e) => {
+    let x = e.clientX - e.target.getBoundingClientRect().left;
+    if(x < 150) carX = Math.max(10, carX-40); else carX = Math.min(260, carX+40);
+});
+function fLoop() {
+    if(!fActive) return;
+    fCtx.fillStyle="#333"; fCtx.fillRect(0,0,300,400); // Pist
+    fCtx.fillStyle="white"; for(let i=0; i<400; i+=40) fCtx.fillRect(145, i, 10, 20); // Şerit
+    fCtx.fillStyle="#ff0000"; fCtx.fillRect(carX, 330, 30, 50); // Araba
+    if(Math.random() < 0.04) ens.push({x: Math.random()*260, y: -50});
+    ens.forEach((en, i) => {
+        en.y += 6; fCtx.fillStyle="#00ff00"; fCtx.fillRect(en.x, en.y, 30, 50);
+        if(en.y > 400) { ens.splice(i,1); fScore++; document.getElementById("f1Score").innerText = "Skor: "+fScore; }
+        if(en.y+50 > 330 && en.y < 380 && en.x+30 > carX && en.x < carX+30) { fActive=false; alert("Kaza! Skor: "+fScore); anaMenu(); }
+    });
+    requestAnimationFrame(fLoop);
+}
+
+// --- PUANLAMA ---
+function ratingAc() { document.getElementById("icerik").style.display="none"; document.getElementById("ratingAlan").style.display="block"; }
+function rate(n) {
+    document.querySelectorAll(".star").forEach((s, i) => s.classList.toggle("active", i < n));
+    document.getElementById("rateMsg").innerText = n + " Yıldız! Teşekkürler Belinay! ❤️";
+}
+
+function anaMenu() { fActive=false; document.querySelectorAll(".card").forEach(c => c.style.display="none"); document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; }
+</script>
+</body>
+</html>
