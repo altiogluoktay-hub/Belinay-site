@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay'ın Dünyası 💖</title>
 <style>
-/* --- GELİŞMİŞ ANİMASYONLAR --- */
+/* --- ANİMASYONLAR VE GENEL STİL --- */
 @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-@keyframes starBounce { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.3); color: #ffeb3b;} }
 @keyframes slideUp { from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
 
 body {
@@ -15,6 +14,7 @@ body {
     background: linear-gradient(-45deg, #ff7eb3, #ff758c, #8e44ad, #2c3e50);
     background-size: 400% 400%; animation: gradientBG 10s ease infinite;
     display:flex; flex-direction:column; align-items:center; min-height:100vh; color: white;
+    padding-bottom: 80px;
 }
 
 .card {
@@ -24,11 +24,6 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.6s ease-out;
 }
 
-/* Yıldız Animasyonu */
-.star { font-size: 2.5em; cursor: pointer; transition: 0.3s; display: inline-block; }
-.star:hover { animation: starBounce 0.5s infinite; color: #ffeb3b; }
-.star.active { color: #ffeb3b; transform: scale(1.2); }
-
 button {
     background: #ff4f8b; color: white; border: none; padding: 12px;
     border-radius: 15px; width: 100%; margin: 8px 0; cursor: pointer;
@@ -36,72 +31,89 @@ button {
 }
 button:hover { transform: scale(1.03); background: #ff1f6b; }
 
-.gallery img { 
-    width: 80px; height: 80px; object-fit: cover; border-radius: 12px; 
-    margin: 5px; border: 2px solid white; transition: 0.3s;
+/* --- BELİNAY KARTI (FLIP) --- */
+#belinayCardDisplay { display: none; perspective: 1000px; }
+.flip-card { width: 300px; height: 420px; margin: 0 auto; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+.flip-card.flipped { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back {
+  width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4); overflow: hidden; border: 2px solid rgba(255,255,255,0.3);
 }
-.gallery img:hover { transform: scale(1.1) rotate(5deg); }
+.flip-card-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+.flip-card-back { background: linear-gradient(135deg, #ff758c, #ff7eb3); transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; text-align: center; }
 
-#canvas-container { background: #000; border-radius: 15px; overflow: hidden; margin: 10px 0; border: 3px solid #ff4f8b; }
-footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.2); padding: 10px; font-size: 12px; text-align: center; }
+.stat-row { width: 100%; margin: 8px 0; text-align: left; }
+.stat-label { font-size: 0.9em; font-weight: bold; margin-bottom: 4px; display: block; }
+.stat-bar { height: 12px; background: rgba(255,255,255,0.2); border-radius: 6px; overflow: hidden; }
+.stat-fill { height: 100%; background: #ffeb3b; width: 0; transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-#icerik, #profilKart, #quizAlan, #gameAlan, #sonucKart, #ratingAlan { display: none; }
+/* --- GALERİ --- */
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
+.gallery img { width: 85px; height: 85px; object-fit: cover; border-radius: 12px; border: 2px solid white; }
+
+footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); padding: 15px; font-size: 14px; text-align: center; backdrop-filter: blur(5px); z-index: 100; }
+#icerik, #profilKart, #futureNote, #belinayCardDisplay, #quizAlan, #sonucKart { display: none; }
 </style>
 </head>
 <body>
 
 <div id="tanitim" class="card">
     <h1>✨ Belinay ✨</h1>
-    <p>Sana özel hazırlanan sayfaya hoş geldin!</p>
+    <p>Doğum günün kutlu olsun!</p>
 </div>
 
 <div id="giris" class="card" style="display:none;">
-    <h2>🎁 Doğum Günün Kutlu Olsun</h2>
+    <h2>🎁 Giriş Paneli</h2>
     <input id="kullanici" placeholder="Adın Soyadın" style="padding:10px; width:85%; border-radius:8px; border:none; margin-bottom:10px;">
     <input id="sifre" type="password" placeholder="Şifre" style="padding:10px; width:85%; border-radius:8px; border:none;">
     <button onclick="girisYap()">Giriş Yap ve Müziği Aç 🎵</button>
 </div>
 
 <div id="profilKart" class="card">
-    <img id="profilFoto" src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid white;">
+    <img id="profilFoto" src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid white; object-fit: cover;">
     <h3>Belinay Altın</h3>
-    <input type="file" id="fotoSec" style="display:none;" onchange="profilGuncelle(event)">
-    <button onclick="document.getElementById('fotoSec').click()" style="background:#6c5ce7">Fotoğraf Seç</button>
 </div>
 
 <div id="icerik" class="card">
-    <h3>📸 Anılarımız</h3>
+    <h3>Sana Özel Köşe 💖</h3>
+    <button onclick="showBelinayCard()">🌟 Belinay Kartı'nı Gör</button>
+    <button onclick="quizAc()">🔥 Karakter Tahmini (Akinator)</button>
+    <button onclick="showFutureNote()">🔒 Geleceğe Not Bırak</button>
     <div id="galeri" class="gallery">
         <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg">
         <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg">
     </div>
-    <input type="file" multiple onchange="galeriEkle(event)" style="font-size:10px; margin:10px 0;">
-    <hr style="opacity:0.2">
-    <button onclick="oyunBaslat()">🐦 Flappy Bird Oyna</button>
-    <button onclick="quizAc()">🔥 Karakter Tahmini</button>
-    <button onclick="ratingAc()">⭐ Siteyi Puanla</button>
-    <button onclick="location.reload()" style="background:#555">Güvenli Çıkış</button>
+    <input type="file" multiple onchange="galeriEkle(event)" style="font-size:10px; margin-top:10px;">
+    <button onclick="location.reload()" style="background:#555; margin-top:15px;">Güvenli Çıkış</button>
 </div>
 
-<div id="gameAlan" class="card">
-    <h3 id="scoreText">Skor: 0</h3>
-    <div id="canvas-container">
-        <canvas id="gameCanvas" width="320" height="400"></canvas>
+<div id="belinayCardDisplay" class="card">
+    <div class="flip-card" id="mainCard" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-front">
+            <h2 style="color: #ffeb3b;">BELİNAY</h2>
+            <div class="stat-row">
+                <span class="stat-label">Enerji ⚡ (%80)</span>
+                <div class="stat-bar"><div class="stat-fill" data-width="80%"></div></div>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Komiklik 😂 (%99)</span>
+                <div class="stat-bar"><div class="stat-fill" data-width="99%"></div></div>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Zeka 🧠 (%90)</span>
+                <div class="stat-bar"><div class="stat-fill" data-width="90%"></div></div>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Mallık 🤡 (%50)</span>
+                <div class="stat-bar"><div class="stat-fill" data-width="50%"></div></div>
+            </div>
+            <p style="font-size: 0.7em; margin-top: 20px;">(Çevirmek için tıkla!)</p>
+        </div>
+        <div class="flip-card-back">
+            <h2>İyi ki Varsın! 💖</h2>
+            <p>"Senin gibi neşeli ve bazen de tatlı bir şekilde 'mal' olan bir arkadaş bulmak çok zor. Her zaman böyle kal!"</p>
+        </div>
     </div>
-    <p>Zıplamak için tıkla!</p>
-    <button onclick="anaMenu()">Oyundan Çık</button>
-</div>
-
-<div id="ratingAlan" class="card">
-    <h3>Nasıl olmuş? 😍</h3>
-    <div id="stars">
-        <span class="star" onclick="rate(1)">⭐</span>
-        <span class="star" onclick="rate(2)">⭐</span>
-        <span class="star" onclick="rate(3)">⭐</span>
-        <span class="star" onclick="rate(4)">⭐</span>
-        <span class="star" onclick="rate(5)">⭐</span>
-    </div>
-    <p id="rateMsg"></p>
     <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
@@ -112,26 +124,27 @@ footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.2); p
 </div>
 
 <div id="sonucKart" class="card">
-    <h3>Tahminim: Rengoku 🔥</h3>
-    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px;">
-    <p>Senin enerjin tam bir "Umai!" dedirtiyor! 💖</p>
-    <button onclick="anaMenu()">Harika!</button>
+    <h2 style="color: #ffeb3b;">🔥 TAHMİNİM: RENGOKU 🔥</h2>
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px; border: 3px solid #ff4f8b;">
+    <p>"Kalbini ateşle yak!" <br> Rengoku ruh eşin çıktı! 💖</p>
+    <button onclick="anaMenu()">Geri Dön</button>
+</div>
+
+<div id="futureNote" class="card">
+    <h3>🔒 Geleceğe Not</h3>
+    <textarea id="noteText" placeholder="Mesajını buraya yaz..."></textarea>
+    <button onclick="saveNote()" id="lockBtn">Kilitle 🗝️</button>
+    <div id="countdown"></div>
+    <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
 <iframe id="muzikPlayer" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
 
-<footer>Oktay tarafından Belinay için sevgiyle yapılmıştır. 💖</footer>
+<footer>Belinay'a doğum günü için yapılmıştır. 💖</footer>
 
 <script>
-// --- SİSTEM AYARLARI ---
-let canvas = document.getElementById("gameCanvas");
-let ctx = canvas.getContext("2d");
-let gameRunning = false;
-
-setTimeout(() => {
-    document.getElementById("tanitim").style.display = "none";
-    document.getElementById("giris").style.display = "block";
-}, 2000);
+// --- GİRİŞ VE ANA SİSTEM ---
+setTimeout(() => { document.getElementById("tanitim").style.display = "none"; document.getElementById("giris").style.display = "block"; }, 2000);
 
 function girisYap() {
     let k = document.getElementById("kullanici").value;
@@ -140,101 +153,81 @@ function girisYap() {
         document.getElementById("giris").style.display = "none";
         document.getElementById("icerik").style.display = "block";
         document.getElementById("profilKart").style.display = "block";
-        // MÜZİK ÇALIŞTIRMA (YouTube Embed No-Cookie versiyon)
-        document.getElementById("muzikPlayer").src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1";
-    } else {
-        alert("Lütfen adını ve şifreni doğru gir Belinay! ❤️");
-    }
+        document.getElementById("muzikPlayer").src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1";
+        checkNote();
+    } else { alert("Yanlış giriş! ❤️"); }
 }
 
-// --- PROFİL VE GALERİ ---
-function profilGuncelle(e) {
-    let reader = new FileReader();
-    reader.onload = function(ev) { document.getElementById("profilFoto").src = ev.target.result; }
-    reader.readAsDataURL(e.target.files[0]);
+// --- QUIZ (8 SORU) ---
+let adim = 0;
+const sorular = [
+    "Bu karakter bir Demon Slayer mı? ⚔️",
+    "Peki, bu karakter bir 'Hashira' mı? ✨",
+    "Saçları güneş gibi renkli mi? 🔥",
+    "Sürekli gülümseyen biri mi? 😄",
+    "Yemek yerken 'Umai!' diyor mu? 🍱",
+    "Savaşırken 'Ateş Nefesi' kullanıyor mu? 🐉",
+    "Mugen Train görevinde yer aldı mı? 🚂",
+    "Bu senin en sevdiğin karakter mi? 💖"
+];
+
+function quizAc() { adim = 0; document.getElementById("icerik").style.display = "none"; document.getElementById("quizAlan").style.display = "block"; soruGuncelle(); }
+function soruGuncelle() { document.getElementById("soruMetni").innerText = `${adim + 1}. Soru: ${sorular[adim]}`; }
+function quizCevap() {
+    adim++;
+    if (adim < sorular.length) { soruGuncelle(); } 
+    else { document.getElementById("quizAlan").style.display = "none"; document.getElementById("sonucKart").style.display = "block"; }
 }
 
+// --- GALERİ ---
 function galeriEkle(e) {
     for(let f of e.target.files) {
-        let reader = new FileReader();
-        reader.onload = function(ev) {
+        let r = new FileReader();
+        r.onload = (ev) => {
             let img = document.createElement("img");
             img.src = ev.target.result;
             document.getElementById("galeri").appendChild(img);
         }
-        reader.readAsDataURL(f);
+        r.readAsDataURL(f);
     }
 }
 
-// --- OYUN: FLAPPY BIRD ---
-let bird, pipes, score;
-function oyunBaslat() {
+// --- KART VE NOT ---
+function showBelinayCard() {
     document.getElementById("icerik").style.display = "none";
-    document.getElementById("gameAlan").style.display = "block";
-    resetGame();
-    if(!gameRunning) { gameRunning = true; gameLoop(); }
+    document.getElementById("belinayCardDisplay").style.display = "block";
+    setTimeout(() => { document.querySelectorAll('.stat-fill').forEach(f => f.style.width = f.getAttribute('data-width')); }, 300);
 }
 
-function resetGame() {
-    bird = { x: 50, y: 150, v: 0, g: 0.4, jump: -6 };
-    pipes = [];
-    score = 0;
+function showFutureNote() { document.getElementById("icerik").style.display = "none"; document.getElementById("futureNote").style.display = "block"; }
+
+function saveNote() {
+    const note = document.getElementById("noteText").value;
+    if(!note.trim()) return;
+    const openDate = new Date(); openDate.setFullYear(openDate.getFullYear() + 1);
+    localStorage.setItem("bNote", note); localStorage.setItem("bDate", openDate.getTime());
+    checkNote();
 }
 
-canvas.addEventListener("mousedown", () => bird.v = bird.jump);
-
-function gameLoop() {
-    if(!gameRunning) return;
-    ctx.fillStyle = "#4ec0ca"; ctx.fillRect(0,0,320,400); // Gökyüzü
-
-    bird.v += bird.g; bird.y += bird.v;
-    ctx.fillStyle = "#f1c40f"; ctx.fillRect(bird.x, bird.y, 25, 20); // Kuş
-
-    if(Date.now() % 1500 < 20) pipes.push({x:320, y: Math.random()*200+50});
-
-    pipes.forEach((p, i) => {
-        p.x -= 2;
-        ctx.fillStyle = "#2ecc71";
-        ctx.fillRect(p.x, 0, 40, p.y); // Üst boru
-        ctx.fillRect(p.x, p.y+110, 40, 400); // Alt boru
-        
-        if(p.x == 50) { score++; document.getElementById("scoreText").innerText = "Skor: " + score; }
-        // Çarpışma
-        if(bird.x+25 > p.x && bird.x < p.x+40 && (bird.y < p.y || bird.y+20 > p.y+110)) resetGame();
-    });
-    if(bird.y > 400 || bird.y < 0) resetGame();
-    requestAnimationFrame(gameLoop);
+function checkNote() {
+    const sN = localStorage.getItem("bNote"), sD = localStorage.getItem("bDate"), now = new Date().getTime();
+    if (sN && sD) {
+        document.getElementById("lockBtn").style.display = "none";
+        if (now >= sD) { document.getElementById("noteText").value = sN; }
+        else { document.getElementById("noteText").value = "Kilitli... 🔒"; updateTime(sD); setInterval(() => updateTime(sD), 1000); }
+    }
 }
 
-// --- PUANLAMA VE DİĞER ---
-function ratingAc() {
-    document.getElementById("icerik").style.display = "none";
-    document.getElementById("ratingAlan").style.display = "block";
+function updateTime(t) {
+    const diff = t - new Date().getTime();
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = `Açılmasına: ${d}g ${h}s ${m}d ${s}sn`;
 }
 
-function rate(n) {
-    let stars = document.querySelectorAll('.star');
-    stars.forEach((s, i) => s.classList.toggle('active', i < n));
-    document.getElementById("rateMsg").innerText = n + " Yıldız! Teşekkürler Belinay! ✨💖";
-}
-
-function quizAc() {
-    document.getElementById("icerik").style.display = "none";
-    document.getElementById("quizAlan").style.display = "block";
-    document.getElementById("soruMetni").innerText = "Karakterin çok güçlü bir kılıç ustası mı?";
-}
-
-function quizCevap() {
-    document.getElementById("quizAlan").style.display = "none";
-    document.getElementById("sonucKart").style.display = "block";
-}
-
-function anaMenu() {
-    gameRunning = false;
-    document.querySelectorAll('.card').forEach(c => c.style.display = "none");
-    document.getElementById("icerik").style.display = "block";
-    document.getElementById("profilKart").style.display = "block";
-}
+function anaMenu() { document.querySelectorAll('.card').forEach(c => c.style.display = "none"); document.getElementById("icerik").style.display = "block"; document.getElementById("profilKart").style.display = "block"; }
 </script>
 </body>
 </html>
