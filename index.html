@@ -4,261 +4,136 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay 💖</title>
+
 <style>
-body {margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#ff9ab5,#ffc3d9);display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:60px;}
-.card {background:rgba(255,255,255,0.15);padding:20px;border-radius:20px;width:90%;max-width:450px;text-align:center;color:white;backdrop-filter:blur(10px);margin:20px auto;box-shadow:0 4px 15px rgba(0,0,0,0.2);transition:0.3s;}
-.card:hover {transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,0.3);}
-button {margin-top:10px;padding:10px;border-radius:12px;border:none;width:100%;background:#ff4f8b;color:white;cursor:pointer;transition:0.3s;}
-button:hover{background:#ff2a70;transform:scale(1.05);}
-#profilKart img{width:130px;height:130px;border-radius:50%;cursor:pointer;margin-bottom:10px;transition:0.3s;}
-#profilKart img:hover{transform:scale(1.1);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
-#profilKart input[type=file]{margin-top:10px;padding:8px;border-radius:12px;border:none;width:80%;background:#ff4f8b;color:white;cursor:pointer;transition:0.2s;}
-#profilKart input[type=file]:hover{background:#ff2a70;transform:scale(1.05);}
-.gallery{display:flex;flex-direction:column;gap:10px;margin-bottom:15px;}
-.gallery img{width:100%;border-radius:12px;cursor:pointer;transition:0.3s;}
-.gallery img:hover{transform:scale(1.05);}
+body {margin:0;font-family:Arial;background:linear-gradient(135deg,#ff9ab5,#ffc3d9);display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:60px;}
+.card {background:rgba(255,255,255,0.15);padding:20px;border-radius:20px;width:90%;max-width:450px;text-align:center;color:white;margin:20px auto;}
+button {margin-top:10px;padding:10px;border-radius:12px;border:none;width:100%;background:#ff4f8b;color:white;}
+.gallery img{width:100%;border-radius:12px;margin-top:10px;}
 #lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:#000000ee;display:none;justify-content:center;align-items:center;}
-#lightbox img{max-width:90%;max-height:80%;}
-.arrow{position:absolute;top:50%;font-size:40px;color:white;cursor:pointer;}
-.left{left:20px;} .right{right:20px;}
-footer{text-align:center;padding:15px;background:rgba(255,255,255,0.2);color:white;border-top:1px solid #fff;backdrop-filter:blur(5px);position:fixed;bottom:0;width:100%;}
-canvas{display:block;margin:10px auto;background:rgba(255,255,255,0.1);border-radius:15px;}
-#sonucKart{animation:fadeIn 1s;}
-#icerik,#profilKart,#quizAlan,#arkadasAlan,#pacmanCard,#flappyCard,#arabaCard,#sonucKart{display:none;}
+#lightbox img{max-width:90%;}
 </style>
 </head>
+
 <body>
 
-<!-- Tanıtım -->
-<div id="tanitim" class="card">
-  <h2>💖 Hoşgeldin Belinay 💖</h2>
+<div id="giris" class="card">
+<h2>Giriş</h2>
+<input id="kullanici" placeholder="Kullanıcı adı"><br><br>
+<input id="sifre" type="password" placeholder="Şifre"><br>
+<button onclick="kontrol()">Giriş</button>
 </div>
 
-<!-- Müzik -->
-<iframe id="ytMuzik" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
-<button onclick="muzikKontrol()">🔊 Müzik Aç / Kapat</button>
-
-<!-- Giriş -->
-<div class="card" id="giris">
-  <h2>🎉 Doğum günün kutlu olsun 🎉</h2>
-  <input type="text" id="kullanici" placeholder="Kullanıcı adı">
-  <input type="password" id="sifre" placeholder="Şifre">
-  <button onclick="kontrol()">Giriş</button>
+<div id="profilKart" class="card" style="display:none;">
+<img id="profilFoto" style="width:120px;border-radius:50%;">
+<h3>Belinay Altın</h3>
+<p>05.02.2011</p>
+<input type="file" id="profilSec">
+<button onclick="profilKaydet()">Kaydet</button>
 </div>
 
-<!-- Profil Kartı -->
-<div class="card" id="profilKart">
-  <h3 style="color:#fff;text-shadow:1px 1px 2px #000;">👤 Profil</h3>
-  <img id="profilFoto" src="https://i.postimg.cc/5tL9NShp/foto1.jpg" alt="Profil Foto">
-  <p style="color:#fff;font-weight:bold;font-size:18px;text-shadow:1px 1px 2px #000;">Belinay Altın</p>
-  <p style="color:#fff;font-size:16px;text-shadow:1px 1px 2px #000;">Doğum Tarihi: 05.02.2011</p>
-  <input type="file" accept="image/*" id="profilSec">
-  <button onclick="profilKaydet()">💾 Kaydet</button>
+<div id="icerik" class="card" style="display:none;">
+<h2>Galeri 💖</h2>
+<div id="galeri"></div>
+<input type="file" multiple onchange="fotoEkle(event)">
 </div>
 
-<!-- İçerik -->
-<div class="card" id="icerik">
-  <h2>📸 Anılarımız 💖</h2>
-  <div class="gallery" id="galeri"></div>
-  <input type="file" accept="image/*" multiple onchange="fotoEkle(event)">
-  <button onclick="quizAc()">🎮 Quiz Başlat</button>
-  <button onclick="arkadasAc()">👯 En Sevdiğin Arkadaş</button>
-  <button onclick="degerlendirmeAc()">⭐ Siteyi Değerlendir</button>
-  <button onclick="pacmanAc()">👾 Mini Pacman</button>
-  <button onclick="flappyAc()">🐦 Mini Flappy Bird</button>
-  <button onclick="arabaAc()">🏎 Mini Araba Yarışı</button>
-  <button onclick="cikis()">Çıkış</button>
-</div>
-
-<!-- Quiz -->
-<div class="card" id="quizAlan">
-  <h3>Belinay’ın en sevdiği Demon Slayer karakterini bulmaya çalışıyorum 💖</h3>
-  <p id="soru"></p>
-  <button onclick="cevap('evet')">Evet</button>
-  <button onclick="cevap('hayir')">Hayır</button>
-</div>
-
-<!-- Arkadaş -->
-<div class="card" id="arkadasAlan">
-  <h3>En sevdiğin arkadaşın kim? 💖</h3>
-  <button onclick="arkadasSecildi()">Oktay</button>
-  <button onclick="arkadasSecildi()">Oktay</button>
-</div>
-
-<!-- Sonuç -->
-<div class="card" id="sonucKart">
-  <h3>Tahminim: Rengoku 💖</h3>
-  <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" alt="Rengoku">
-  <p>Harika bir seçim yaptın! 💖</p>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<!-- Lightbox -->
 <div id="lightbox">
-  <span class="arrow left" onclick="prev()">❮</span>
-  <img id="buyukFoto">
-  <span class="arrow right" onclick="next()">❯</span>
+<img id="buyukFoto">
 </div>
-
-<!-- Mini Pacman -->
-<div class="card" id="pacmanCard">
-  <h3>👾 Mini Pacman</h3>
-  <canvas id="pacmanCanvas" width="300" height="300"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<!-- Mini Flappy Bird -->
-<div class="card" id="flappyCard">
-  <h3>🐦 Mini Flappy Bird</h3>
-  <canvas id="flappyCanvas" width="300" height="400"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<!-- Mini Araba Yarışı -->
-<div class="card" id="arabaCard">
-  <h3>🏎 Mini Araba Yarışı</h3>
-  <canvas id="arabaCanvas" width="300" height="300"></canvas>
-  <button onclick="geriIcerik()">Geri Dön</button>
-</div>
-
-<footer>
-  Bu web sitesi, Belinay’a ithafen Oktay tarafından hazırlanmıştır. Lütfen Oktay’a nazik ve iyi davranmayı unutmayın 💖
-</footer>
 
 <script>
-// ---------------- Profiller ve Galeri ----------------
+
+// 🔥 PROFİL FOTO (SENİN FOTO)
 let profilFoto=document.getElementById("profilFoto");
-let profilSec=document.getElementById("profilSec");
-let galeri=document.getElementById("galeri");
-let fotolar=[], sabitFotolar=["https://i.postimg.cc/5tL9NShp/foto1.jpg","https://i.postimg.cc/3N8LMR3S/foto2.jpg"];
-let currentIndex=0;
+profilFoto.src="https://i.ibb.co/n8tTCLx1/1.jpg";
 
-// ---------------- Başlangıç ve Giriş ----------------
+// 🔥 GALERİ SABİT FOTOĞRAFLAR (SİLİNMEZ)
+let sabitFotolar=[
+"https://i.postimg.cc/5tL9NShp/foto1.jpg",
+"https://i.postimg.cc/3N8LMR3S/foto2.jpg",
+
+"https://i.ibb.co/Pfvg7qn/1.jpg",
+"https://i.ibb.co/5xJpT9pd/2.jpg",
+"https://i.ibb.co/q3FsRZJW/3.jpg",
+"https://i.ibb.co/1GZ09TZP/4.jpg",
+"https://i.ibb.co/7tcJG5Vz/5.jpg"
+];
+
+let fotolar=[];
+
+// 🚀 SAYFA AÇILINCA
 window.onload=function(){
-  // Profili yükle
-  let savedProfile=localStorage.getItem("profilFoto");
-  if(savedProfile) profilFoto.src=savedProfile;
 
-  // Galeriyi yükle
-  let savedFotos=JSON.parse(localStorage.getItem("galeriFotos"))||[];
-  fotolar=[...sabitFotolar,...savedFotos];
-  fotolar.forEach(src=>ekranaEkle(src));
-
-  // 2 saniye sonra tanıtım kaybolur, giriş açılır
-  setTimeout(()=>{tanitim.style.display="none"; giris.style.display="block";},2000);
+let kayitli=localStorage.getItem("profilFoto");
+if(kayitli){
+profilFoto.src=kayitli;
+}else{
+localStorage.setItem("profilFoto",profilFoto.src);
 }
 
-// Profil fotoğrafı seçme
-profilSec.onchange=function(e){
-  let file=e.target.files[0];
-  if(file){
-    let reader=new FileReader();
-    reader.onload=function(ev){profilFoto.src=ev.target.result;}
-    reader.readAsDataURL(file);
-  }
+let kayitliFotolar=JSON.parse(localStorage.getItem("galeri"))||[];
+fotolar=[...sabitFotolar,...kayitliFotolar];
+
+fotolar.forEach(f=>ekranaEkle(f));
 }
 
-// Profil kaydet
-function profilKaydet(){
-  localStorage.setItem("profilFoto",profilFoto.src);
-  alert("Profil fotoğrafı kaydedildi 💖");
-}
-
-// Galeriye ekle
-function ekranaEkle(src){
-  let img=document.createElement("img");
-  img.src=src;
-  img.onclick=()=>acLightbox(src);
-  galeri.appendChild(img);
-}
-
-// Foto ekleme
-function fotoEkle(e){
-  for(let f of e.target.files){
-    let reader=new FileReader();
-    reader.onload=function(ev){
-      let src=ev.target.result;
-      fotolar.push(src);
-      ekranaEkle(src);
-      let kayit=JSON.parse(localStorage.getItem("galeriFotos"))||[];
-      kayit.push(src);
-      localStorage.setItem("galeriFotos",JSON.stringify(kayit));
-    }
-    reader.readAsDataURL(f);
-  }
-}
-
-// ---------------- Lightbox ----------------
-function acLightbox(src){currentIndex=fotolar.indexOf(src);buyukFoto.src=src;lightbox.style.display="flex";}
-function next(){currentIndex=(currentIndex+1)%fotolar.length;buyukFoto.src=fotolar[currentIndex];}
-function prev(){currentIndex=(currentIndex-1+fotolar.length)%fotolar.length;buyukFoto.src=fotolar[currentIndex];}
-lightbox.onclick=(e)=>{if(e.target===lightbox) lightbox.style.display="none";}
-
-// ---------------- Müzik ----------------
-let muzikAcik=false;
-let ytMuzik=document.getElementById("ytMuzik");
-function muzikKontrol(){if(muzikAcik){ytMuzik.src="";muzikAcik=false;}else{ytMuzik.src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&loop=1&playlist=iws0dywdEs4";muzikAcik=true;}}
-
-// ---------------- Giriş Kontrol ----------------
+// 🔐 GİRİŞ
 function kontrol(){
-  if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){
-    giris.style.display="none";
-    icerik.style.display="block";
-    profilKart.style.display="block";
-    muzikKontrol();
-  } else alert("Kullanıcı adı veya şifre hatalı!");
+if(kullanici.value==="Belinay Altın" && sifre.value==="belinay123"){
+giris.style.display="none";
+icerik.style.display="block";
+profilKart.style.display="block";
+}else{
+alert("Hatalı giriş");
 }
-function basla(){tanitim.style.display="none"; giris.style.display="block";}
-function cikis(){location.reload();}
-
-// ---------------- Quiz ----------------
-let adim=0;
-let sorular=["Kadın mı?","Renkli saçlı mı?","Neşeli mi?","Soğukkanlı mı?","Güçlü mü?"];
-function quizAc(){icerik.style.display="none"; quizAlan.style.display="block"; adim=0; soru.innerText=sorular[0];}
-function cevap(c){adim++; if(adim<sorular.length){soru.innerText=sorular[adim];}else{quizAlan.style.display="none"; sonucKart.style.display="block";}}
-
-// ---------------- Arkadaş ----------------
-function arkadasAc(){icerik.style.display="none"; arkadasAlan.style.display="block";}
-function arkadasSecildi(){alert("Seni sevdiğini biliyordum, çok iyi bir arkadaşsın 💖"); arkadasAlan.style.display="none"; icerik.style.display="block";}
-
-// ---------------- Site Değerlendirme ----------------
-function degerlendirmeAc(){let deger=prompt("Siteyi değerlendirin (10 üzerinden kaç?):"); if(!deger) return; deger=parseInt(deger); if(deger>=8){alert(`Teşekkürler! Minnettarlığımı belirtiyorum 💖\nSenin emeğin ve desteğin çok değerli!`);}else{alert("Tirip at! Daha çok uğraşmalısın 😡");}}
-
-// ---------------- Geri ----------------
-function geriIcerik(){sonucKart.style.display="none"; icerik.style.display="block"; pacmanCard.style.display="none"; flappyCard.style.display="none"; arabaCard.style.display="none";}
-
-// ---------------- Mini Pacman ----------------
-function pacmanAc(){
-  icerik.style.display="none"; pacmanCard.style.display="block";
-  const canvas=document.getElementById("pacmanCanvas"); const ctx=canvas.getContext("2d");
-  let x=150,y=150,r=10,dots=[{x:50,y:50},{x:250,y:50},{x:50,y:250},{x:250,y:250}];
-  document.onkeydown=(e)=>{if(e.key==="ArrowUp")y=Math.max(0,y-10);if(e.key==="ArrowDown")y=Math.min(300,y+10);if(e.key==="ArrowLeft")x=Math.max(0,x-10);if(e.key==="ArrowRight")x=Math.min(300,x+10);}
-  function draw(){ctx.clearRect(0,0,300,300);ctx.fillStyle="yellow";ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill();ctx.fillStyle="white";dots.forEach(d=>{ctx.beginPath();ctx.arc(d.x,d.y,5,0,2*Math.PI);ctx.fill();});requestAnimationFrame(draw);}
-  draw();
 }
 
-// ---------------- Mini Flappy ----------------
-function flappyAc(){
-  icerik.style.display="none"; flappyCard.style.display="block";
-  const canvas=document.getElementById("flappyCanvas"); const ctx=canvas.getContext("2d");
-  let bird={x:50,y:200,vy:0},gravity=0.6,jump=-10,pipes=[{x:300,y:100,height:100},{x:500,y:150,height:120}];
-  document.onkeydown=(e)=>{if(e.key===" "){bird.vy=jump;}}
-  function draw(){ctx.clearRect(0,0,300,400);bird.vy+=gravity;bird.y+=bird.vy;ctx.fillStyle="yellow";ctx.fillRect(bird.x,bird.y,20,20);ctx.fillStyle="green";pipes.forEach(p=>{p.x-=2;ctx.fillRect(p.x,0,30,p.y);ctx.fillRect(p.x,p.y+p.height,30,400-(p.y+p.height));});pipes.forEach(p=>{if(p.x<-30){p.x=300;p.y=Math.random()*200+50;p.height=100+Math.random()*50;}});requestAnimationFrame(draw);}
-  draw();
+// 📸 GALERİ
+function ekranaEkle(src){
+let img=document.createElement("img");
+img.src=src;
+img.onclick=()=>ac(src);
+galeri.appendChild(img);
 }
 
-// ---------------- Mini Araba ----------------
-function arabaAc(){
-  icerik.style.display="none"; arabaCard.style.display="block";
-  const canvas=document.getElementById("arabaCanvas"); const ctx=canvas.getContext("2d");
-  let car={x:140,y:250}, road=[];
-  document.onkeydown=(e)=>{if(e.key==="ArrowLeft")car.x=Math.max(0,car.x-10);if(e.key==="ArrowRight")car.x=Math.min(280,car.x+10);}
-  function draw(){
-    ctx.clearRect(0,0,300,300);ctx.fillStyle="#888";ctx.fillRect(0,0,300,300);
-    ctx.fillStyle="blue";ctx.fillRect(car.x,car.y,20,40);
-    requestAnimationFrame(draw);
-  }draw();
+function fotoEkle(e){
+for(let f of e.target.files){
+let reader=new FileReader();
+reader.onload=function(ev){
+let src=ev.target.result;
+fotolar.push(src);
+ekranaEkle(src);
+
+let kayit=JSON.parse(localStorage.getItem("galeri"))||[];
+kayit.push(src);
+localStorage.setItem("galeri",JSON.stringify(kayit));
 }
+reader.readAsDataURL(f);
+}
+}
+
+// 🔍 BÜYÜTME
+function ac(src){
+buyukFoto.src=src;
+lightbox.style.display="flex";
+}
+
+lightbox.onclick=()=>lightbox.style.display="none";
+
+// 👤 PROFİL
+profilSec.onchange=function(e){
+let f=e.target.files[0];
+let reader=new FileReader();
+reader.onload=(ev)=>profilFoto.src=ev.target.result;
+reader.readAsDataURL(f);
+}
+
+function profilKaydet(){
+localStorage.setItem("profilFoto",profilFoto.src);
+alert("Kaydedildi 💖");
+}
+
 </script>
 </body>
 </html>
