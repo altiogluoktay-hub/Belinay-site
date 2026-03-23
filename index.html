@@ -3,83 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belinay Altın Özel Portalı 2026-2027 ✨</title>
+    <title>Belinay Altın 2026 - Ultra Portal ✨</title>
     <style>
-        /* --- ANA TEMA VE ANİMASYONLAR --- */
+        /* --- ANA TEMA --- */
         @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-        @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
-        
+        @keyframes slideIn { from {opacity: 0; transform: translateX(-50px);} to {opacity: 1; transform: translateX(0);} }
+
         body {
-            margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%; animation: gradientBG 15s ease infinite;
             color: white; display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden; padding-bottom: 250px;
+            min-height: 100vh; padding-bottom: 280px; overflow-x: hidden;
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(20px);
-            padding: 30px; border-radius: 30px; width: 90%; max-width: 450px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(25px);
+            padding: 30px; border-radius: 35px; width: 90%; max-width: 450px;
             text-align: center; margin: 20px auto; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: fadeIn 0.8s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        h1, h2, h3 { margin: 10px 0; letter-spacing: 1px; }
-        
+        /* --- KİŞİLİK KARTI ÖZEL TASARIM --- */
+        .bio-card {
+            background: linear-gradient(145deg, #2c3e50, #000000);
+            border: 2px solid #ff4f8b; text-align: left; padding: 25px;
+        }
+        .bio-item { margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; animation: slideIn 0.5s ease forwards; }
+        .bio-label { color: #ff4f8b; font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
+        .bio-value { font-size: 1.1em; color: #fff; display: block; }
+
         button {
             background: linear-gradient(135deg, #ff4f8b, #ff1f6b);
-            color: white; border: none; padding: 15px; border-radius: 18px;
+            color: white; border: none; padding: 16px; border-radius: 20px;
             width: 100%; margin: 10px 0; cursor: pointer; font-weight: bold;
-            font-size: 1.1em; transition: 0.4s; box-shadow: 0 5px 15px rgba(255,79,139,0.3);
+            font-size: 1.1em; transition: 0.4s;
         }
-        button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(255,31,107,0.5); }
+        button:hover { transform: scale(1.03); box-shadow: 0 10px 25px rgba(255,31,107,0.5); }
         .back-btn { background: #444 !important; margin-top: 20px !important; }
 
-        /* --- CORTISOL METRE (SABİT ALT PANEL) --- */
+        /* --- CORTISOL METRE --- */
         #cortisolFixed {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(0, 0, 0, 0.95); border-top: 4px solid #ff4f8b;
+            background: rgba(0, 0, 0, 0.98); border-top: 4px solid #ff4f8b;
             padding: 15px 0; z-index: 3000; display: none; text-align: center;
         }
-        .meter-container { display: flex; flex-direction: column; align-items: center; }
         canvas#meterCanvas { width: 280px; height: 120px; }
-        .meter-title { font-size: 14px; font-weight: bold; color: #ff4f8b; margin-bottom: 5px; text-transform: uppercase; }
-        #meterStatus { font-size: 16px; font-weight: bold; margin-top: -10px; }
 
-        /* --- PUANLAMA YILDIZLARI --- */
-        .stars { font-size: 2.5em; margin: 15px 0; display: flex; justify-content: center; gap: 10px; }
-        .star { cursor: pointer; color: #444; transition: 0.3s; }
+        /* --- DİĞERLERİ --- */
+        .stars { font-size: 2.8em; margin: 15px 0; }
+        .star { cursor: pointer; color: #444; }
         .star.active { color: #ffeb3b; text-shadow: 0 0 15px #ffeb3b; }
-
-        /* --- KLAVUZ MODAL --- */
-        #klavuzModal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 5000; display: none;
-            justify-content: center; align-items: center;
-        }
-
-        /* --- OYUN VE GALERİ --- */
-        #f1Canvas { background: #222; border-radius: 20px; border: 4px solid #ff4f8b; touch-action: none; }
-        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 20px 0; }
-        .gallery img { width: 100px; height: 100px; object-fit: cover; border-radius: 15px; border: 3px solid white; cursor: pointer; transition: 0.3s; }
-        .gallery img:hover { transform: scale(1.1); }
-
-        /* --- BİLDİRİM --- */
+        #f1Canvas { background: #111; border-radius: 20px; border: 4px solid #ff4f8b; touch-action: none; }
         #notif {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150px);
-            background: #2ecc71; color: white; padding: 15px 35px; border-radius: 50px;
-            font-weight: bold; transition: 0.6s; z-index: 4000; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: #2ecc71; color: white; padding: 15px 30px; border-radius: 50px;
+            font-weight: bold; transition: 0.6s; z-index: 4000;
         }
+        #volPanel { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 15px; z-index: 2500; }
+        input, textarea { padding: 15px; width: 88%; border-radius: 15px; border: none; margin-bottom: 15px; font-size: 1em; }
 
-        input, textarea {
-            padding: 15px; width: 85%; border-radius: 15px; border: none;
-            margin-bottom: 15px; font-size: 1em; background: rgba(255,255,255,0.9); color: #333;
-        }
-
-        #volPanel { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 15px; z-index: 2000; border: 1px solid rgba(255,255,255,0.2); }
-
-        /* GİZLİ BÖLÜMLER */
-        #icerik, #profilKart, #f1Alan, #quizAlan, #sonucKart, #mektupAlan, #oktayBolumu, #puanAlan { display: none; }
+        #icerik, #profilKart, #f1Alan, #quizAlan, #sonucKart, #mektupAlan, #oktayBolumu, #puanAlan, #kisilikAlan { display: none; }
     </style>
 </head>
 <body onload="checkFirstLoad()">
@@ -87,4 +71,154 @@
 <div id="notif">✨ STRES SEVİYESİ DÜŞTÜ! ✨</div>
 
 <div id="volPanel">
-    <span>🔊</span><input type="range" min="0" max="100" value="50" oninput="setVol(this.value)" style="width:70px; cursor
+    <span>🔊</span><input type="range" min="0" max="100" value="50" oninput="setVol(this.value)" style="width:70px;">
+</div>
+
+<div id="giris" class="card">
+    <h1>🎁 Belinay ✨</h1>
+    <p>Giriş yapmak için şifreni doğrula.</p>
+    <input id="sifre" type="password" placeholder="Şifre (belinay123)">
+    <button onclick="girisYap()">SİSTEME BAĞLAN 🚀</button>
+</div>
+
+<div id="profilKart" class="card">
+    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid white; object-fit: cover;">
+    <h2>Belinay Altın</h2>
+    <p>05.02.2011 | Cortisol Takip Sistemi</p>
+</div>
+
+<div id="icerik" class="card">
+    <h3 style="color:#ffeb3b">GÖREV LİSTESİ</h3>
+    <button onclick="ac('kisilikAlan')">👤 Belinay Kimdir? (Kişilik Kartı)</button>
+    <button onclick="ac('oktayBolumu')">🌟 Arkadaşlık Testi</button>
+    <button onclick="f1Baslat()">🏎️ Mini F1 Yarışı</button>
+    <button onclick="ac('quizAlan'); soruSor();">🔥 Karakter Tahmini</button>
+    <button onclick="ac('mektupAlan')">📩 2027 Gelecek Mesajı</button>
+    <button onclick="ac('puanAlan')" style="background:#f1c40f; color:black;">⭐ Puan Ver</button>
+    <button onclick="location.reload()" style="background:#222; font-size:0.8em; margin-top:15px;">ÇIKIŞ</button>
+</div>
+
+<div id="kisilikAlan" class="card bio-card">
+    <h2 style="text-align:center; border-bottom:2px solid #ff4f8b; padding-bottom:10px;">👤 KİŞİLİK KARTI</h2>
+    <div class="bio-item" style="animation-delay: 0.1s;">
+        <span class="bio-label">Tam Adı</span>
+        <span class="bio-value">Belinay Altın</span>
+    </div>
+    <div class="bio-item" style="animation-delay: 0.2s;">
+        <span class="bio-label">Doğum Tarihi</span>
+        <span class="bio-value">5 Şubat 2011 (Kova Burcu ♒)</span>
+    </div>
+    <div class="bio-item" style="animation-delay: 0.3s;">
+        <span class="bio-label">İlgi Alanları</span>
+        <span class="bio-value">Anime (Demon Slayer), Minecraft Tasarımları, Dijital Sanat</span>
+    </div>
+    <div class="bio-item" style="animation-delay: 0.4s;">
+        <span class="bio-label">En Sevdiği Karakter</span>
+        <span class="bio-value">Kyojuro Rengoku 🔥</span>
+    </div>
+    <div class="bio-item" style="animation-delay: 0.5s;">
+        <span class="bio-label">Motto</span>
+        <span class="bio-value">"Kalbini ateşle yak ve sınırları aş!"</span>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">MENÜYE DÖN</button>
+</div>
+
+<div id="oktayBolumu" class="card">
+    <h2>En Kafa Dengi Kim? 🤔</h2>
+    <button onclick="okBitir()">Tabii ki Oktay</button>
+    <button onclick="okBitir()">Kesinlikle Oktay</button>
+    <p id="okYanit" style="display:none; color:#2ecc71; font-weight:bold; font-size:1.3em;">Doğru! 😊💖</p>
+    <button class="back-btn" onclick="anaMenu()">MENÜ</button>
+</div>
+
+<div id="f1Alan" class="card">
+    <h3>Skor: <span id="skor">0</span></h3>
+    <canvas id="f1Canvas" width="300" height="400"></canvas>
+    <button class="back-btn" onclick="anaMenu()">DURDUR</button>
+</div>
+
+<div id="quizAlan" class="card">
+    <h3 id="soruKutusu" style="height:80px; color:#ffeb3b;"></h3>
+    <button onclick="qCevap()">EVET</button><button onclick="qCevap()">HAYIR</button>
+    <button class="back-btn" onclick="anaMenu()">İPTAL</button>
+</div>
+
+<div id="sonucKart" class="card">
+    <h2>TAHMİNİM: RENGOKU 🔥</h2>
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:20px;">
+    <button class="back-btn" onclick="anaMenu()">HARİKA</button>
+</div>
+
+<div id="mektupAlan" class="card">
+    <h2>📩 2027 ZAMAN KAPSÜLÜ</h2>
+    <textarea id="mektupTxt" placeholder="Gelecekteki kendine not..."></textarea>
+    <button onclick="mekKaydet()" style="background:#2ecc71;">MÜHÜRLE 🚀</button>
+    <button class="back-btn" onclick="anaMenu()">MENÜ</button>
+</div>
+
+<div id="puanAlan" class="card">
+    <h2>Siteyi Puanla ⭐</h2>
+    <div class="stars">
+        <span class="star" onclick="yildizla(1)">★</span><span class="star" onclick="yildizla(2)">★</span><span class="star" onclick="yildizla(3)">★</span><span class="star" onclick="yildizla(4)">★</span><span class="star" onclick="yildizla(5)">★</span>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">KAYDET VE DÖN</button>
+</div>
+
+<div id="cortisolFixed">
+    <div style="font-size:12px; color:#ff4f8b; font-weight:bold;">CORTISOL METRE (STRES TAKİBİ)</div>
+    <canvas id="meterCanvas" width="280" height="120"></canvas>
+    <div id="mStat" style="font-weight:bold; color:#ff4d4d; margin-top:-10px;">DURUM: KRİTİK 🚨</div>
+</div>
+
+<iframe id="muzik" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
+
+<script>
+    let g=0, a=60, f=false;
+    function checkFirstLoad(){ if(!localStorage.getItem('b_final')){ alert("Hoş geldin Belinay! Alttaki Cortisol Metre'yi YEŞİL'e çekmek için görevleri tamamla!"); metreCiz(); localStorage.setItem('b_final','t'); } }
+
+    function metreCiz() {
+        const c=document.getElementById("meterCanvas"), ctx=c.getContext("2d"); ctx.clearRect(0,0,280,120);
+        const colors=["#2ecc71","#f1c40f","#e74c3c"];
+        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v,i)=>{ ctx.beginPath(); ctx.arc(140,110,90,v,v+Math.PI*0.33); ctx.lineWidth=18; ctx.strokeStyle=colors[i]; ctx.stroke(); });
+        ctx.save(); ctx.translate(140,110); ctx.rotate(a*Math.PI/180);
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-6,-80); ctx.lineTo(6,-80); ctx.fillStyle="white"; ctx.fill(); ctx.restore();
+    }
+
+    function stresDusur() {
+        g++; const s=document.getElementById("mStat");
+        if(g===1){ a=0; s.innerText="DURUM: NORMAL 😐"; s.style.color="orange"; }
+        else if(g>=2){ a=-60; s.innerText="DURUM: RAHAT 😊"; s.style.color="#2ecc71"; }
+        metreCiz(); const n=document.getElementById("notif"); n.style.transform="translateX(-50%) translateY(0)"; setTimeout(()=>n.style.transform="translateX(-50%) translateY(-150px)",3000);
+    }
+
+    function girisYap() {
+        if(document.getElementById("sifre").value==="belinay123"){
+            document.getElementById("giris").style.display="none"; document.getElementById("icerik").style.display="block";
+            document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolFixed").style.display="block";
+            metreCiz(); document.getElementById("muzik").src="https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1&autoplay=1";
+        } else { alert("Şifre: belinay123 ❤️"); }
+    }
+
+    function anaMenu() { f=false; document.querySelectorAll(".card").forEach(c=>c.style.display="none"); document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolFixed").style.display="block"; }
+    function ac(id) { document.getElementById("icerik").style.display="none"; document.getElementById(id).style.display="block"; }
+    function okBitir() { document.getElementById("okYanit").style.display="block"; stresDusur(); }
+    function yildizla(n) { document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('active',i<n)); stresDusur(); }
+    function mekKaydet() { alert("2027'ye mühürlendi! 🔒"); anaMenu(); stresDusur(); }
+
+    let qI=0; const qs=["Hashira mı?","Ateş mi kullanıyor?","Umai der mi?","Mugen Train'de miydi?","En sevdiğin mi?"];
+    function soruSor() { document.getElementById("soruKutusu").innerText=qs[qI]; }
+    function qCevap() { qI++; if(qI<qs.length) soruSor(); else { ac('sonucKart'); stresDusur(); } }
+
+    let fCtx=document.getElementById("f1Canvas").getContext("2d"), cX=135, ens=[], sc=0;
+    function f1Baslat() { ac('f1Alan'); f=true; ens=[]; sc=0; fLoop(); }
+    document.getElementById("f1Canvas").addEventListener("touchstart", (e)=>{ let x=e.touches[0].clientX - e.target.getBoundingClientRect().left; cX=(x<150)?Math.max(10,cX-40):Math.min(260,cX+40); });
+    function fLoop() {
+        if(!f) return; fCtx.fillStyle="#111"; fCtx.fillRect(0,0,300,400); fCtx.fillStyle="#ff4f8b"; fCtx.fillRect(cX,330,30,50);
+        if(Math.random()<0.04) ens.push({x:Math.random()*260, y:-50});
+        ens.forEach((en,i)=>{ en.y+=6; fCtx.fillStyle="#2ecc71"; fCtx.fillRect(en.x,en.y,30,50); if(en.y>400){ ens.splice(i,1); sc++; document.getElementById("skor").innerText=sc; if(sc===10) stresDusur(); } if(en.y+50>330 && en.y<380 && en.x+30>cX && en.x<cX+30){ f=false; alert("Skor: "+sc); anaMenu(); } });
+        requestAnimationFrame(fLoop);
+    }
+    function setVol(v) { document.getElementById("muzik").contentWindow.postMessage('{"event":"command","func":"setVolume","args":['+v+']}', '*'); }
+</script>
+</body>
+</html>
