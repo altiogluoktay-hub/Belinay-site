@@ -8,122 +8,164 @@
 /* --- ANA STİLLER & ANİMASYON --- */
 @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 @keyframes slideUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+@keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
 
 body {
     margin:0; font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(-45deg, #ff7eb3, #ff758c, #8e44ad, #2c3e50);
     background-size: 400% 400%; animation: gradientBG 10s ease infinite;
-    display:flex; flex-direction:column; align-items:center; min-height:100vh; color: white; padding-bottom: 150px; /* Metre için daha fazla alan */
+    display:flex; flex-direction:column; align-items:center; min-height:100vh; color: white; padding-bottom: 180px; /* Metre için daha fazla alan */
+    overflow-x: hidden;
 }
 .card {
     background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
-    padding: 20px; border-radius: 20px; width: 90%; max-width: 400px;
+    padding: 20px; border-radius: 25px; width: 90%; max-width: 420px;
     text-align: center; margin: 15px auto; border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.5s ease;
 }
 button {
     background: #ff4f8b; color: white; border: none; padding: 12px;
-    border-radius: 12px; width: 100%; margin: 6px 0; cursor: pointer; font-weight: bold; transition: 0.3s;
+    border-radius: 15px; width: 100%; margin: 6px 0; cursor: pointer; font-weight: bold; transition: 0.3s;
+    font-size: 1.1em;
 }
-button:hover { transform: scale(1.02); background: #ff1f6b; }
-.back-btn { background: #555 !important; margin-top: 15px !important; }
+button:hover { transform: scale(1.03); background: #ff1f6b; }
+.back-btn { background: #555 !important; margin-top: 20px !important; }
 
 /* --- SES PANELİ --- */
-#volPanel { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 12px; display: flex; align-items: center; gap: 8px; z-index: 2000; }
+#volPanel { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 12px; display: flex; align-items: center; gap: 8px; z-index: 2000; border: 1px solid rgba(255,255,255,0.2); }
 #volPanel input { width: 70px; cursor: pointer; }
 
-/* --- CORTISOL METER (YENİ & İNTERAKTİF) --- */
+/* --- CORTISOL METER (KENDİ ÇİZİMİM & İNTERAKTİF) --- */
 #cortisolCard {
-    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-    width: 250px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-    border-radius: 15px; border: 2px solid white; z-index: 1000; display: none;
-    transition: opacity 0.3s;
+    position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
+    width: 280px; height: 160px; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+    border-radius: 20px; border: 2px solid white; z-index: 1000; display: none;
+    transition: opacity 0.3s; overflow: hidden; padding: 10px;
 }
-#cortisolCard img { width: 100%; border-radius: 10px; }
+#meterCanvas { width: 100%; height: 100px; display: block; margin: 0 auto; }
 #meterArrow {
-    position: absolute; bottom: 15px; left: 125px; /* Okun tabanı */
+    position: absolute; bottom: 25px; left: 140px; /* Okun tabanı (Canvas'ın ortası) */
     width: 0; height: 0;
-    border-left: 5px solid transparent; border-right: 5px solid transparent;
-    border-bottom: 50px solid red; /* Ok rengi ve boyu */
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-bottom: 70px solid black; /* Ok rengi ve boyu */
     transform-origin: 50% 100%; /* Taban etrafında dönsün */
     transform: rotate(60deg); /* Başlangıç: YÜKSEK (60 derece sağa) */
-    transition: transform 1s ease-out, border-bottom-color 1s ease-out; /* Animasyon */
+    transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasyon */
 }
-#meterStatus { font-weight: bold; font-size: 1.1em; color: red; margin-top: 5px; transition: color 1s; }
+#meterStatus { font-weight: bold; font-size: 1.2em; color: red; margin-top: 5px; transition: color 1s; }
 
-/* --- KLAVUZ MODAL (YENİ) --- */
+/* --- KLAVUZ MODAL (YENİ & GELİŞMİŞ OYUN MODU) --- */
 #klavuzModal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); z-index: 4000; display: none;
+    background: rgba(0,0,0,0.95); z-index: 4000; display: none;
     justify-content: center; align-items: center;
+    backdrop-filter: blur(10px);
 }
-#klavuzIçerik { width: 85%; max-width: 380px; text-align: center; }
+#klavuzIçerik { width: 90%; max-width: 400px; text-align: center; border: 3px solid #ff4f8b; animation: pulse 2s infinite; }
+#klavuzMetin { font-size: 1.1em; line-height: 1.6; margin: 20px 0; }
+.klavuz-highlight { color: #ff4f8b; font-weight: bold; }
 
 /* --- DİĞER MODALLAR --- */
 #oktayBolumu, #f1Alan, #quizAlan, #sonucKart, #ratingAlan { display: none; }
-.gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid white; margin: 4px; }
+.gallery img { width: 90px; height: 90px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid white; margin: 5px; transition: 0.3s; }
+.gallery img:hover { transform: scale(1.1) rotate(5deg); }
 #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
-#f1Canvas { background: #333; border-radius: 10px; border: 3px solid #ff4f8b; width: 100%; max-width: 300px; display: block; margin: 10px auto; }
-.star { font-size: 2em; cursor: pointer; color: #ccc; }
-.star.active { color: #ffeb3b; }
-footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.6); padding: 15px; text-align: center; font-size: 14px; z-index: 100; }
+#lbImg { max-width: 90%; max-height: 80%; border-radius: 15px; border: 3px solid white; }
+#f1Canvas { background: #333; border-radius: 15px; border: 4px solid #ff4f8b; width: 100%; max-width: 320px; display: block; margin: 15px auto; }
+.star { font-size: 2.5em; cursor: pointer; color: #ccc; transition: 0.2s; }
+.star.active { color: #ffeb3b; text-shadow: 0 0 15px #ffeb3b; }
+footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); padding: 15px; text-align: center; font-size: 14px; z-index: 100; backdrop-filter: blur(5px); }
 </style>
 </head>
-<body onload="checkFirstLoad()">
+<body onload="checkFirstLoad(); drawMeterBackground();">
 
 <div id="volPanel">
     <span>🔊</span><input type="range" min="0" max="100" value="50" oninput="changeVol(this.value)"><span id="volVal">50%</span>
 </div>
 
 <div id="giris" class="card">
-    <h1>✨ Belinay ✨</h1>
-    <input id="kullanici" placeholder="Adın Soyadın" style="padding:10px; width:85%; border-radius:8px; border:none; margin-bottom:10px;">
-    <input id="sifre" type="password" placeholder="Şifre" style="padding:10px; width:85%; border-radius:8px; border:none;">
-    <button onclick="girisYap()">Giriş Yap ve Sürprizi Başlat! 🎵</button>
+    <h1 style="font-size: 2.5em;">✨ Belinay ✨</h1>
+    <p>Doğum günün kutlu olsun! Sürprizi başlatmak için giriş yap.</p>
+    <input id="kullanici" placeholder="Adın Soyadın" style="padding:12px; width:85%; border-radius:10px; border:none; margin-bottom:12px; font-size:1em;">
+    <input id="sifre" type="password" placeholder="Şifre" style="padding:12px; width:85%; border-radius:10px; border:none; font-size:1em;">
+    <button onclick="girisYap()">Giriş Yap ve Dünyayı Keşfet! 🎵</button>
+    <p style="font-size: 0.8em; opacity: 0.8;">İpucu: Belinay Altın / belinay123</p>
 </div>
 
 <div id="cortisolCard">
-    <img src="https://lh3.googleusercontent.com/pw/AP1GczNBg8YgK8VvI18qE6n3Y6L4E3E3O6r9P7n4p3O6E3N3qO6r9N4P7P3O6E3Q=w800-h600-no" alt="Cortisol Meter">
+    <canvas id="meterCanvas" width="260" height="100"></canvas>
     <div id="meterArrow"></div>
-    <p>Cortisol Seviyesi</p>
-    <div id="meterStatus">YÜKSEK (Stresli)</div>
+    <div id="meterStatus">KRİTİK (Stresli)</div>
 </div>
 
 <div id="klavuzModal">
     <div id="klavuzIçerik" class="card">
-        <h2 style="color: #ff4f8b;">Merhaba Belinay! 💖</h2>
+        <h2 style="color: #ffeb3b; font-size: 1.8em;">🕹️ SİSTEM ANALİZİ: BAŞLATILDI 🕹️</h2>
         <div id="klavuzMetin"></div>
-        <button onclick="nextKlavuzStep()" id="klavuzBtn">Devam Et</button>
+        <button onclick="nextKlavuzStep()" id="klavuzBtn">Anlaşıldı, Devam Et</button>
     </div>
 </div>
 
 <div id="profilKart" class="card" style="display:none;">
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid white; object-fit: cover;">
+    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid white; object-fit: cover;">
     <h3>Belinay Altın</h3>
+    <p>Doğum Tarihi: 05.02.2011</p>
 </div>
 
 <div id="icerik" class="card" style="display:none;">
-    <h3>Ana Menü 💖</h3>
-    <button onclick="oktayAc()">🌟 En Sevdiğin Arkadaşın Kim?</button>
-    <button onclick="f1Baslat()">🏎️ Mini F1 Yarışı</button>
-    <button onclick="quizAc()">🔥 Karakter Tahmini</button>
-    <button onclick="ratingAc()">⭐ Siteyi Puanla</button>
+    <h3>GÖREV MENÜSÜ 💖</h3>
+    <button onclick="oktayAc()">🌟 Görev 1: En Sevdiğin Arkadaş?</button>
+    <button onclick="f1Baslat()">🏎️ Görev 2: Mini F1 Yarışı</button>
+    <button onclick="quizAc()">🔥 Görev 3: Karakter Tahmini</button>
+    <button onclick="ratingAc()">⭐ Görev 4: Siteyi Puanla</button>
     <div class="gallery"><img src="https://i.postimg.cc/5tL9NShp/foto1.jpg" onclick="openLB(this.src)"><img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg" onclick="openLB(this.src)"></div>
-    <button onclick="location.reload()" style="background:#444; margin-top:20px;">Güvenli Çıkış</button>
+    <button onclick="location.reload()" style="background:#444; margin-top:25px;">Güvenli Çıkış (Sistemi Kapat)</button>
 </div>
 
 <div id="oktayBolumu" class="card"><h2 style="color: #ffeb3b;">Zor Soru!</h2><p>En sevdiğin kim?</p><div id="oktayButonlar"><button onclick="oktayMesaj()">Oktay</button><button onclick="oktayMesaj()">Tabii ki Oktay</button></div><div id="oktayMesajKutusu" style="display:none;"><p>Çok naziksin, teşekkür ederim! 😊💖</p></div><button class="back-btn" onclick="anaMenu()">🏠 Ana Menü</button></div>
-<div id="f1Alan" class="card"><h3 id="f1Score">Skor: 0</h3><canvas id="f1Canvas" width="300" height="400"></canvas><button class="back-btn" onclick="anaMenu()">🏠 Yarışı Bitir</button></div>
+<div id="f1Alan" class="card"><h3 id="f1Score">Skor: 0</h3><canvas id="f1Canvas" width="300" height="400"></canvas><p>(Dokunarak kontrol et!)</p><button class="back-btn" onclick="anaMenu()">🏠 Yarışı Bitir</button></div>
 <div id="quizAlan" class="card"><h3 id="soruMetni">...</h3><button onclick="quizCevap()">Evet</button><button onclick="quizCevap()">Hayır</button><button class="back-btn" onclick="anaMenu()">🏠 Menü</button></div>
-<div id="sonucKart" class="card"><h2 style="color: #ffeb3b;">🔥 RENGOKU 🔥</h2><img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px;"><button class="back-btn" onclick="anaMenu()">🏠 Menü</button></div>
+<div id="sonucKart" class="card"><h2 style="color: #ffeb3b;">🔥 RENGOKU 🔥</h2><img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px; border: 3px solid white;"><button class="back-btn" onclick="anaMenu()">🏠 Menü</button></div>
 <div id="ratingAlan" class="card"><h3>Puanla ⭐</h3><div id="stars"><span class="star" onclick="rate(1)">⭐</span><span class="star" onclick="rate(2)">⭐</span><span class="star" onclick="rate(3)">⭐</span><span class="star" onclick="rate(4)">⭐</span><span class="star" onclick="rate(5)">⭐</span></div><p id="rateMsg"></p><button class="back-btn" onclick="anaMenu()">🏠 Menü</button></div>
 <div id="lightbox" onclick="this.style.display='none'"><img id="lbImg" src=""></div>
 <iframe id="muzikPlayer" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
-<footer>Belinay Altın için Oktay tarafından yapılmıştır. 💖</footer>
+<footer>Belinay Altın için Oktay tarafından yapılmıştır. 💖 2024</footer>
 
 <script>
-// --- CORTISOL MANTIK (YENİ & İNTERAKTİF) ---
-let cortisolLevel = 2; // 2: YÜKSEK, 1: NORMAL, 0: DÜŞÜK
+// --- CORTISOL METER (KENDİ ÇİZİMİM) ---
+function drawMeterBackground() {
+    const canvas = document.getElementById("meterCanvas");
+    const ctx = canvas.getContext("2d");
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height;
+    const radius = 90;
+
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+
+    // Yeşil Bölge (Düşük)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + (Math.PI/3));
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = "green";
+    ctx.stroke();
+
+    // Turuncu Bölge (Normal)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, Math.PI + (Math.PI/3), Math.PI + (2*Math.PI/3));
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = "orange";
+    ctx.stroke();
+
+    // Kırmızı Bölge (Yüksek)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, Math.PI + (2*Math.PI/3), 2*Math.PI);
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+}
+
+// --- CORTISOL MANTIK (İNTERAKTİF) ---
+let cortisolLevel = 2; // 2: KRİTİK, 1: NORMAL, 0: DÜŞÜK
 const totalActivities = 4; // Toplam aktiviteler
 let completedActivities = 0;
 
@@ -135,34 +177,34 @@ function updateCortisol() {
     // Yüzdeye göre seviyeyi düşür
     if (completedActivities / totalActivities >= 1) cortisolLevel = 0; // DÜŞÜK
     else if (completedActivities / totalActivities >= 0.5) cortisolLevel = 1; // NORMAL
-    else cortisolLevel = 2; // YÜKSEK
+    else cortisolLevel = 2; // KRİTİK
 
     // Görseli güncelle
     if (cortisolLevel === 2) {
-        arrow.style.transform = "rotate(60deg)"; // YÜKSEK (Sağa)
-        arrow.style.borderBottomColor = "red";
-        status.innerText = "YÜKSEK (Stresli)";
+        arrow.style.transform = "rotate(60deg)"; // KRİTİK (Sağa)
+        arrow.style.borderBottomColor = "black"; // Ok rengi
+        status.innerText = "KRİTİK (Stresli)";
         status.style.color = "red";
     } else if (cortisolLevel === 1) {
         arrow.style.transform = "rotate(0deg)"; // NORMAL (Ortada)
-        arrow.style.borderBottomColor = "orange";
+        arrow.style.borderBottomColor = "black";
         status.innerText = "NORMAL (Rahat)";
         status.style.color = "orange";
     } else {
         arrow.style.transform = "rotate(-60deg)"; // DÜŞÜK (Sola)
-        arrow.style.borderBottomColor = "green";
+        arrow.style.borderBottomColor = "black";
         status.innerText = "DÜŞÜK (Süper!)";
         status.style.color = "green";
     }
 }
 
-// --- KLAVUZ MODAL MANTIK (YENİ) ---
+// --- KLAVUZ MODAL MANTIK (GELİŞMİŞ OYUN MODU) ---
 let klavuzStep = 0;
 const klavuzMessages = [
-    "Doğum günün kutlu olsun! Stres dolu bir günden gelmiş olabilirsin, ama bu site senin için bir kaçış noktası olacak. 😊",
-    "Bak, ekranın altındaki **Cortisol Metre'ye!** Şimdilik **YÜKSEK**. Buradaki eğlenceli şeyleri yaptıkça o metre düşecek ve seni rahatlatacak.",
-    "Beni (**Oktay'ı** 😉), F1 yarışını, Rengoku testini veya siteyi puanlamayı dene. Her birinde metre yavaş yavaş düşecek.",
-    "Ses panelinden müziği ayarla ve dünyayı keşfetmeye başla! Bakalım metreyi green'e kadar düşürebilecek misin? Hadi başla! 💖"
+    "Hoş geldin <span class='klavuz-highlight'>Oyuncu Belinay</span>! Doğum günün kutlu olsun. Sistem analizi tamamlandı: Bugün senin günün, ama stres seviyen biraz yüksek gözüküyor.",
+    "Bak, ekranın altındaki <span class='klavuz-highlight'>Cortisol Metresi</span>'ne! Şimdilik <span class='klavuz-highlight' style='color:red;'>KRİTİK (Kırmızı)</span> seviyede. Hedefimiz bu metreyi <span class='klavuz-highlight' style='color:green;'>GÜVENLİ (Yeşil)</span> bölgeye çekmek.",
+    "Bunun için 'Ana Menü'deki <span class='klavuz-highlight'>GÖREVLERİ</span> tamamlaman gerekiyor. Beni (Oktay'ı 😉), F1 yarışını, Rengoku testini veya siteyi puanlamayı dene.",
+    "Her tamamlanan görev metreyi yavaş yavaş düşürecek. Ses panelinden müziği aç ve dünyayı keşfetmeye başla! Bakalım metreyi green'e kadar düşürebilecek misin? <span class='klavuz-highlight'>GÖREV BAŞLIYOR! ⭐</span>"
 ];
 
 function checkFirstLoad() {
@@ -176,6 +218,7 @@ function startKlavuz() {
     document.getElementById("giris").style.display = "none";
     document.getElementById("cortisolCard").style.display = "block"; // Metreyi Klavuzla göster
     document.getElementById("klavuzModal").style.display = "flex";
+    drawMeterBackground(); // Metreyi çiz
     klavuzStep = 0;
     nextKlavuzStep();
 }
@@ -184,7 +227,11 @@ function nextKlavuzStep() {
     if (klavuzStep < klavuzMessages.length) {
         document.getElementById("klavuzMetin").innerHTML = `<p>${klavuzMessages[klavuzStep]}</p>`;
         klavuzStep++;
-        if(klavuzStep === klavuzMessages.length) document.getElementById("klavuzBtn").innerText = "Süper! Hadi Başla! ⭐";
+        if(klavuzStep === klavuzMessages.length) {
+            document.getElementById("klavuzBtn").innerText = "GÖREVİ BAŞLAT ⭐";
+            document.getElementById("klavuzBtn").style.background = "#ffeb3b";
+            document.getElementById("klavuzBtn").style.color = "black";
+        }
     } else {
         closeKlavuz();
     }
@@ -199,19 +246,19 @@ function closeKlavuz() {
 // --- DİĞER MANTIKSAL FONKSİYONLAR (CORTISOL İLE BİRLEŞTİRİLDİ) ---
 function oktayMesaj() { document.getElementById("oktayButonlar").style.display = "none"; document.getElementById("oktayMesajKutusu").style.display = "block"; updateCortisol(); }
 function quizCevap() { adim++; if(adim<8) soruGuncelle(); else { document.getElementById("quizAlan").style.display="none"; document.getElementById("sonucKart").style.display="block"; updateCortisol(); } }
-function rate(n) { document.querySelectorAll(".star").forEach((s,i)=>s.classList.toggle("active",i<n)); document.getElementById("rateMsg").innerText = n+" Yıldız! Teşekkürler! ❤️"; updateCortisol(); }
+function rate(n) { document.querySelectorAll(".star").forEach((s,i)=>s.classList.toggle("active",i<n)); document.getElementById("rateMsg").innerText = n+" Yıldız! Teşekkürler Belinay! ❤️"; updateCortisol(); }
 function fLoop() { // F1 kazasında Cortisol düşmez, sadece kazandıkça düşer (enemies spliced)
     if(!fActive) return; fCtx.fillStyle="#333"; fCtx.fillRect(0,0,300,400); fCtx.fillStyle="#ff0000"; fCtx.fillRect(carX,330,30,50); 
     if(Math.random()<0.04) ens.push({x:Math.random()*260, y:-50}); ens.forEach((en,i)=>{
         en.y+=6; fCtx.fillStyle="#00ff00"; fCtx.fillRect(en.x,en.y,30,50);
-        if(en.y>400) { ens.splice(i,1); fScore++; document.getElementById("f1Score").innerText="Skor: "+fScore; if(fScore%5===0) updateCortisol(); } // Her 5 skorda bir metre düşür
+        if(en.y>400) { ens.splice(i,1); fScore++; document.getElementById("f1Score").innerText="Skor: "+fScore; if(fScore%10===0) updateCortisol(); } // Her 10 skorda bir metre düşür
         if(en.y+50>330 && en.y<380 && en.x+30>carX && en.x<carX+30) { fActive=false; alert("Kaza! Skor: "+fScore); anaMenu(); }
     }); requestAnimationFrame(fLoop);
 }
 
 // --- KALAN TEMEL FONKSİYONLAR (ÖNCEKİ KODLA AYNI) ---
 function changeVol(v) { document.getElementById("volVal").innerText=v+"%"; document.getElementById("muzikPlayer").contentWindow.postMessage('{"event":"command","func":"setVolume","args":['+v+']}', '*'); }
-function girisYap() { let k=document.getElementById("kullanici").value, s=document.getElementById("sifre").value; if(k==="Belinay Altın" && s==="belinay123") { document.getElementById("giris").style.display="none"; document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolCard").style.display="block"; document.getElementById("muzikPlayer").src="https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1&autoplay=1"; } else { alert("Hata! ❤️"); } }
+function girisYap() { let k=document.getElementById("kullanici").value, s=document.getElementById("sifre").value; if(k==="Belinay Altın" && s==="belinay123") { document.getElementById("giris").style.display="none"; document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolCard").style.display="block"; drawMeterBackground(); document.getElementById("muzikPlayer").src="https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1&autoplay=1"; } else { alert("Hata! ❤️"); } }
 function anaMenu() { fActive=false; document.querySelectorAll(".card").forEach(c=>c.style.display="none"); document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolCard").style.display="block"; }
 function oktayAc() { document.getElementById("icerik").style.display="none"; document.getElementById("oktayBolumu").style.display="block"; document.getElementById("oktayButonlar").style.display="block"; document.getElementById("oktayMesajKutusu").style.display="none"; document.getElementById("cortisolCard").style.display="none"; }
 function quizAc() { adim=0; document.getElementById("icerik").style.display="none"; document.getElementById("quizAlan").style.display="block"; soruGuncelle(); document.getElementById("cortisolCard").style.display="none"; }
@@ -219,7 +266,7 @@ function ratingAc() { document.getElementById("icerik").style.display="none"; do
 function f1Baslat() { document.getElementById("icerik").style.display="none"; document.getElementById("f1Alan").style.display="block"; fActive=true; ens=[]; fScore=0; fLoop(); document.getElementById("cortisolCard").style.display="none"; }
 function soruGuncelle() { document.getElementById("soruMetni").innerText = `${adim+1}. Soru: ${sorular[adim]}`; }
 function openLB(src) { document.getElementById("lbImg").src=src; document.getElementById("lightbox").style.display="flex"; }
-let adim = 0; const sorular = ["...","...","...","...","...","...","...","..."]; // Quiz soruları aynı kalıyor
+let adim = 0; const sorular = ["Karakter Demon Slayer mı?","Hashira mı?","Saçları güneş gibi mi?","Gülümser mi?","'Umai!' der mi?","Ateş kullanır mı?","Mugen Train'de miydi?","En sevdiğin mi?"]; 
 let fCtx = document.getElementById("f1Canvas").getContext("2d"), carX = 135, fScore = 0, ens = [], fActive = false;
 document.getElementById("f1Canvas").addEventListener("pointerdown", (e)=>{let x=e.clientX-e.target.getBoundingClientRect().left; if(x<150) carX=Math.max(10,carX-40); else carX=Math.min(260,carX+40); });
 </script>
