@@ -3,111 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belinay Altın 2026 - Master Portal Final ✨</title>
+    <title>Belinay Altın 2026 - Kusursuz Portal</title>
     <style>
-        /* --- ANA TEMA --- */
+        /* --- BELİNAY PORTAL ÖZEL STİLLERİ --- */
         @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
         @keyframes confettiFall { 0% {transform: translateY(-100vh) rotate(0deg); opacity: 1;} 100% {transform: translateY(100vh) rotate(720deg); opacity: 0;} }
+        @keyframes slideUp { from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
         
         body {
-            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
+            margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%; animation: gradientBG 15s ease infinite;
             color: white; display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; padding-bottom: 280px; overflow-x: hidden;
+            min-height: 100vh; padding-bottom: 250px; overflow-x: hidden;
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px);
             padding: 25px; border-radius: 30px; width: 90%; max-width: 440px;
-            text-align: center; margin: 20px auto; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: none; /* Varsayılan gizli */
+            text-align: center; margin: 20px auto; border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); display: none; animation: slideUp 0.5s ease;
         }
 
-        /* Konfeti */
-        .confetti { position: fixed; width: 10px; height: 10px; z-index: 6000; animation: confettiFall 3s linear forwards; }
+        /* Konfeti Parçacıkları */
+        .confetti { position: fixed; width: 12px; height: 12px; z-index: 9999; animation: confettiFall 4s linear forwards; }
 
-        /* 3D Kart */
-        .flip-container { perspective: 1000px; width: 100%; height: 420px; margin: 10px 0; cursor: pointer; }
+        /* 3D Kişilik Kartı Tasarımı */
+        .flip-container { perspective: 1000px; width: 100%; height: 420px; margin: 15px 0; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
         .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; padding: 25px; box-sizing: border-box; }
-        .flip-front { background: #111; border: 2px solid #ff4f8b; }
-        .flip-back { background: #ff4f8b; transform: rotateY(180deg); border: 2px solid white; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; }
+        .flip-front { background: #111; border: 3px solid #ff4f8b; box-shadow: inset 0 0 20px rgba(255,79,139,0.3); }
+        .flip-back { background: linear-gradient(135deg, #ff4f8b, #ff1f6b); transform: rotateY(180deg); border: 3px solid white; }
 
-        /* İstatistikler */
-        .stat-row { margin: 10px 0; text-align: left; font-size: 0.9em; font-weight: bold; }
-        .stat-bar { background: rgba(0,0,0,0.3); height: 12px; border-radius: 6px; margin-top: 4px; overflow: hidden; }
-        .stat-fill { background: white; height: 100%; transition: 1s; }
+        /* İstatistik Barları */
+        .stat-row { margin: 12px 0; text-align: left; font-size: 0.95em; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .stat-bar { background: rgba(0,0,0,0.4); height: 14px; border-radius: 7px; margin-top: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+        .stat-fill { background: #fff; height: 100%; box-shadow: 0 0 15px white; transition: 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        button { background: linear-gradient(135deg, #ff4f8b, #ff1f6b); color: white; border: none; padding: 16px; border-radius: 18px; width: 100%; margin: 8px 0; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { transform: scale(1.02); }
-        .back-btn { background: #333 !important; margin-top: 15px !important; }
+        /* Butonlar */
+        button { background: linear-gradient(135deg, #ff4f8b, #ff1f6b); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; margin: 10px 0; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.4s; box-shadow: 0 8px 15px rgba(0,0,0,0.3); }
+        button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 20px rgba(255,31,107,0.4); }
+        button:active { transform: scale(0.98); }
+        .back-btn { background: #222 !important; margin-top: 20px !important; border: 1px solid #444 !important; }
 
-        /* Galeri */
-        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .gallery img { width: 100px; height: 100px; border-radius: 15px; border: 3px solid white; object-fit: cover; }
+        /* Galeri Izgarası */
+        .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .gallery img { width: 100%; height: 120px; border-radius: 18px; border: 3px solid white; object-fit: cover; transition: 0.5s; cursor: zoom-in; }
+        .gallery img:hover { transform: scale(1.05) rotate(2deg); z-index: 10; }
 
-        /* Cortisol Metre Sabit */
-        #cortisolFixed { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-top: 4px solid #ff4f8b; padding: 15px 0; z-index: 3000; display: none; text-align: center; }
-        canvas#meterCanvas { width: 280px; height: 120px; }
+        /* Cortisol Metre Sabit Panel */
+        #cortisolFixed { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.96); border-top: 5px solid #ff4f8b; padding: 20px 0; z-index: 3000; display: none; text-align: center; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+        canvas#meterCanvas { width: 300px; height: 130px; }
 
-        input, textarea { padding: 15px; width: 88%; border-radius: 15px; border: none; margin-bottom: 15px; font-size: 1em; background: #222; color: white; }
-        #notif { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150px); background: #2ecc71; color: white; padding: 12px 30px; border-radius: 50px; font-weight: bold; transition: 0.6s; z-index: 4000; }
+        /* Girdiler */
+        input, textarea { padding: 16px; width: 90%; border-radius: 18px; border: 2px solid rgba(255,255,255,0.1); margin-bottom: 15px; font-size: 1.1em; background: #1a1a1a; color: white; outline: none; transition: 0.3s; }
+        input:focus { border-color: #ff4f8b; box-shadow: 0 0 10px rgba(255,79,139,0.5); }
         
+        /* Bildirim Paneli */
+        #notif { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-150px); background: #2ecc71; color: white; padding: 14px 35px; border-radius: 50px; font-weight: bold; transition: 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 4000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        
+        /* Rehber Penceresi */
         #klavuzModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 5000; display: none; justify-content: center; align-items: center; }
-        #giris { display: block; } /* Sadece giriş ekranı başta açık */
+        #giris { display: block; }
     </style>
 </head>
 <body onload="checkFirstLoad()">
 
-<div id="notif">✨ STRES SEVİYESİ DÜŞTÜ! ✨</div>
+<div id="notif">✨ GÖREV TAMAMLANDI! ✨</div>
 
 <div id="klavuzModal">
-    <div class="card" style="display:block; border: 3px solid #ffeb3b;">
-        <h2 style="color: #ffeb3b;">📜 MASTER PORTAL REHBERİ</h2>
-        <div id="klavuzMetin" style="font-size: 1.1em; line-height: 1.6; margin: 20px 0;"></div>
+    <div class="card" style="display:block; border: 4px solid #ffeb3b; max-width: 400px;">
+        <h2 style="color: #ffeb3b; text-transform: uppercase; letter-spacing: 2px;">📜 PORTAL REHBERİ</h2>
+        <div id="klavuzMetin" style="font-size: 1.15em; line-height: 1.7; margin: 25px 0; color: #eee;"></div>
         <button onclick="klavuzIlerle()" style="background: #2ecc71;">ANLADIM, BAŞLAYALIM!</button>
     </div>
 </div>
 
 <div id="giris" class="card">
-    <h1>🎁 Belinay ✨</h1>
-    <p>Portal Güvenliği: belinay123</p>
-    <input id="sifre" type="password" placeholder="Şifre Giriniz">
-    <button onclick="girisYap()">SİSTEME BAĞLAN 🚀</button>
+    <h1 style="font-size: 2.8em; margin-bottom: 10px;">🎁 Belinay ✨</h1>
+    <p style="opacity: 0.8;">Sana özel portala hoş geldin.</p>
+    <div style="margin: 25px 0;">
+        <input id="sifre" type="password" placeholder="Erişim Şifresi">
+        <button onclick="girisYap()">SİSTEME GİRİŞ YAP 🚀</button>
+    </div>
+    <p style="font-size: 0.85em; color: #ff4f8b;">* Şifre: belinay123</p>
 </div>
 
 <div id="profilKart" class="card">
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid white; object-fit: cover;">
-    <h2>Belinay Altın</h2>
-    <p>05.02.2011 | Cortisol Analiz Merkezi</p>
+    <div style="position: relative; display: inline-block;">
+        <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid #ff4f8b; object-fit: cover; box-shadow: 0 0 20px rgba(255,79,139,0.5);">
+    </div>
+    <h2 style="margin: 15px 0 5px 0; font-size: 1.8em;">Belinay Altın</h2>
+    <p style="color: #aaa; margin-bottom: 0;">05.02.2011 | Cortisol Analizörü</p>
 </div>
 
 <div id="icerik" class="card">
-    <h3 style="color:#ffeb3b">MENÜ (Görevler: <span id="gorevSay">0</span>/4)</h3>
-    <button onclick="ac('kisilikAlan')">👤 Kişilik Kartı (Tıkla-Çevir)</button>
-    <button onclick="ac('galeriAlan')">📸 Hatıra Galerisi</button>
-    <button onclick="f1Baslat()">🏎️ Mini F1 Yarışı (Hedef: 20 Skor)</button>
-    <button onclick="ac('quizAlan'); qI=0; soruSor();">🔥 Karakter Tahmini</button>
-    <button onclick="ac('mektupAlan')">📩 2027 Geleceğe Mesaj</button>
-    <button onclick="ac('puanAlan')" style="background:#f1c40f; color:black;">⭐ Puanla</button>
-    <button onclick="location.reload()" style="background:#222; font-size: 0.8em; margin-top:10px;">ÇIKIŞ</button>
+    <h3 style="color:#ffeb3b; margin-bottom: 20px; font-size: 1.3em;">ANA KONTROL PANELİ</h3>
+    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; margin-bottom: 15px;">
+        GÖREV DURUMU: <b id="gorevSay" style="color:#ff4f8b;">0</b> / 4
+    </div>
+    <button onclick="ac('kisilikAlan')">👤 KİŞİLİK KARTI (3D)</button>
+    <button onclick="ac('galeriAlan')">📸 HATIRA GALERİSİ</button>
+    <button onclick="f1Baslat()">🏎️ F1 YARIŞI (HEDEF: 20)</button>
+    <button onclick="ac('quizAlan'); qI=0; soruSor();">🔥 KARAKTER TAHMİNİ</button>
+    <button onclick="ac('mektupAlan')">📩 2027 GELECEK NOTU</button>
+    <button onclick="ac('puanAlan')" style="background:#f1c40f; color:black;">⭐ SİSTEMİ PUANLA</button>
+    <button onclick="location.reload()" style="background:#111; font-size: 0.85em; margin-top:15px; color: #666;">OTURUMU KAPAT</button>
 </div>
 
 <div id="kisilikAlan" class="card" style="background:transparent; box-shadow:none; border:none; padding:0;">
     <div class="flip-container" onclick="this.classList.toggle('flipped'); stresDusur('kart');">
         <div class="flip-inner">
             <div class="flip-front">
-                <h2 style="color:#ff4f8b;">KİMLİK BİLGİSİ</h2>
+                <h2 style="color:#ff4f8b; margin-top: 0;">BİYOMETRİK</h2>
+                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+                <p><b>Kullanıcı:</b> Belinay Altın</p>
                 <p><b>Burç:</b> Kova ♒</p>
-                <p><b>Hobiler:</b> Anime, Minecraft</p>
-                <p style="margin-top:20px; font-size:0.8em; opacity:0.6;">🔄 İstatistikler için tıkla!</p>
+                <p><b>Seviye:</b> Tasarım Uzmanı</p>
+                <div style="margin-top: 40px; border: 1px dashed #444; padding: 10px; border-radius: 10px;">
+                    <small>ÇEVİRMEK İÇİN DOKUN</small>
+                </div>
             </div>
             <div class="flip-back">
-                <h2 style="margin-top:0;">GÜÇ ANALİZİ 📊</h2>
+                <h2 style="margin-top:0; color: white;">YETENEK SKORLARI</h2>
                 <div class="stat-row">Zeka: %80 <div class="stat-bar"><div class="stat-fill" style="width:80%;"></div></div></div>
-                <div class="stat-row">Arkadaş Canlılığı: %99 <div class="stat-bar"><div class="stat-fill" style="width:99%;"></div></div></div>
+                <div class="stat-row">Arkadaşlık: %99 <div class="stat-bar"><div class="stat-fill" style="width:99%;"></div></div></div>
                 <div class="stat-row">Komiklik: %99 <div class="stat-bar"><div class="stat-fill" style="width:99%;"></div></div></div>
                 <div class="stat-row">Güç: %50 <div class="stat-bar"><div class="stat-fill" style="width:50%;"></div></div></div>
                 <div class="stat-row">Mallık: %50 <div class="stat-bar"><div class="stat-fill" style="width:50%;"></div></div></div>
@@ -115,15 +136,219 @@
             </div>
         </div>
     </div>
-    <button class="back-btn" onclick="anaMenu()">MENÜYE DÖN</button>
+    <button class="back-btn" onclick="anaMenu()">ANA MENÜYE DÖN</button>
 </div>
 
 <div id="galeriAlan" class="card">
-    <h2>📸 GALERİ</h2>
+    <h2 style="color: #ff4f8b;">📸 GALERİ</h2>
+    <p style="font-size: 0.9em; opacity: 0.7;">En güzel anlardan seçmeler.</p>
     <div class="gallery">
         <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg">
         <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg">
         <img src="https://i.ibb.co/n8tTCLx1/1.jpg">
+        <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg">
     </div>
-    <p>Anılar her zaman seninle!</p>
-    <button class="back-btn" onclick="anaMenu
+    <button class="back-btn" onclick="anaMenu()">GERİ DÖN</button>
+</div>
+
+<div id="f1Alan" class="card">
+    <h3 style="margin-top: 0;">F1 CHALLENGE: <span id="skor" style="color:#ff4f8b;">0</span> / 20</h3>
+    <canvas id="f1Canvas" width="300" height="400" style="background: #050505; border: 3px solid #ff4f8b; border-radius: 20px;"></canvas>
+    <p style="font-size: 0.8em; margin-top: 10px; color: #888;">Dokunarak şerit değiştir.</p>
+    <button class="back-btn" onclick="anaMenu()">YARIŞI BIRAK</button>
+</div>
+
+<div id="quizAlan" class="card">
+    <h2 style="color: #ffeb3b;">ZİHİN OKUYUCU</h2>
+    <div id="qKutu" style="min-height:100px; display: flex; align-items: center; justify-content: center; font-size: 1.3em; padding: 10px; border: 1px solid #333; border-radius: 15px; margin: 20px 0;"></div>
+    <div style="display: flex; gap: 10px;">
+        <button onclick="qCevap()" style="background: #2ecc71;">EVET</button>
+        <button onclick="qCevap()" style="background: #e74c3c;">HAYIR</button>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">VAZGEÇ</button>
+</div>
+
+<div id="sonucKart" class="card">
+    <h2 style="color: #ff4f8b;">RUH İKİZİN: RENGOKU 🔥</h2>
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:25px; border: 4px solid white; box-shadow: 0 0 30px rgba(255,255,255,0.2);">
+    <p style="margin-top: 15px;">"Kalbini ateşle yak!"</p>
+    <button class="back-btn" onclick="anaMenu()">HARİKA!</button>
+</div>
+
+<div id="mektupAlan" class="card">
+    <h2 style="color: #ff4f8b;">📩 ZAMAN KAPSÜLÜ</h2>
+    <p>Bu mesaj 2027 yılında açılacak.</p>
+    <textarea id="mektupTxt" style="height:120px;" placeholder="Gelecekteki kendine ne söylemek istersin?"></textarea>
+    <button onclick="mekKaydet()" style="background: #2ecc71;">SİSTEME MÜHÜRLE 🚀</button>
+    <button class="back-btn" onclick="anaMenu()">İPTAL</button>
+</div>
+
+<div id="puanAlan" class="card">
+    <h2>SİSTEMİ DEĞERLENDİR ⭐</h2>
+    <p>Belinay, bu portalı nasıl buldun?</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button onclick="stresDusur('puan'); alert('Teşekkürler!'); anaMenu();">MUHTEŞEM ✨</button>
+        <button onclick="stresDusur('puan'); alert('Geliştirilecek!'); anaMenu();">İYİ 😊</button>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">DÖN</button>
+</div>
+
+<div id="cortisolFixed">
+    <div style="font-size:13px; color:#ff4f8b; font-weight:bold; letter-spacing: 2px; margin-bottom: 5px;">CANLI STRES ANALİZİ (CORTISOL)</div>
+    <canvas id="meterCanvas" width="300" height="120"></canvas>
+    <div id="mStat" style="font-weight:900; color:#ff4d4d; font-size: 1.1em;">DURUM: KRİTİK SEVİYE 🚨</div>
+</div>
+
+<iframe id="muzik" width="0" height="0" src="" frameborder="0" allow="autoplay" style="visibility:hidden; position:absolute;"></iframe>
+
+<script>
+    // --- GLOBAL DEĞİŞKENLER ---
+    let gList = [], a = 60, k = 0, fActive = false;
+    const kMsgs = [
+        "Hoş geldin Belinay! Bugün 15. yaş günün için bu portalı hazırladık.",
+        "Alttaki Cortisol Metre stresini gösteriyor. Şu an çok yüksek!",
+        "Stresi düşürmek ve kutlamayı başlatmak için en az 4 görev tamamlamalısın.",
+        "Kartı çevir, Oyun oyna, Quiz bitir ve Not bırak. Başarılar dileriz! ✨"
+    ];
+
+    // --- SİSTEM BAŞLATICI ---
+    function checkFirstLoad(){ 
+        if(!localStorage.getItem('b_vFinal_400')){ 
+            document.getElementById("klavuzModal").style.display="flex"; 
+            metreCiz(); klavuzIlerle(); 
+        } 
+    }
+
+    function klavuzIlerle(){ 
+        if(k < kMsgs.length){ 
+            document.getElementById("klavuzMetin").innerText = kMsgs[k]; 
+            k++; 
+        } else { 
+            document.getElementById("klavuzModal").style.display = "none"; 
+            localStorage.setItem('b_vFinal_400','t'); 
+        } 
+    }
+
+    // --- CORTISOL METRE ÇİZİMİ ---
+    function metreCiz() {
+        const c = document.getElementById("meterCanvas"), ctx = c.getContext("2d"); 
+        ctx.clearRect(0,0,300,120);
+        const colors = ["#2ecc71","#f1c40f","#e74c3c"];
+        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v,i) => { 
+            ctx.beginPath(); ctx.arc(150,110,90,v,v+Math.PI*0.33); 
+            ctx.lineWidth=20; ctx.strokeStyle=colors[i]; ctx.stroke(); 
+        });
+        ctx.save(); ctx.translate(150,110); ctx.rotate(a*Math.PI/180);
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-7,-85); ctx.lineTo(7,-85); 
+        ctx.fillStyle="white"; ctx.fill(); ctx.restore();
+    }
+
+    // --- STRES YÖNETİMİ VE KONFETİ ---
+    function stresDusur(gorevId) {
+        if(!gList.includes(gorevId)) {
+            gList.push(gorevId);
+            document.getElementById("gorevSay").innerText = gList.length;
+            if(gList.length === 2) { 
+                a = 0; document.getElementById("mStat").innerText = "DURUM: STABİL 😐"; 
+                document.getElementById("mStat").style.color = "orange"; 
+            }
+            if(gList.length >= 4) { 
+                a = -60; document.getElementById("mStat").innerText = "DURUM: HUZURLU 😊"; 
+                document.getElementById("mStat").style.color = "#2ecc71";
+                konfetiPatlat();
+            }
+            metreCiz();
+            const n = document.getElementById("notif"); 
+            n.style.transform = "translateX(-50%) translateY(0)"; 
+            setTimeout(() => n.style.transform = "translateX(-50%) translateY(-150px)", 3000);
+        }
+    }
+
+    function konfetiPatlat() {
+        for(let i=0; i<120; i++) {
+            let conf = document.createElement("div");
+            conf.className = "confetti";
+            conf.style.left = Math.random() * 100 + "vw";
+            conf.style.backgroundColor = ["#ff4f8b","#ffeb3b","#2ecc71","#23a6d5","#ffffff"][Math.floor(Math.random()*5)];
+            conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+            conf.style.animationDelay = Math.random() * 2 + "s";
+            document.body.appendChild(conf);
+            setTimeout(() => conf.remove(), 5000);
+        }
+        setTimeout(() => alert("İNANILMAZSIN BELİNAY! 🥳\nPortalın tüm özelliklerini açtın. Mutlu yıllar! ❤️"), 600);
+    }
+
+    // --- NAVİGASYON ---
+    function girisYap() {
+        if(document.getElementById("sifre").value === "belinay123"){
+            document.getElementById("giris").style.display = "none"; 
+            document.getElementById("icerik").style.display = "block";
+            document.getElementById("profilKart").style.display = "block"; 
+            document.getElementById("cortisolFixed").style.display = "block";
+            metreCiz(); 
+            document.getElementById("muzik").src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1&enablejsapi=1";
+        } else { 
+            alert("Erişim Reddedildi! Şifreyi kontrol et."); 
+        }
+    }
+
+    function anaMenu() { 
+        fActive = false; 
+        document.querySelectorAll(".card").forEach(c => c.style.display = "none"); 
+        document.getElementById("icerik").style.display = "block"; 
+        document.getElementById("profilKart").style.display = "block"; 
+        document.getElementById("cortisolFixed").style.display = "block"; 
+    }
+
+    function ac(id) { 
+        document.querySelectorAll(".card").forEach(c => c.style.display = "none"); 
+        document.getElementById(id).style.display = "block"; 
+    }
+
+    function mekKaydet() { 
+        if(document.getElementById("mektupTxt").value.length < 5) return alert("Biraz daha bir şeyler yazmalısın!");
+        alert("Mesajın 2027 yılına başarıyla gönderildi! 🔒"); 
+        stresDusur('mektup'); anaMenu(); 
+    }
+
+    // --- QUIZ MOTORU ---
+    let qI = 0; 
+    const qs = ["Karakterin bir Hashira mı?", "Ateş nefesi mi kullanıyor?", "Sürekli 'UMAI!' der mi?", "Mugen Train filminde miydi?"];
+    function soruSor() { document.getElementById("qKutu").innerText = qs[qI]; }
+    function qCevap() { 
+        qI++; 
+        if(qI < qs.length) { 
+            soruSor(); 
+        } else { 
+            ac('sonucKart'); stresDusur('quiz'); 
+        } 
+    }
+
+    // --- F1 OYUN MOTORU ---
+    let fCtx = document.getElementById("f1Canvas").getContext("2d"), cX = 135, ens = [], sc = 0;
+    function f1Baslat() { ac('f1Alan'); fActive = true; ens = []; sc = 0; fLoop(); }
+    document.getElementById("f1Canvas").addEventListener("touchstart", (e) => { 
+        let x = e.touches[0].clientX - e.target.getBoundingClientRect().left; 
+        cX = (x < 150) ? Math.max(15, cX-50) : Math.min(255, cX+50); 
+    });
+    function fLoop() { 
+        if(!fActive) return; 
+        fCtx.fillStyle = "#050505"; fCtx.fillRect(0, 0, 300, 400);
+        fCtx.fillStyle = "#ff4f8b"; fCtx.fillRect(cX, 330, 30, 55); // Belinay'ın arabası
+        if(Math.random() < 0.05) ens.push({x: Math.random() * 260, y: -60});
+        ens.forEach((en, i) => { 
+            en.y += 8; fCtx.fillStyle = "#2ecc71"; fCtx.fillRect(en.x, en.y, 32, 52); 
+            if(en.y > 400) { 
+                ens.splice(i, 1); sc++; document.getElementById("skor").innerText = sc; 
+                if(sc === 20) stresDusur('f1'); 
+            } 
+            if(en.y+52 > 330 && en.y < 385 && en.x+32 > cX && en.x < cX+30) { 
+                fActive = false; alert("Kaza Yaptın! Skor: " + sc); anaMenu(); 
+            } 
+        }); 
+        requestAnimationFrame(fLoop); 
+    }
+</script>
+
+</body>
+</html>
