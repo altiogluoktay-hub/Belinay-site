@@ -49,7 +49,8 @@
         .profile-side img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
         .stats-side { flex-grow: 1; font-family: 'Orbitron'; font-size: 0.85em; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,215,0,0.2); padding-bottom: 2px; }
-        
+        .stat-label { color: var(--gold); }
+
         button { 
             background: linear-gradient(45deg, var(--pink), var(--gold)); 
             color: #000; border: none; padding: 15px; border-radius: 50px; 
@@ -73,9 +74,7 @@
         <span style="font-size: 10px; font-family: 'Orbitron'; color: var(--gold); font-weight: bold;">İYİ Kİ DOĞDUN</span>
         <span style="font-size: 9px; font-family: 'Poppins'; color: white;">BELİNAY ALTIN 🎂</span>
     </div>
-    <audio id="bgMusic" loop>
-        <source src="https://www.mboxdrive.com/happy-birthday-to-you-150.mp3" type="audio/mpeg">
-    </audio>
+    <iframe id="youtube-audio" width="0" height="0" src="https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1" frameborder="0" style="display:none"></iframe>
 </div>
 
 <div id="login-screen">
@@ -121,9 +120,9 @@
             <div class="stat-row"><span class="stat-label">Şans</span> <span>31</span></div>
         </div>
     </div>
-    <div style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 15px; margin-top: 15px; text-align: left; font-size: 0.85em; border: 1px solid var(--glass);">
-        <p><b>♈ Burç:</b> Boğa | <b>🎮 Hobiler:</b> Minecraft, Roblox, MLBB, Anime</p>
-        <p style="font-style: italic; color: var(--gold); border-top: 1px solid var(--glass); padding-top: 8px;">"Belinay, neşenle dünyayı güzelleştiren harika bir insansın!"</p>
+    <div style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 15px; margin-top: 15px; text-align: left; font-size: 0.85em;">
+        <p><b>🎮 Hobiler:</b> Minecraft, Roblox, MLBB, Anime</p>
+        <p style="font-style: italic; color: var(--gold); border-top: 1px solid rgba(255,215,0,0.2); padding-top: 8px;">"Belinay, neşenle dünyayı güzelleştiren harika bir insansın!"</p>
     </div>
     <button class="back-btn" onclick="updateTask('card'); goHome();">ANA MENÜYE DÖN</button>
 </div>
@@ -157,9 +156,9 @@
 <div id="puanAlan" class="card">
     <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUAN VER ⭐</h2>
     <div style="display: flex; justify-content: center; gap: 10px; font-size: 2em; margin: 15px 0;">
-        <span onclick="this.style.color='gold'; alert('Teşekkürler!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
-        <span onclick="this.style.color='gold'; alert('Harikasın!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
-        <span onclick="this.style.color='gold'; alert('Mükemmel!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
+        <span onclick="alert('Teşekkürler!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
+        <span onclick="alert('Harikasın!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
+        <span onclick="alert('Mükemmel!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
     </div>
     <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
 </div>
@@ -176,15 +175,25 @@
     <div id="stressStatus" style="font-weight:900; color:red;">DURUM: KRİTİK 🚨</div>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [], step = 0;
-    const guideMsgs = ["Hoş geldin Belinay!","Doğum günün kutlu olsun! ✨","6 görevi tamamla ve stresi sıfırla!","Müziği açmayı unutma!"];
-
-    const audio = document.getElementById("bgMusic");
-    function toggleMusic() {
-        if (audio.paused) { audio.play(); document.getElementById("playBtn").innerText = "⏸️"; }
-        else { audio.pause(); document.getElementById("playBtn").innerText = "▶️"; }
+    let player, isPlaying = false;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-audio', {
+            events: { 'onStateChange': onPlayerStateChange }
+        });
     }
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) isPlaying = true;
+        else isPlaying = false;
+    }
+    function toggleMusic() {
+        if (!isPlaying) { player.playVideo(); document.getElementById("playBtn").innerText = "⏸️"; }
+        else { player.pauseVideo(); document.getElementById("playBtn").innerText = "▶️"; }
+    }
+
+    let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [], step = 0;
+    const guideMsgs = ["Hoş geldin Belinay!","Doğum günün kutlu olsun! ✨","Görevleri tamamla ve stresi sıfırla!","Müziği sağ üstten başlatabilirsin!"];
 
     function nextStep() { if(step < guideMsgs.length) { document.getElementById("guideContent").innerText = guideMsgs[step++]; } else { document.getElementById("klavuzModal").style.display = "none"; } }
 
@@ -198,8 +207,6 @@
             document.getElementById("mainMenu").style.display = "block";
             document.getElementById("cortisolHUD").style.display = "block";
             nextStep(); drawMeter();
-            // Otomatik çalmayı dene (Tarayıcı izin verirse)
-            audio.play().then(() => { document.getElementById("playBtn").innerText = "⏸️"; }).catch(() => {});
         } else { alert("Şifre Hatalı!"); }
     }
 
@@ -209,7 +216,6 @@
     function updateTask(id) {
         if(!activeTasks.includes(id)) {
             activeTasks.push(id);
-            document.getElementById("taskCount").innerText = activeTasks.length;
             angle = 60 - (activeTasks.length * 20);
             if(activeTasks.length >= 6) { document.getElementById("stressStatus").innerText = "DURUM: HARİKA 😊"; document.getElementById("stressStatus").style.color = "#00ff88"; angle = -60; }
             drawMeter();
