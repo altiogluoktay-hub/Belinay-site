@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belinay'ın Dünyası 💖</title>
 <style>
-/* --- ANİMASYONLAR VE GENEL STİL --- */
+/* --- GENEL VE ANİMASYON --- */
 @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 @keyframes slideUp { from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
 
@@ -13,25 +13,25 @@ body {
     margin:0; font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(-45deg, #ff7eb3, #ff758c, #8e44ad, #2c3e50);
     background-size: 400% 400%; animation: gradientBG 10s ease infinite;
-    display:flex; flex-direction:column; align-items:center; min-height:100vh; color: white;
-    padding-bottom: 80px;
+    display:flex; flex-direction:column; align-items:center; min-height:100vh; color: white; padding-bottom: 80px;
 }
-
 .card {
     background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
-    padding: 25px; border-radius: 25px; width: 90%; max-width: 420px;
-    text-align: center; margin: 20px auto; border: 1px solid rgba(255,255,255,0.2);
+    padding: 20px; border-radius: 20px; width: 90%; max-width: 400px;
+    text-align: center; margin: 15px auto; border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.6s ease-out;
 }
-
 button {
-    background: #ff4f8b; color: white; border: none; padding: 12px;
-    border-radius: 15px; width: 100%; margin: 8px 0; cursor: pointer;
-    font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,79,139,0.4);
+    background: #ff4f8b; color: white; border: none; padding: 10px;
+    border-radius: 12px; width: 100%; margin: 5px 0; cursor: pointer; font-weight: bold; transition: 0.3s;
 }
-button:hover { transform: scale(1.03); background: #ff1f6b; }
+button:hover { transform: scale(1.02); background: #ff1f6b; }
 
-/* --- BELİNAY KARTI (FLIP) --- */
+/* --- SES PANELİ (WINDOWS STİLİ) --- */
+#volPanel { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.7); padding: 8px 12px; border-radius: 12px; display: flex; align-items: center; gap: 8px; z-index: 2000; border: 1px solid rgba(255,255,255,0.2); }
+#volPanel input { width: 70px; cursor: pointer; }
+
+/* --- BELİNAY DOST KARTI (FLIP) --- */
 #belinayCardDisplay { display: none; perspective: 1000px; }
 .flip-card { width: 300px; height: 420px; margin: 0 auto; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
 .flip-card.flipped { transform: rotateY(180deg); }
@@ -41,73 +41,72 @@ button:hover { transform: scale(1.03); background: #ff1f6b; }
 }
 .flip-card-front { background: linear-gradient(135deg, #6c5ce7, #a29bfe); display: flex; flex-direction: column; align-items: center; padding: 20px; }
 .flip-card-back { background: linear-gradient(135deg, #ff758c, #ff7eb3); transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; text-align: center; }
-
 .stat-row { width: 100%; margin: 8px 0; text-align: left; }
-.stat-label { font-size: 0.9em; font-weight: bold; margin-bottom: 4px; display: block; }
-.stat-bar { height: 12px; background: rgba(255,255,255,0.2); border-radius: 6px; overflow: hidden; }
-.stat-fill { height: 100%; background: #ffeb3b; width: 0; transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.stat-bar { height: 10px; background: rgba(255,255,255,0.2); border-radius: 5px; overflow: hidden; }
+.stat-fill { height: 100%; background: #ffeb3b; width: 0; transition: width 1.5s ease-in-out; }
 
-/* --- GALERİ --- */
-.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
-.gallery img { width: 85px; height: 85px; object-fit: cover; border-radius: 12px; border: 2px solid white; }
+/* --- GALERİ & LIGHTBOX --- */
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; }
+.gallery img { width: 75px; height: 75px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid white; transition: 0.2s; }
+#lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
+#lightbox img { max-width: 85%; max-height: 75%; border-radius: 10px; border: 3px solid white; }
+.lb-btn { position: absolute; color: white; font-size: 50px; cursor: pointer; top: 50%; transform: translateY(-50%); user-select: none; }
 
-footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); padding: 15px; font-size: 14px; text-align: center; backdrop-filter: blur(5px); z-index: 100; }
-#icerik, #profilKart, #futureNote, #belinayCardDisplay, #quizAlan, #sonucKart { display: none; }
+/* --- F1 YARIŞI --- */
+#f1Canvas { background: #444; border-radius: 10px; border: 3px solid #ff4f8b; width: 100%; max-width: 300px; display: block; margin: 0 auto; }
+
+.star { font-size: 2em; cursor: pointer; transition: 0.2s; }
+.star.active { color: #ffeb3b; text-shadow: 0 0 10px #ffeb3b; }
+
+footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); padding: 15px; text-align: center; backdrop-filter: blur(5px); z-index: 100; font-size: 14px;}
+#icerik, #profilKart, #belinayCardDisplay, #f1Alan, #ratingAlan, #quizAlan, #sonucKart { display: none; }
 </style>
 </head>
 <body>
 
-<div id="tanitim" class="card">
-    <h1>✨ Belinay ✨</h1>
-    <p>Doğum günün kutlu olsun!</p>
+<div id="volPanel">
+    <span>🔊</span>
+    <input type="range" id="volSlider" min="0" max="100" value="50" oninput="changeVol(this.value)">
+    <span id="volVal">50%</span>
 </div>
 
-<div id="giris" class="card" style="display:none;">
-    <h2>🎁 Giriş Paneli</h2>
+<div id="giris" class="card">
+    <h2>🎁 Belinay'ın Dünyası</h2>
+    <p>Giriş yaparak sürprizi başlat!</p>
     <input id="kullanici" placeholder="Adın Soyadın" style="padding:10px; width:85%; border-radius:8px; border:none; margin-bottom:10px;">
     <input id="sifre" type="password" placeholder="Şifre" style="padding:10px; width:85%; border-radius:8px; border:none;">
-    <button onclick="girisYap()">Giriş Yap ve Müziği Aç 🎵</button>
+    <button onclick="girisYap()">Giriş Yap 🎵</button>
 </div>
 
 <div id="profilKart" class="card">
-    <img id="profilFoto" src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid white; object-fit: cover;">
+    <img id="profilFoto" src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid white; object-fit: cover;">
     <h3>Belinay Altın</h3>
 </div>
 
 <div id="icerik" class="card">
-    <h3>Sana Özel Köşe 💖</h3>
-    <button onclick="showBelinayCard()">🌟 Belinay Kartı'nı Gör</button>
-    <button onclick="quizAc()">🔥 Karakter Tahmini (Akinator)</button>
-    <button onclick="showFutureNote()">🔒 Geleceğe Not Bırak</button>
+    <h3>Neler Yapalım? ✨</h3>
+    <button onclick="showBelinayCard()">🌟 En Sevdiğin Arkadaşın (Kart)</button>
+    <button onclick="f1Baslat()">🏎️ Mini F1 Yarışı</button>
+    <button onclick="quizAc()">🔥 Karakter Tahmini</button>
+    <button onclick="ratingAc()">⭐ Siteyi Puanla</button>
+    
     <div id="galeri" class="gallery">
-        <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg">
-        <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg">
+        <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg" onclick="openLB(0)">
+        <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg" onclick="openLB(1)">
     </div>
-    <input type="file" multiple onchange="galeriEkle(event)" style="font-size:10px; margin-top:10px;">
-    <button onclick="location.reload()" style="background:#555; margin-top:15px;">Güvenli Çıkış</button>
+    <button onclick="location.reload()" style="background:#555; margin-top:15px;">Çıkış Yap</button>
 </div>
 
 <div id="belinayCardDisplay" class="card">
     <div class="flip-card" id="mainCard" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-front">
-            <h2 style="color: #ffeb3b;">BELİNAY</h2>
-            <div class="stat-row">
-                <span class="stat-label">Enerji ⚡ (%80)</span>
-                <div class="stat-bar"><div class="stat-fill" data-width="80%"></div></div>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Komiklik 😂 (%99)</span>
-                <div class="stat-bar"><div class="stat-fill" data-width="99%"></div></div>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Zeka 🧠 (%90)</span>
-                <div class="stat-bar"><div class="stat-fill" data-width="90%"></div></div>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Mallık 🤡 (%50)</span>
-                <div class="stat-bar"><div class="stat-fill" data-width="50%"></div></div>
-            </div>
-            <p style="font-size: 0.7em; margin-top: 20px;">(Çevirmek için tıkla!)</p>
+            <h2 style="color: #ffeb3b; margin-top: 10px;">BELİNAY</h2>
+            <p style="font-size: 0.8em; opacity: 0.8;">Efsanevi Dost Kartı</p>
+            <div class="stat-row"><span>Enerji ⚡ (%80)</span><div class="stat-bar"><div class="stat-fill" data-w="80%"></div></div></div>
+            <div class="stat-row"><span>Komiklik 😂 (%99)</span><div class="stat-bar"><div class="stat-fill" data-w="99%"></div></div></div>
+            <div class="stat-row"><span>Zeka 🧠 (%90)</span><div class="stat-bar"><div class="stat-fill" data-w="90%"></div></div></div>
+            <div class="stat-row"><span>Mallık 🤡 (%50)</span><div class="stat-bar"><div class="stat-fill" data-w="50%"></div></div></div>
+            <p style="font-size: 0.7em; margin-top: 15px;">(Kartı çevir!)</p>
         </div>
         <div class="flip-card-back">
             <h2>İyi ki Varsın! 💖</h2>
@@ -117,35 +116,53 @@ footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); p
     <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
+<div id="f1Alan" class="card">
+    <h3 id="f1Score">Skor: 0</h3>
+    <canvas id="f1Canvas" width="300" height="400"></canvas>
+    <button onclick="anaMenu()">Yarışı Bitir</button>
+</div>
+
 <div id="quizAlan" class="card">
-    <h3 id="soruMetni">Soru Yükleniyor...</h3>
+    <h3 id="soruMetni">Yükleniyor...</h3>
     <button onclick="quizCevap()">Evet</button>
     <button onclick="quizCevap()">Hayır</button>
 </div>
 
 <div id="sonucKart" class="card">
     <h2 style="color: #ffeb3b;">🔥 TAHMİNİM: RENGOKU 🔥</h2>
-    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px; border: 3px solid #ff4f8b;">
-    <p>"Kalbini ateşle yak!" <br> Rengoku ruh eşin çıktı! 💖</p>
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:15px;">
     <button onclick="anaMenu()">Geri Dön</button>
 </div>
 
-<div id="futureNote" class="card">
-    <h3>🔒 Geleceğe Not</h3>
-    <textarea id="noteText" placeholder="Mesajını buraya yaz..."></textarea>
-    <button onclick="saveNote()" id="lockBtn">Kilitle 🗝️</button>
-    <div id="countdown"></div>
+<div id="ratingAlan" class="card">
+    <h3>Puanın? 😍</h3>
+    <div id="stars">
+        <span class="star" onclick="rate(1)">⭐</span><span class="star" onclick="rate(2)">⭐</span>
+        <span class="star" onclick="rate(3)">⭐</span><span class="star" onclick="rate(4)">⭐</span>
+        <span class="star" onclick="rate(5)">⭐</span>
+    </div>
+    <p id="rateMsg"></p>
     <button onclick="anaMenu()">Geri Dön</button>
+</div>
+
+<div id="lightbox">
+    <span class="lb-btn" style="left:10px;" onclick="changeImg(-1)">❮</span>
+    <img id="lbImg" src="">
+    <span class="lb-btn" style="right:10px;" onclick="changeImg(1)">❯</span>
+    <span onclick="this.parentElement.style.display='none'" style="position:absolute; top:20px; right:30px; font-size:40px; cursor:pointer;">×</span>
 </div>
 
 <iframe id="muzikPlayer" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
-
 <footer>Belinay'a doğum günü için yapılmıştır. 💖</footer>
 
 <script>
-// --- GİRİŞ VE ANA SİSTEM ---
-setTimeout(() => { document.getElementById("tanitim").style.display = "none"; document.getElementById("giris").style.display = "block"; }, 2000);
+// --- SES ---
+function changeVol(v) {
+    document.getElementById("volVal").innerText = v + "%";
+    document.getElementById("muzikPlayer").contentWindow.postMessage('{"event":"command","func":"setVolume","args":['+v+']}', '*');
+}
 
+// --- GİRİŞ ---
 function girisYap() {
     let k = document.getElementById("kullanici").value;
     let s = document.getElementById("sifre").value;
@@ -153,81 +170,52 @@ function girisYap() {
         document.getElementById("giris").style.display = "none";
         document.getElementById("icerik").style.display = "block";
         document.getElementById("profilKart").style.display = "block";
-        document.getElementById("muzikPlayer").src = "https://www.youtube.com/embed/iws0dywdEs4?autoplay=1";
-        checkNote();
-    } else { alert("Yanlış giriş! ❤️"); }
+        document.getElementById("muzikPlayer").src = "https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1&autoplay=1";
+    } else { alert("Yanlış bilgiler! ❤️"); }
 }
 
-// --- QUIZ (8 SORU) ---
-let adim = 0;
-const sorular = [
-    "Bu karakter bir Demon Slayer mı? ⚔️",
-    "Peki, bu karakter bir 'Hashira' mı? ✨",
-    "Saçları güneş gibi renkli mi? 🔥",
-    "Sürekli gülümseyen biri mi? 😄",
-    "Yemek yerken 'Umai!' diyor mu? 🍱",
-    "Savaşırken 'Ateş Nefesi' kullanıyor mu? 🐉",
-    "Mugen Train görevinde yer aldı mı? 🚂",
-    "Bu senin en sevdiğin karakter mi? 💖"
-];
-
-function quizAc() { adim = 0; document.getElementById("icerik").style.display = "none"; document.getElementById("quizAlan").style.display = "block"; soruGuncelle(); }
-function soruGuncelle() { document.getElementById("soruMetni").innerText = `${adim + 1}. Soru: ${sorular[adim]}`; }
-function quizCevap() {
-    adim++;
-    if (adim < sorular.length) { soruGuncelle(); } 
-    else { document.getElementById("quizAlan").style.display = "none"; document.getElementById("sonucKart").style.display = "block"; }
-}
-
-// --- GALERİ ---
-function galeriEkle(e) {
-    for(let f of e.target.files) {
-        let r = new FileReader();
-        r.onload = (ev) => {
-            let img = document.createElement("img");
-            img.src = ev.target.result;
-            document.getElementById("galeri").appendChild(img);
-        }
-        r.readAsDataURL(f);
-    }
-}
-
-// --- KART VE NOT ---
+// --- DOST KARTI ---
 function showBelinayCard() {
     document.getElementById("icerik").style.display = "none";
     document.getElementById("belinayCardDisplay").style.display = "block";
-    setTimeout(() => { document.querySelectorAll('.stat-fill').forEach(f => f.style.width = f.getAttribute('data-width')); }, 300);
+    setTimeout(() => { document.querySelectorAll('.stat-fill').forEach(f => f.style.width = f.getAttribute('data-w')); }, 300);
 }
 
-function showFutureNote() { document.getElementById("icerik").style.display = "none"; document.getElementById("futureNote").style.display = "block"; }
+// --- LIGHTBOX GALERİ ---
+let imgList = ["https://i.postimg.cc/5tL9NShp/foto1.jpg", "https://i.postimg.cc/3N8LMR3S/foto2.jpg"];
+let curIdx = 0;
+function openLB(idx) { curIdx = idx; document.getElementById("lbImg").src = imgList[curIdx]; document.getElementById("lightbox").style.display = "flex"; }
+function changeImg(dir) { curIdx = (curIdx + dir + imgList.length) % imgList.length; document.getElementById("lbImg").src = imgList[curIdx]; }
 
-function saveNote() {
-    const note = document.getElementById("noteText").value;
-    if(!note.trim()) return;
-    const openDate = new Date(); openDate.setFullYear(openDate.getFullYear() + 1);
-    localStorage.setItem("bNote", note); localStorage.setItem("bDate", openDate.getTime());
-    checkNote();
+// --- QUIZ ---
+let adim = 0;
+const sorular = ["Karakter bir Demon Slayer mı?","Bir Hashira mı?","Saçları renkli mi?","Gülümser mi?","'Umai!' der mi?","Ateş kullanır mı?","Trende miydi?","En sevdiğin mi?"];
+function quizAc() { adim=0; document.getElementById("icerik").style.display="none"; document.getElementById("quizAlan").style.display="block"; soruGuncelle(); }
+function soruGuncelle() { document.getElementById("soruMetni").innerText = `${adim+1}. Soru: ${sorular[adim]}`; }
+function quizCevap() { adim++; if(adim<8) soruGuncelle(); else { document.getElementById("quizAlan").style.display="none"; document.getElementById("sonucKart").style.display="block"; } }
+
+// --- F1 OYUNU ---
+let fCtx = document.getElementById("f1Canvas").getContext("2d"), carX = 135, fScore = 0, ens = [], fActive = false;
+function f1Baslat() { document.getElementById("icerik").style.display="none"; document.getElementById("f1Alan").style.display="block"; fActive=true; ens=[]; fScore=0; fLoop(); }
+document.getElementById("f1Canvas").onclick = (e) => { let x = e.clientX - e.target.getBoundingClientRect().left; if(x < 150) carX = Math.max(20, carX-40); else carX = Math.min(250, carX+40); };
+function fLoop() {
+    if(!fActive) return;
+    fCtx.fillStyle="#333"; fCtx.fillRect(0,0,300,400); fCtx.fillStyle="white"; for(let i=0; i<400; i+=40) fCtx.fillRect(145, i, 10, 20);
+    fCtx.fillStyle="#ff0000"; fCtx.fillRect(carX, 330, 30, 50); // F1 Araba
+    if(Math.random() < 0.03) ens.push({x: Math.random()*250, y: -50});
+    ens.forEach((en, i) => {
+        en.y += 5; fCtx.fillStyle="#00ff00"; fCtx.fillRect(en.x, en.y, 30, 50);
+        if(en.y > 400) { ens.splice(i,1); fScore++; document.getElementById("f1Score").innerText = "Skor: "+fScore; }
+        if(en.y+50 > 330 && en.y < 380 && en.x+30 > carX && en.x < carX+30) { fActive=false; alert("Kaza! Skor: "+fScore); anaMenu(); }
+    });
+    requestAnimationFrame(fLoop);
 }
 
-function checkNote() {
-    const sN = localStorage.getItem("bNote"), sD = localStorage.getItem("bDate"), now = new Date().getTime();
-    if (sN && sD) {
-        document.getElementById("lockBtn").style.display = "none";
-        if (now >= sD) { document.getElementById("noteText").value = sN; }
-        else { document.getElementById("noteText").value = "Kilitli... 🔒"; updateTime(sD); setInterval(() => updateTime(sD), 1000); }
-    }
-}
+// --- PUANLAMA ---
+function ratingAc() { document.getElementById("icerik").style.display="none"; document.getElementById("ratingAlan").style.display="block"; }
+function rate(n) { document.querySelectorAll(".star").forEach((s, i) => s.classList.toggle("active", i < n)); document.getElementById("rateMsg").innerText = n + " Yıldız! Teşekkürler! ❤️"; }
 
-function updateTime(t) {
-    const diff = t - new Date().getTime();
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((diff % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = `Açılmasına: ${d}g ${h}s ${m}d ${s}sn`;
-}
-
-function anaMenu() { document.querySelectorAll('.card').forEach(c => c.style.display = "none"); document.getElementById("icerik").style.display = "block"; document.getElementById("profilKart").style.display = "block"; }
+function anaMenu() { fActive=false; document.querySelectorAll(".card").forEach(c => c.style.display="none"); document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; }
 </script>
 </body>
 </html>
