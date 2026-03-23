@@ -3,116 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belinay Altın 2026 - Official Portal</title>
+    <title>Belinay Altın 2026 - Master Portal</title>
     <style>
-        /* --- BELİNAY ÖZEL TEMA AYARLARI --- */
+        /* --- TEAM IMPALA ÖZEL TASARIM --- */
         @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
         @keyframes confettiFall { 0% {transform: translateY(-100vh) rotate(0deg); opacity: 1;} 100% {transform: translateY(100vh) rotate(720deg); opacity: 0;} }
-        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+        @keyframes popIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
         
         body {
-            margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #e94560);
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, #0d1b2a, #1b263b, #415a77, #e94560);
             background-size: 400% 400%; animation: gradientBG 15s ease infinite;
             color: white; display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; padding-bottom: 260px; overflow-x: hidden;
         }
 
         .card {
-            background: rgba(15, 52, 96, 0.9); backdrop-filter: blur(15px);
-            padding: 25px; border-radius: 30px; width: 92%; max-width: 440px;
+            background: rgba(13, 27, 42, 0.96); backdrop-filter: blur(20px);
+            padding: 30px; border-radius: 35px; width: 92%; max-width: 440px;
             text-align: center; margin: 20px auto; border: 2px solid #e94560;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8); display: none; animation: popIn 0.4s ease;
         }
 
-        /* Konfeti */
         .confetti { position: fixed; width: 12px; height: 12px; z-index: 9999; animation: confettiFall 3s linear forwards; }
 
-        /* 3D Kişilik Kartı - ROBLOX & MINECRAFT TEMA */
         .flip-container { perspective: 1000px; width: 100%; height: 440px; margin: 15px 0; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
         .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; }
-        .flip-front { background: #111; border: 3px solid #00a2ff; box-shadow: inset 0 0 20px rgba(0,162,255,0.3); }
+        .flip-front { background: #111; border: 3px solid #e94560; box-shadow: inset 0 0 30px rgba(233,69,96,0.2); }
         .flip-back { background: linear-gradient(135deg, #e94560, #ff2e63); transform: rotateY(180deg); border: 3px solid white; }
 
-        /* İstatistikler */
-        .stat-row { margin: 10px 0; text-align: left; font-size: 0.9em; font-weight: bold; }
-        .stat-bar { background: rgba(0,0,0,0.4); height: 14px; border-radius: 10px; margin-top: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
-        .stat-fill { background: #fff; height: 100%; box-shadow: 0 0 10px white; transition: 1.5s ease-out; }
+        .stat-row { margin: 12px 0; text-align: left; font-size: 0.9em; font-weight: bold; }
+        .stat-bar { background: rgba(0,0,0,0.5); height: 14px; border-radius: 10px; margin-top: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .stat-fill { background: #fff; height: 100%; box-shadow: 0 0 10px white; transition: 1.5s ease; }
 
-        /* Butonlar */
-        button { background: #e94560; color: white; border: none; padding: 16px; border-radius: 18px; width: 100%; margin: 8px 0; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
-        button:hover { transform: scale(1.03); background: #ff2e63; }
-        .back-btn { background: #0f3460 !important; margin-top: 15px !important; border: 1px solid #e94560 !important; }
+        button { background: #e94560; color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; margin: 10px 0; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        button:hover { transform: translateY(-3px); background: #ff2e63; }
+        .back-btn { background: #1b263b !important; margin-top: 15px !important; border: 1px solid #e94560 !important; }
 
-        /* Galeri */
         .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
-        .gallery img { width: 100%; height: 110px; border-radius: 15px; border: 2px solid #00a2ff; object-fit: cover; }
+        .gallery img { width: 100%; height: 110px; border-radius: 15px; border: 2px solid #e94560; object-fit: cover; }
 
-        /* Cortisol Metre */
-        #cortisolFixed { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a2e; border-top: 4px solid #e94560; padding: 15px 0; z-index: 3000; display: none; text-align: center; }
+        #cortisolFixed { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d1b2a; border-top: 5px solid #e94560; padding: 15px 0; z-index: 3000; display: none; text-align: center; }
         canvas#meterCanvas { width: 280px; height: 120px; }
 
-        /* Girdiler */
-        input, textarea { padding: 15px; width: 88%; border-radius: 15px; border: 1px solid #e94560; margin-bottom: 15px; font-size: 1em; background: #16213e; color: white; }
-        #notif { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150px); background: #00ff88; color: #111; padding: 12px 30px; border-radius: 50px; font-weight: bold; transition: 0.6s; z-index: 4000; }
+        input { padding: 16px; width: 88%; border-radius: 18px; border: 1px solid #e94560; margin-bottom: 15px; font-size: 1.1em; background: #1b263b; color: white; text-align: center; outline: none; }
+        textarea { padding: 15px; width: 88%; border-radius: 15px; background: #1b263b; color: white; border: 1px solid #e94560; outline: none; }
+        #notif { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-150px); background: #00ff88; color: #111; padding: 15px 40px; border-radius: 50px; font-weight: bold; transition: 0.6s; z-index: 4000; }
         
-        #klavuzModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; justify-content: center; align-items: center; }
+        #klavuzModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 5000; display: none; justify-content: center; align-items: center; }
         #giris { display: block; }
     </style>
 </head>
 <body onload="checkFirstLoad()">
 
-<div id="notif">✨ STRES SEVİYESİ DÜŞTÜ! ✨</div>
+<div id="notif">✨ ANALİZ GÜNCELLENDİ! ✨</div>
 
 <div id="klavuzModal">
-    <div class="card" style="display:block; border: 3px solid #00a2ff;">
-        <h2 style="color: #00a2ff;">📜 PORTAL REHBERİ</h2>
-        <div id="klavuzMetin" style="font-size: 1.1em; line-height: 1.6; margin: 20px 0;"></div>
-        <button onclick="klavuzIlerle()" style="background: #00a2ff;">TAMAMDIR!</button>
+    <div class="card" style="display:block; border: 3px solid #e94560;">
+        <h2 style="color: #e94560;">📜 TEAM IMPALA PORTAL</h2>
+        <div id="klavuzMetin" style="font-size: 1.15em; line-height: 1.6; margin: 25px 0;"></div>
+        <button onclick="klavuzIlerle()" style="background: #e94560;">ANLADIM, BAŞLAT!</button>
     </div>
 </div>
 
 <div id="giris" class="card">
-    <h1 style="color: #e94560; font-size: 2.5em;">B.A. PORTAL</h1>
-    <p>Giriş Şifresi: belinay123</p>
-    <input id="sifre" type="password" placeholder="Parolayı gir...">
+    <h1 style="color: #e94560; font-size: 2.8em; margin-bottom: 10px;">B.A. ACCESS</h1>
+    <p style="opacity: 0.7; margin-bottom: 25px;">Team Impala Özel Giriş Paneli</p>
+    <input id="kullanici" type="text" placeholder="Kullanıcı Adı">
+    <input id="sifre" type="password" placeholder="Parola">
     <button onclick="girisYap()">SİSTEME BAĞLAN 🚀</button>
 </div>
 
 <div id="profilKart" class="card">
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid #e94560; object-fit: cover;">
-    <h2>Belinay Altın</h2>
-    <p style="color: #00a2ff; font-weight: bold;">TEAM IMPALA FAN 🏎️</p>
+    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:110px; height:110px; border-radius:50%; border:4px solid #e94560; object-fit: cover; box-shadow: 0 0 20px rgba(233,69,96,0.6);">
+    <h2 style="margin: 10px 0;">Belinay Altın</h2>
+    <p style="color: #e94560; font-weight: bold; font-size: 1.1em;">TEAM IMPALA SUPPORTER 🏎️</p>
+    <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+    <p style="font-size: 0.9em; color: #ffeb3b;">En Sevdiği Arkadaşı: <b>Oktay</b> 🌟</p>
 </div>
 
 <div id="icerik" class="card">
-    <h3 style="color:#e94560">GÖREVLER: <span id="gorevSay">0</span>/4</h3>
+    <h3 style="color:#e94560; margin-bottom: 20px;">GÖREVLER: <span id="gorevSay">0</span>/4</h3>
     <button onclick="ac('kisilikAlan')">👤 KİŞİLİK KARTI (3D)</button>
     <button onclick="ac('galeriAlan')">📸 HATIRA GALERİSİ</button>
     <button onclick="f1Baslat()">🏎️ TEAM IMPALA YARIŞI</button>
-    <button onclick="ac('quizAlan'); qI=0; soruSor();">🔥 ANİME TAHMİNİ</button>
-    <button onclick="ac('mektupAlan')">📩 GELECEĞE NOT</button>
+    <button onclick="ac('quizAlan'); qI=0; soruSor();">🔥 ANİME TESTİ</button>
+    <button onclick="ac('mektupAlan')">📩 GELECEĞE NOT BIRAK</button>
     <button onclick="ac('puanAlan')" style="background:#f1c40f; color:black;">⭐ SİTEYİ PUANLA</button>
-    <button onclick="location.reload()" style="background:#333; font-size: 0.8em; margin-top:15px;">ÇIKIŞ YAP</button>
+    <button onclick="location.reload()" style="background:#222; font-size: 0.8em; margin-top:20px;">GÜVENLİ ÇIKIŞ</button>
 </div>
 
 <div id="kisilikAlan" class="card" style="background:transparent; box-shadow:none; border:none; padding:0;">
     <div class="flip-container" onclick="this.classList.toggle('flipped'); stresDusur('kart');">
         <div class="flip-inner">
             <div class="flip-front">
-                <h2 style="color:#00a2ff;">GAMER ID</h2>
-                <p><b>Oyun:</b> Roblox & Minecraft 🎮</p>
-                <p><b>Kişilik:</b> Çok Komik 😂</p>
-                <p><b>Müzik:</b> Team Impala 🎵</p>
-                <p style="margin-top:20px; font-size:0.7em; opacity:0.5;">(Çevirmek için tıkla)</p>
+                <h2 style="color:#e94560;">BELİNAY ID</h2>
+                <p><b>Burç:</b> Boğa ♉</p>
+                <p><b>Hobiler:</b> Roblox & Minecraft 🎮</p>
+                <p><b>Favori:</b> Team Impala 🏎️</p>
+                <p style="margin-top:40px; font-size:0.8em; opacity:0.6;">(Çevirmek için tıkla)</p>
             </div>
             <div class="flip-back">
-                <h2 style="margin-top:0;">GÜÇ ANALİZİ 📊</h2>
-                <div class="stat-row">Mizah: %100 <div class="stat-bar"><div class="stat-fill" style="width:100%;"></div></div></div>
+                <h2 style="margin-top:0;">BOĞA GÜCÜ 📊</h2>
+                <div class="stat-row">Sadakat: %100 <div class="stat-bar"><div class="stat-fill" style="width:100%;"></div></div></div>
+                <div class="stat-row">Mizah Seviyesi: %100 <div class="stat-bar"><div class="stat-fill" style="width:100%;"></div></div></div>
                 <div class="stat-row">Roblox Skill: %95 <div class="stat-bar"><div class="stat-fill" style="width:95%;"></div></div></div>
-                <div class="stat-row">Minecraft: %90 <div class="stat-bar"><div class="stat-fill" style="width:90%;"></div></div></div>
                 <div class="stat-row">Mallık: %50 <div class="stat-bar"><div class="stat-fill" style="width:50%;"></div></div></div>
                 <div class="stat-row">Şans: %31 <div class="stat-bar"><div class="stat-fill" style="width:31%;"></div></div></div>
             </div>
@@ -122,53 +119,58 @@
 </div>
 
 <div id="galeriAlan" class="card">
-    <h2 style="color: #00a2ff;">📸 GALERİ</h2>
+    <h2 style="color: #e94560;">📸 GALERİ</h2>
     <div class="gallery">
         <img src="https://i.postimg.cc/5tL9NShp/foto1.jpg">
         <img src="https://i.postimg.cc/3N8LMR3S/foto2.jpg">
         <img src="https://i.ibb.co/n8tTCLx1/1.jpg">
         <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg">
     </div>
-    <button class="back-btn" onclick="anaMenu()">DÖN</button>
+    <button class="back-btn" onclick="anaMenu()">ANA SAYFA</button>
 </div>
 
 <div id="f1Alan" class="card">
-    <h3>SKOR: <span id="skor">0</span> / 20</h3>
-    <canvas id="f1Canvas" width="300" height="400"></canvas>
-    <button class="back-btn" onclick="anaMenu()">DURDUR</button>
+    <h3 style="margin-top: 0;">IMPALA SKOR: <span id="skor" style="color:#e94560;">0</span> / 20</h3>
+    <canvas id="f1Canvas" width="300" height="400" style="background: #000; border-radius: 20px; border: 2px solid #e94560;"></canvas>
+    <button class="back-btn" onclick="anaMenu()">YARIŞTAN ÇIK</button>
 </div>
 
 <div id="quizAlan" class="card">
-    <h3 id="qKutu" style="color:#00a2ff; min-height:80px;"></h3>
-    <button onclick="qCevap()">EVET</button><button onclick="qCevap()">HAYIR</button>
-    <button class="back-btn" onclick="anaMenu()">İPTAL</button>
+    <h3 id="qKutu" style="color:#e94560; min-height:80px; display: flex; align-items: center; justify-content: center; font-size: 1.2em;"></h3>
+    <div style="display: flex; gap: 10px;">
+        <button onclick="qCevap()" style="background: #00ff88; color: #111;">EVET</button>
+        <button onclick="qCevap()" style="background: #ff4d4d;">HAYIR</button>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">İPTAL ET</button>
 </div>
 
 <div id="sonucKart" class="card">
-    <h2>RUH İKİZİN: RENGOKU 🔥</h2>
-    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:20px;">
+    <h2 style="color: #e94560;">RUH İKİZİN: RENGOKU 🔥</h2>
+    <img src="https://i.postimg.cc/0jZtgT8T/rengoku.jpg" style="width:100%; border-radius:20px; border: 3px solid white;">
     <button class="back-btn" onclick="anaMenu()">BİTİR</button>
 </div>
 
 <div id="mektupAlan" class="card">
-    <h2>📩 2027 KAPSÜLÜ</h2>
-    <textarea id="mektupTxt" placeholder="Gelecekteki kendine ne dersin?"></textarea>
-    <button onclick="mekKaydet()">MÜHÜRLE 🚀</button>
-    <button class="back-btn" onclick="anaMenu()">VAZGEÇ</button>
-</div>
-
-<div id="puanAlan" class="card">
-    <h2>SİTEYİ PUANLA ⭐</h2>
-    <p>Görüşlerin bizim için önemli!</p>
-    <button onclick="stresDusur('puan'); alert('Puanladın! ❤️'); anaMenu();">⭐⭐⭐⭐⭐</button>
-    <button onclick="stresDusur('puan'); alert('Puanladın! 💖'); anaMenu();">⭐⭐⭐⭐</button>
+    <h2>📩 GELECEK MESAJI</h2>
+    <textarea id="mektupTxt" rows="5" placeholder="Gelecekteki kendine ne dersin?"></textarea>
+    <button onclick="mekKaydet()" style="background: #00ff88; color: #111;">MÜHÜRLE 🚀</button>
     <button class="back-btn" onclick="anaMenu()">DÖN</button>
 </div>
 
+<div id="puanAlan" class="card">
+    <h2 style="color: #ffeb3b;">SİSTEMİ PUANLA ⭐</h2>
+    <p>Oktay'ın hazırladığı portalı beğendin mi?</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button onclick="stresDusur('puan'); alert('Puanın için teşekkürler! ❤️'); anaMenu();">HARİKA! ✨</button>
+        <button onclick="stresDusur('puan'); alert('Güzel olmuş! 😊'); anaMenu();">İYİ 👍</button>
+    </div>
+    <button class="back-btn" onclick="anaMenu()">MENÜYE GİT</button>
+</div>
+
 <div id="cortisolFixed">
-    <div style="font-size:12px; color:#e94560; font-weight:bold;">CORTISOL SEVİYESİ</div>
+    <div style="font-size:13px; color:#e94560; font-weight:bold; letter-spacing: 1px;">CORTISOL ANALİZ SİSTEMİ</div>
     <canvas id="meterCanvas" width="300" height="120"></canvas>
-    <div id="mStat" style="font-weight:bold; color:#ff4d4d;">🚨 TEHLİKELİ 🚨</div>
+    <div id="mStat" style="font-weight:900; color:#ff4d4d;">DURUM: KRİTİK SEVİYE 🚨</div>
 </div>
 
 <iframe id="muzik" width="0" height="0" src="" frameborder="0" allow="autoplay" style="display:none;"></iframe>
@@ -176,39 +178,38 @@
 <script>
     let gList = [], a = 60, k = 0, fActive = false;
     const kMsgs = [
-        "Selam Belinay! Roblox ve Minecraft dünyasından portala hoş geldin.",
-        "Şu an Cortisol (stres) seviyen Team Impala'nın hızı gibi çok yüksek!",
-        "4 farklı görevi yaparak stresi düşürmeli ve konfetileri patlatmalısın.",
-        "Hadi başlayalım komik kız!"
+        "Hoş geldin Belinay! Boğa burcu kararlılığıyla portala giriş yaptın.",
+        "Şu an Cortisol seviyen çok yüksek! Team Impala fanlarına yakışmaz.",
+        "Stresi düşürmek için 4 farklı görevi başarıyla tamamlamalısın.",
+        "Oktay senin için bu sistemi tasarladı. Başarılar komik kız!"
     ];
 
     function checkFirstLoad(){ 
-        if(!localStorage.getItem('b_vFinal_Impala')){ 
+        if(!localStorage.getItem('b_vFinal_Impala_400')){ 
             document.getElementById("klavuzModal").style.display="flex"; 
             metreCiz(); klavuzIlerle(); 
         } 
     }
     function klavuzIlerle(){ 
         if(k < kMsgs.length){ document.getElementById("klavuzMetin").innerText=kMsgs[k]; k++; } 
-        else { document.getElementById("klavuzModal").style.display="none"; localStorage.setItem('b_vFinal_Impala','t'); } 
+        else { document.getElementById("klavuzModal").style.display="none"; localStorage.setItem('b_vFinal_Impala_400','t'); } 
     }
 
     function metreCiz() {
         const c=document.getElementById("meterCanvas"), ctx=c.getContext("2d"); ctx.clearRect(0,0,300,120);
         const colors=["#00ff88","#f1c40f","#e94560"];
-        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v,i)=>{ ctx.beginPath(); ctx.arc(150,110,90,v,v+Math.PI*0.33); ctx.lineWidth=20; ctx.strokeStyle=colors[i]; ctx.stroke(); });
+        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v,i)=>{ ctx.beginPath(); ctx.arc(150,110,90,v,v+Math.PI*0.33); ctx.lineWidth=22; ctx.strokeStyle=colors[i]; ctx.stroke(); });
         ctx.save(); ctx.translate(150,110); ctx.rotate(a*Math.PI/180);
-        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-6,-80); ctx.lineTo(6,-80); ctx.fillStyle="white"; ctx.fill(); ctx.restore();
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-7,-85); ctx.lineTo(7,-85); ctx.fillStyle="white"; ctx.fill(); ctx.restore();
     }
 
     function stresDusur(gorevId) {
         if(!gList.includes(gorevId)) {
             gList.push(gorevId);
             document.getElementById("gorevSay").innerText = gList.length;
-            if(gList.length === 2) { a = 0; document.getElementById("mStat").innerText = "DURUM: SAKİN 😐"; document.getElementById("mStat").style.color = "yellow"; }
+            if(gList.length === 2) { a = 0; document.getElementById("mStat").innerText = "DURUM: STABİL 😐"; document.getElementById("mStat").style.color = "yellow"; }
             if(gList.length >= 4) { 
-                a = -60; 
-                document.getElementById("mStat").innerText = "DURUM: EFSANE! 😊"; 
+                a = -60; document.getElementById("mStat").innerText = "DURUM: HARİKA! 😊"; 
                 document.getElementById("mStat").style.color = "#00ff88";
                 konfetiPatlat();
             }
@@ -218,30 +219,32 @@
     }
 
     function konfetiPatlat() {
-        for(let i=0; i<100; i++) {
+        for(let i=0; i<120; i++) {
             let conf = document.createElement("div");
             conf.className = "confetti";
             conf.style.left = Math.random() * 100 + "vw";
-            conf.style.backgroundColor = ["#e94560","#00a2ff","#00ff88","#ffffff"][Math.floor(Math.random()*4)];
+            conf.style.backgroundColor = ["#e94560","#00a2ff","#00ff88","#ffeb3b","#fff"][Math.floor(Math.random()*5)];
             conf.style.transform = `rotate(${Math.random() * 360}deg)`;
             conf.style.animationDelay = Math.random() * 2 + "s";
             document.body.appendChild(conf);
             setTimeout(() => conf.remove(), 4000);
         }
-        alert("TEBRİKLER BELİNAY! 🥳\nBütün görevleri yaptın, Team Impala gurur duyuyor!");
+        setTimeout(()=>alert("TEBRİKLER BELİNAY! 🥳\nOktay seninle gurur duyuyor!"), 500);
     }
 
     function girisYap() {
-        if(document.getElementById("sifre").value==="belinay123"){
+        const u = document.getElementById("kullanici").value.toLowerCase();
+        const p = document.getElementById("sifre").value;
+        if((u==="belinay" || u==="belinay altın") && p==="belinay123"){
             document.getElementById("giris").style.display="none"; document.getElementById("icerik").style.display="block";
             document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolFixed").style.display="block";
             metreCiz(); document.getElementById("muzik").src="https://www.youtube.com/embed/iws0dywdEs4?autoplay=1";
-        } else { alert("Şifre: belinay123"); }
+        } else { alert("Kullanıcı Adı: belinay | Şifre: belinay123"); }
     }
 
     function anaMenu() { fActive=false; document.querySelectorAll(".card").forEach(c=>c.style.display="none"); document.getElementById("icerik").style.display="block"; document.getElementById("profilKart").style.display="block"; document.getElementById("cortisolFixed").style.display="block"; }
     function ac(id) { document.querySelectorAll(".card").forEach(c=>c.style.display="none"); document.getElementById(id).style.display="block"; }
-    function mekKaydet() { alert("Mektup mühürlendi! 🔒"); stresDusur('mektup'); anaMenu(); }
+    function mekKaydet() { alert("Mektubun 2027 için mühürlendi! 🔒"); stresDusur('mektup'); anaMenu(); }
 
     let qI=0; const qs=["Karakterin Hashira mı?","Ateş mi kullanıyor?","'Umai!' der mi?","Mugen Train filminde miydi?"];
     function soruSor() { document.getElementById("qKutu").innerText=qs[qI]; }
@@ -249,8 +252,8 @@
 
     let fCtx=document.getElementById("f1Canvas").getContext("2d"), cX=135, ens=[], sc=0;
     function f1Baslat() { ac('f1Alan'); fActive=true; ens=[]; sc=0; fLoop(); }
-    document.getElementById("f1Canvas").addEventListener("touchstart", (e)=>{ let x=e.touches[0].clientX - e.target.getBoundingClientRect().left; cX=(x<150)?Math.max(10,cX-40):Math.min(260,cX+40); });
-    function fLoop() { if(!fActive) return; fCtx.fillStyle="#111"; fCtx.fillRect(0,0,300,400); fCtx.fillStyle="#e94560"; fCtx.fillRect(cX,330,30,55); if(Math.random()<0.04) ens.push({x:Math.random()*260, y:-50}); ens.forEach((en,i)=>{ en.y+=7; fCtx.fillStyle="#00ff88"; fCtx.fillRect(en.x,en.y,30,50); if(en.y>400){ ens.splice(i,1); sc++; document.getElementById("skor").innerText=sc; if(sc===20) stresDusur('f1'); } if(en.y+50>330 && en.y<385 && en.x+30>cX && en.x<cX+30){ fActive=false; alert("Kaza! Skorun: "+sc); anaMenu(); } }); requestAnimationFrame(fLoop); }
+    document.getElementById("f1Canvas").addEventListener("touchstart", (e)=>{ let x=e.touches[0].clientX - e.target.getBoundingClientRect().left; cX=(x<150)?Math.max(10,cX-45):Math.min(260,cX+45); });
+    function fLoop() { if(!fActive) return; fCtx.fillStyle="#000"; fCtx.fillRect(0,0,300,400); fCtx.fillStyle="#e94560"; fCtx.fillRect(cX,330,32,58); if(Math.random()<0.045) ens.push({x:Math.random()*260, y:-55}); ens.forEach((en,i)=>{ en.y+=8; fCtx.fillStyle="#00ff88"; fCtx.fillRect(en.x,en.y,30,50); if(en.y>400){ ens.splice(i,1); sc++; document.getElementById("skor").innerText=sc; if(sc===20) stresDusur('f1'); } if(en.y+50>330 && en.y<388 && en.x+30>cX && en.x<cX+32){ fActive=false; alert("Eyvah Kaza! Skorun: "+sc); anaMenu(); } }); requestAnimationFrame(fLoop); }
 </script>
 </body>
 </html>
