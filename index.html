@@ -23,10 +23,11 @@
         /* --- MÜZİK KONTROL --- */
         #music-box {
             position: fixed; top: 15px; right: 15px; z-index: 10001;
-            background: rgba(0,0,0,0.7); border: 2px solid var(--gold);
-            padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.8); border: 2px solid var(--gold);
+            padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 0 15px var(--pink);
         }
-        .music-btn { cursor: pointer; font-size: 1.2em; transition: 0.3s; }
+        .music-btn { cursor: pointer; font-size: 1.4em; transition: 0.3s; }
         .music-btn:hover { transform: scale(1.2); }
 
         .card {
@@ -48,12 +49,7 @@
         .profile-side img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
         .stats-side { flex-grow: 1; font-family: 'Orbitron'; font-size: 0.85em; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,215,0,0.2); padding-bottom: 2px; }
-        .stat-label { color: var(--gold); }
-
-        .stars { display: flex; justify-content: center; gap: 10px; margin: 15px 0; font-size: 2.2em; cursor: pointer; }
-        .star { color: #444; }
-        .star.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
-
+        
         button { 
             background: linear-gradient(45deg, var(--pink), var(--gold)); 
             color: #000; border: none; padding: 15px; border-radius: 50px; 
@@ -62,10 +58,10 @@
         }
         .back-btn { background: transparent !important; color: var(--gold) !important; border: 2px solid var(--gold) !important; }
 
-        input { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 15px; border: none; outline: none; box-sizing: border-box;}
+        input { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 15px; border: none; outline: none; box-sizing: border-box; }
 
         #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, var(--pink) 0%, var(--dark) 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        #klavuzModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        #klavuzModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; justify-content: center; align-items: center; }
         #cortisolHUD { position: fixed; bottom: 0; width: 100%; background: rgba(20, 0, 10, 0.95); border-top: 4px solid var(--gold); padding: 10px 0; z-index: 998; text-align: center; }
     </style>
 </head>
@@ -73,31 +69,34 @@
 
 <div id="music-box" style="display:none;">
     <span class="music-btn" id="playBtn" onclick="toggleMusic()">▶️</span>
-    <span style="font-size: 10px; font-family: 'Orbitron'; color: var(--gold);">BELİNAY FM</span>
+    <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 10px; font-family: 'Orbitron'; color: var(--gold); font-weight: bold;">İYİ Kİ DOĞDUN</span>
+        <span style="font-size: 9px; font-family: 'Poppins'; color: white;">BELİNAY ALTIN 🎂</span>
+    </div>
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://www.mboxdrive.com/happy-birthday-to-you-150.mp3" type="audio/mpeg">
     </audio>
 </div>
 
 <div id="login-screen">
     <div class="card" style="display: block;">
-        <h1 style="font-family: 'Orbitron'; color: var(--gold);">B.A. PORTAL</h1>
+        <h1 style="font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 10px var(--pink);">B.A. PORTAL</h1>
         <input id="uName" type="text" placeholder="Kullanıcı Adı">
         <input id="uPass" type="password" placeholder="Şifre">
-        <button onclick="checkAccess()">GİRİŞ YAP ✨</button>
+        <button onclick="checkAccess()">SİSTEME GİRİŞ YAP ✨</button>
     </div>
 </div>
 
 <div id="klavuzModal">
     <div class="card" style="display: block; border-color: var(--gold);">
         <h2 style="font-family: 'Dancing Script'; color: var(--gold); font-size: 2.2em;">Selam Belinay! ✨</h2>
-        <p id="guideContent" style="margin: 15px 0;"></p>
-        <button onclick="nextStep()">SIRADAKİ ➡️</button>
+        <p id="guideContent" style="margin: 15px 0; font-size: 1.1em;"></p>
+        <button onclick="nextStep()">DEVAM ET ➡️</button>
     </div>
 </div>
 
 <div id="mainMenu" class="card">
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:4px solid var(--pink);">
+    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:4px solid var(--pink); box-shadow: 0 0 15px var(--pink);">
     <h2 style="font-family: 'Orbitron'; color: var(--gold); margin: 10px 0;">Belinay Altın</h2>
     <button onclick="show('personality')">👤 YETENEK PANELİ</button>
     <button onclick="show('gallery')">🖼️ ANILAR GALERİSİ</button>
@@ -122,8 +121,9 @@
             <div class="stat-row"><span class="stat-label">Şans</span> <span>31</span></div>
         </div>
     </div>
-    <div style="background: rgba(0,0,0,0.5); border-radius: 15px; padding: 15px; margin-top: 15px; text-align: left; font-size: 0.85em;">
+    <div style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 15px; margin-top: 15px; text-align: left; font-size: 0.85em; border: 1px solid var(--glass);">
         <p><b>♈ Burç:</b> Boğa | <b>🎮 Hobiler:</b> Minecraft, Roblox, MLBB, Anime</p>
+        <p style="font-style: italic; color: var(--gold); border-top: 1px solid var(--glass); padding-top: 8px;">"Belinay, neşenle dünyayı güzelleştiren harika bir insansın!"</p>
     </div>
     <button class="back-btn" onclick="updateTask('card'); goHome();">ANA MENÜYE DÖN</button>
 </div>
@@ -147,37 +147,39 @@
 <div id="animeQuiz" class="card">
     <h2 style="color: var(--pink); font-family: 'Orbitron';">ANİME TESTİ</h2>
     <div id="qBox" style="margin: 20px 0; font-weight: bold; color: var(--gold);"></div>
-    <button onclick="nextQ()">EVET</button>
-    <button onclick="nextQ()">HAYIR</button>
+    <div style="display: flex; gap: 10px;">
+        <button onclick="nextQ()" style="background: #00ff88; color: black;">EVET</button>
+        <button onclick="nextQ()" style="background: #ff4d4d; color: white;">HAYIR</button>
+    </div>
     <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
 </div>
 
 <div id="puanAlan" class="card">
-    <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUAN VER</h2>
-    <div class="stars" id="starContainer">
-        <span class="star" onclick="setStar(1)">★</span><span class="star" onclick="setStar(2)">★</span><span class="star" onclick="setStar(3)">★</span><span class="star" onclick="setStar(4)">★</span><span class="star" onclick="setStar(5)">★</span>
+    <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUAN VER ⭐</h2>
+    <div style="display: flex; justify-content: center; gap: 10px; font-size: 2em; margin: 15px 0;">
+        <span onclick="this.style.color='gold'; alert('Teşekkürler!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
+        <span onclick="this.style.color='gold'; alert('Harikasın!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
+        <span onclick="this.style.color='gold'; alert('Mükemmel!'); updateTask('puan'); goHome();" style="cursor:pointer">⭐</span>
     </div>
-    <button onclick="saveRating()">GÖNDER</button>
     <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
 </div>
 
 <div id="f1Game" class="card">
     <h3 style="margin:0;">SKOR: <span id="f1Score">0</span></h3>
-    <canvas id="f1Canvas" width="300" height="350" style="background:#000; width:100%; border-radius:15px;"></canvas>
+    <canvas id="f1Canvas" width="300" height="350" style="background:#000; width:100%; border-radius:15px; border: 2px solid var(--pink);"></canvas>
     <button class="back-btn" onclick="f1On = false; goHome();">ANA MENÜYE DÖN</button>
 </div>
 
 <div id="cortisolHUD" style="display:none;">
-    <div style="font-size:10px; color:var(--gold); font-family:'Orbitron';">CORTISOL SEVİYESİ</div>
+    <div style="font-size:10px; color:var(--gold); font-family:'Orbitron';">CORTISOL ANALİZÖRÜ</div>
     <canvas id="meterCanvas" width="280" height="100"></canvas>
     <div id="stressStatus" style="font-weight:900; color:red;">DURUM: KRİTİK 🚨</div>
 </div>
 
 <script>
     let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [], step = 0;
-    const guideMsgs = ["Selam Belinay!","6 görevi tamamla!","Stresi yok et!","Başlayalım!"];
+    const guideMsgs = ["Hoş geldin Belinay!","Doğum günün kutlu olsun! ✨","6 görevi tamamla ve stresi sıfırla!","Müziği açmayı unutma!"];
 
-    // MÜZİK FONKSİYONU
     const audio = document.getElementById("bgMusic");
     function toggleMusic() {
         if (audio.paused) { audio.play(); document.getElementById("playBtn").innerText = "⏸️"; }
@@ -196,11 +198,11 @@
             document.getElementById("mainMenu").style.display = "block";
             document.getElementById("cortisolHUD").style.display = "block";
             nextStep(); drawMeter();
-        } else { alert("Hata!"); }
+            // Otomatik çalmayı dene (Tarayıcı izin verirse)
+            audio.play().then(() => { document.getElementById("playBtn").innerText = "⏸️"; }).catch(() => {});
+        } else { alert("Şifre Hatalı!"); }
     }
 
-    function setStar(n) { document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('active', i < n)); }
-    function saveRating() { alert("Puanın alındı! ❤️"); updateTask('puan'); goHome(); }
     function show(id) { document.querySelectorAll('.card').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
     function goHome() { f1On = false; show("mainMenu"); }
 
