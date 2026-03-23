@@ -4,92 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Belinay Altın 2026 - Master Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff1493; --gold: #ffd700; --dark: #1a000d; }
-        body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #2b001a 0%, #660033 50%, #2b001a 100%); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 180px; }
-        
-        #music-box { position: fixed; top: 15px; right: 15px; z-index: 10001; background: rgba(0,0,0,0.85); border: 2px solid var(--gold); padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 12px; box-shadow: 0 0 15px var(--pink); }
-        .music-btn { cursor: pointer; font-size: 1.4em; }
+        :root { 
+            --pink: #ff007f; 
+            --gold: #ffd700; 
+            --dark: #0a0005; 
+            --neon-blue: #00f2ff;
+        }
 
-        .card { background: rgba(30, 0, 15, 0.9); backdrop-filter: blur(20px); padding: 25px; border-radius: 30px; width: 90%; max-width: 450px; text-align: center; margin: 20px auto; border: 3px solid var(--pink); display: none; animation: popIn 0.5s ease-out forwards; }
-        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        body { 
+            margin: 0; padding: 0; 
+            font-family: 'Poppins', sans-serif; 
+            background: radial-gradient(circle at center, #1a000d 0%, #050002 100%); 
+            color: white; 
+            display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow-x: hidden;
+            padding-bottom: 200px;
+        }
 
-        /* KLAVUZ STİLİ */
-        #guide-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: none; justify-content: center; align-items: center; }
-        .guide-content { background: #1a000d; border: 2px solid var(--gold); padding: 30px; border-radius: 20px; max-width: 400px; text-align: left; }
-        .guide-content h2 { color: var(--gold); font-family: 'Orbitron'; text-align: center; margin-top: 0; }
-        .guide-step { margin-bottom: 15px; font-size: 0.9em; line-height: 1.6; border-left: 3px solid var(--pink); padding-left: 10px; }
-        .checkbox-area { margin-top: 20px; display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--gold); }
-        
-        /* DİĞER STİLLER */
-        .ability-panel { background: linear-gradient(90deg, #1a1a1a 0%, #33001a 100%); border: 2px solid var(--gold); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 20px; text-align: left; }
-        .profile-side img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
-        .stats-side { flex-grow: 1; font-family: 'Orbitron'; font-size: 0.85em; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,215,0,0.2); }
+        /* Neon Kart Efektleri */
+        .card { 
+            background: rgba(15, 0, 8, 0.85); 
+            backdrop-filter: blur(15px); 
+            padding: 30px; 
+            border-radius: 40px; 
+            width: 85%; max-width: 450px; 
+            text-align: center; margin: 25px auto; 
+            border: 2px solid var(--pink); 
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3), inset 0 0 10px rgba(255, 0, 127, 0.2);
+            display: none; 
+            animation: slideUp 0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; 
+        }
 
-        .stars { display: flex; justify-content: center; gap: 8px; margin: 15px 0; font-size: 2.5em; }
-        .star { cursor: pointer; color: #444; }
-        .star.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        @keyframes slideUp { 
+            from { transform: translateY(50px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
 
-        button { background: linear-gradient(45deg, var(--pink), var(--gold)); color: #000; border: none; padding: 15px; border-radius: 50px; width: 100%; margin: 8px 0; cursor: pointer; font-weight: 900; font-family: 'Orbitron'; }
-        button:disabled { background: #333; color: #777; cursor: not-allowed; }
-        .back-btn { background: transparent !important; color: var(--gold) !important; border: 2px solid var(--gold) !important; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 15px; border: none; outline: none; box-sizing: border-box; }
+        /* Gelişmiş Cortisol HUD */
+        #cortisolHUD { 
+            position: fixed; bottom: 0; width: 100%; 
+            background: rgba(0, 0, 0, 0.9); 
+            border-top: 3px solid var(--gold); 
+            padding: 20px 0; z-index: 1000; 
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+        }
 
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, var(--pink) 0%, var(--dark) 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        #cortisolHUD { position: fixed; bottom: 0; width: 100%; background: rgba(20, 0, 10, 0.95); border-top: 4px solid var(--gold); padding: 10px 0; z-index: 998; text-align: center; }
+        .meter-container {
+            width: 80%; max-width: 300px; height: 12px;
+            background: #222; border-radius: 10px; margin: 10px auto;
+            overflow: hidden; border: 1px solid #444; position: relative;
+        }
+
+        #meter-fill {
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff8800, #00ff88);
+            transition: width 1s ease-in-out, filter 0.5s;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* Buton Canlandırmaları */
+        button { 
+            background: linear-gradient(45deg, var(--pink), #ff4da6); 
+            color: white; border: none; padding: 16px; 
+            border-radius: 50px; width: 100%; margin: 10px 0; 
+            cursor: pointer; font-weight: 700; font-family: 'Orbitron';
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+        }
+
+        button:hover { 
+            transform: translateY(-3px) scale(1.02); 
+            box-shadow: 0 0 25px var(--pink);
+            filter: brightness(1.2);
+        }
+
+        button:disabled { background: #333; box-shadow: none; cursor: not-allowed; opacity: 0.5; }
+
+        /* Müzik Paneli */
+        #music-box { 
+            position: fixed; top: 20px; right: 20px; z-index: 10001; 
+            background: rgba(0,0,0,0.9); border: 2px solid var(--gold); 
+            padding: 12px 25px; border-radius: 100px; 
+            display: flex; align-items: center; gap: 15px; 
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        /* Klavuz Ekranı */
+        #guide-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.97); z-index: 20000; 
+            display: none; justify-content: center; align-items: center; 
+        }
+
+        .guide-content { 
+            background: #111; border: 2px solid var(--pink); 
+            padding: 35px; border-radius: 35px; max-width: 400px;
+            box-shadow: 0 0 50px rgba(255,0,127,0.4);
+        }
+
+        .guide-step { 
+            background: rgba(255,255,255,0.05); 
+            margin-bottom: 12px; padding: 12px; border-radius: 15px;
+            font-size: 0.9em; border-left: 4px solid var(--gold);
+        }
+
+        /* Profil Stili */
+        .ability-panel { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,215,0,0.3); 
+            border-radius: 25px; padding: 20px; margin-top: 15px;
+        }
+
+        .stat-row { 
+            display: flex; justify-content: space-between; 
+            padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Orbitron'; font-size: 0.8em;
+        }
+
+        input {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--pink);
+            color: white; padding: 15px; border-radius: 20px; width: 100%;
+            margin-bottom: 15px; box-sizing: border-box; text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div id="guide-overlay">
     <div class="guide-content">
-        <h2>SİSTEM REHBERİ</h2>
-        <div class="guide-step">
-            <b>1. Ses Kontrolü:</b> Giriş yaptıktan sonra sağ üst köşede bulunan müzik panelinden doğum günü şarkısını başlatabilirsin.
-        </div>
-        <div class="guide-step">
-            <b>2. İnceleme Akışı:</b> Portalı lütfen <b>yukarıdan aşağıya</b> doğru incele. Önce profil bilgilerini gör, sonra aktivitelere geç.
-        </div>
-        <div class="guide-step">
-            <b>3. Cortisol Analizi:</b> Sayfanın en altında bulunan stres ölçeri takip et. Aktiviteleri tamamladıkça stres seviyen düşecektir.
-        </div>
-        <div class="guide-step">
-            <b>4. Dikkat:</b> Lütfen tüm metinleri ve uyarıları dikkatle oku. Bu senin özel dijital doğum günü alanın!
-        </div>
+        <h2 style="font-family: 'Orbitron'; color: var(--gold); text-align: center;">⚡ SİSTEM AKTİF</h2>
+        <div class="guide-step">🎵 <b>SES:</b> Sağ üstteki panelden Belinay'a özel şarkıyı başlatmayı unutma!</div>
+        <div class="guide-step">🔽 <b>AKIŞ:</b> Portalı yukarıdan aşağıya doğru keşfet.</div>
+        <div class="guide-step">📉 <b>STRES:</b> Alttaki stres barını sıfırlamak için görevleri bitir.</div>
         
-        <div class="checkbox-area">
-            <input type="checkbox" id="guide-check" onchange="toggleGuideBtn()">
+        <div style="display: flex; align-items: center; gap: 10px; margin: 20px 0; color: var(--gold);">
+            <input type="checkbox" id="guide-check" style="width: 20px; margin:0;" onchange="toggleGuideBtn()">
             <label for="guide-check">Okudum, Anladım.</label>
         </div>
-        <button id="guide-start-btn" onclick="startPortal()" disabled>SİSTEMİ BAŞLAT</button>
+        <button id="guide-start-btn" onclick="startPortal()" disabled>BAŞLAT</button>
     </div>
 </div>
 
 <div id="music-box" style="display:none;">
-    <span class="music-btn" id="playBtn" onclick="toggleMusic()">▶️</span>
-    <div style="display: flex; flex-direction: column;">
-        <span style="font-size: 10px; font-family: 'Orbitron'; color: var(--gold);">İYİ Kİ DOĞDUN</span>
-        <span style="font-size: 9px; color: white;">BELİNAY ALTIN 🎂</span>
+    <span class="music-btn" id="playBtn" onclick="toggleMusic()" style="font-size: 25px;">▶️</span>
+    <div>
+        <div style="font-size: 10px; font-family: 'Orbitron'; color: var(--gold);">SİSTEM MÜZİĞİ</div>
+        <div style="font-size: 11px; font-weight: bold;">BELİNAY ÖZEL 🎂</div>
     </div>
     <iframe id="yt-player" width="0" height="0" src="https://www.youtube.com/embed/iws0dywdEs4?enablejsapi=1" frameborder="0" style="display:none"></iframe>
 </div>
 
 <div id="login-screen">
-    <div class="card" style="display: block;">
+    <div class="card" style="display: block; border-color: var(--gold);">
         <h1 style="font-family: 'Orbitron'; color: var(--gold);">B.A. PORTAL</h1>
+        <p style="font-size: 0.8em; opacity: 0.7;">Giriş yaparak evrene bağlanın.</p>
         <input id="uName" type="text" placeholder="Kullanıcı Adı">
         <input id="uPass" type="password" placeholder="Şifre">
-        <button onclick="checkAccess()">GİRİŞ YAP ✨</button>
+        <button onclick="checkAccess()">BAĞLAN ✨</button>
     </div>
 </div>
 
 <div id="mainMenu" class="card">
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100px; height:100px; border-radius:50%; border:4px solid var(--pink);">
-    <h2 style="font-family: 'Orbitron'; color: var(--gold); margin-bottom: 0;">Belinay Altın</h2>
-    <p style="font-size: 0.8em; color: var(--gold); margin-top: 5px; font-family: 'Orbitron';">🗓️ 02.05.2011</p>
+    <div style="position: relative; display: inline-block;">
+        <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:120px; height:120px; border-radius:50%; border:4px solid var(--pink); box-shadow: 0 0 20px var(--pink);">
+        <div style="position: absolute; bottom: 5px; right: 5px; background: var(--gold); color: black; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; border: 2px solid black;">LVL 99</div>
+    </div>
+    <h2 style="font-family: 'Orbitron'; color: var(--gold); margin: 15px 0 0 0;">Belinay Altın</h2>
+    <p style="font-size: 0.9em; color: var(--pink); font-family: 'Orbitron'; margin-bottom: 20px;">🗓️ 02.05.2011</p>
+    
     <button onclick="show('personality')">👤 YETENEK PANELİ</button>
     <button onclick="show('gallery')">🖼️ ANILAR GALERİSİ</button>
     <button onclick="show('friendQuiz')">🌟 EN İYİ ARKADAŞ?</button>
@@ -99,74 +185,49 @@
 </div>
 
 <div id="personality" class="card">
+    <h3 style="font-family: 'Orbitron'; color: var(--gold);">STATUS PANEL</h3>
     <div class="ability-panel">
-        <div class="profile-side">
-            <img src="https://i.ibb.co/n8tTCLx1/1.jpg">
-            <div style="font-family: 'Orbitron'; margin-top: 10px; color: var(--gold); font-size: 1.2em;">LVL 99</div>
-        </div>
-        <div class="stats-side">
-            <div class="stat-row"><span>Zeka</span> <span>90</span></div>
-            <div class="stat-row"><span>Arkadaşlık</span> <span>99</span></div>
-            <div class="stat-row"><span>Mizah</span> <span>99</span></div>
-            <div class="stat-row"><span>Roblox</span> <span>99</span></div>
-            <div class="stat-row"><span>Güç</span> <span>50</span></div>
-            <div class="stat-row"><span>Şans</span> <span>31</span></div>
-        </div>
+        <div class="stat-row"><span>ZEKA</span> <span>99</span></div>
+        <div class="stat-row"><span>ARKADAŞLIK</span> <span>100</span></div>
+        <div class="stat-row"><span>MİZAH</span> <span>95</span></div>
+        <div class="stat-row"><span>ROBLOX SKILL</span> <span>99</span></div>
+        <div class="stat-row"><span>GÜÇ</span> <span>MAX</span></div>
     </div>
-    <p><b>🎮 Hobiler:</b> Minecraft, Roblox, MLBB, Anime</p>
-    <button class="back-btn" onclick="updateTask('card'); goHome();">ANA MENÜYE DÖN</button>
-</div>
-
-<div id="animeQuiz" class="card">
-    <h2 style="color: var(--pink); font-family: 'Orbitron';">ANİME TESTİ</h2>
-    <div id="qBox" style="margin: 20px 0; font-weight: bold; color: var(--gold);"></div>
-    <button onclick="nextQ()">EVET</button>
-    <button onclick="nextQ()">HAYIR</button>
-    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
+    <p style="font-size: 0.8em; margin: 15px 0;">🎮 <b>Minecraft, Roblox, MLBB, Anime</b></p>
+    <button class="back-btn" onclick="updateTask('card'); goHome();">ANA MENÜ</button>
 </div>
 
 <div id="friendQuiz" class="card">
-    <h3 style="color: var(--gold); font-family: 'Orbitron';">EN SEVDİĞİN ARKADAŞIN?</h3>
-    <button onclick="friendWin()">A) Oktay</button>
-    <button onclick="friendWin()">B) OKTAY</button>
-    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
-</div>
-
-<div id="f1Game" class="card">
-    <h3 style="margin:0;">SKOR: <span id="f1Score">0</span></h3>
-    <canvas id="f1Canvas" width="300" height="350" style="background:#000; width:100%; border-radius:15px; border: 2px solid var(--pink);"></canvas>
-    <button class="back-btn" onclick="f1On = false; goHome();">ANA MENÜYE DÖN</button>
+    <h3 style="color: var(--gold); font-family: 'Orbitron';">SİSTEM ANALİZİ</h3>
+    <p>En sevdiğin arkadaşın kim?</p>
+    <button onclick="friendWin()">OKTAY</button>
+    <button onclick="friendWin()">OKTAY (Büyük Harf)</button>
+    <button class="back-btn" onclick="goHome()">VAZGEÇ</button>
 </div>
 
 <div id="puanAlan" class="card">
-    <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUAN VER</h2>
-    <div class="stars">
-        <span class="star" onclick="setStar(1)">★</span><span class="star" onclick="setStar(2)">★</span><span class="star" onclick="setStar(3)">★</span><span class="star" onclick="setStar(4)">★</span><span class="star" onclick="setStar(5)">★</span>
+    <h2 style="font-family: 'Orbitron'; color: var(--gold);">PUANLA</h2>
+    <div style="font-size: 40px; margin-bottom: 20px;">
+        <span class="star" style="cursor:pointer" onclick="setStar(1)">★</span><span class="star" style="cursor:pointer" onclick="setStar(2)">★</span><span class="star" style="cursor:pointer" onclick="setStar(3)">★</span><span class="star" style="cursor:pointer" onclick="setStar(4)">★</span><span class="star" style="cursor:pointer" onclick="setStar(5)">★</span>
     </div>
     <button onclick="saveRating()">GÖNDER</button>
-    <button class="back-btn" onclick="goHome()">ANA MENÜYE DÖN</button>
-</div>
-
-<div id="gallery" class="card">
-    <h2 style="font-family: 'Orbitron'; color: var(--gold);">ANILAR</h2>
-    <img src="https://i.ibb.co/n8tTCLx1/1.jpg" style="width:100%; border-radius:10px;">
-    <button class="back-btn" onclick="updateTask('gal'); goHome();">ANA MENÜYE DÖN</button>
+    <button class="back-btn" onclick="goHome()">GERİ</button>
 </div>
 
 <div id="cortisolHUD" style="display:none;">
-    <div style="font-size:10px; color:var(--gold); font-family:'Orbitron';">CORTISOL SEVİYESİ</div>
-    <canvas id="meterCanvas" width="280" height="100"></canvas>
-    <div id="stressStatus" style="font-weight:900; color:red;">DURUM: KRİTİK 🚨</div>
+    <div style="font-size:11px; color:var(--gold); font-family:'Orbitron'; letter-spacing: 2px;">CORTISOL LEVEL ANALYZER</div>
+    <div class="meter-container">
+        <div id="meter-fill"></div>
+    </div>
+    <div id="stressStatus" style="font-weight:900; color:#ff4444; font-size: 13px;">DURUM: KRİTİK (%100)</div>
 </div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    let activeTasks = [], angle = 60, f1On = false, score = 0, carX = 135, enemies = [], ytPlayer, musicPlaying = false, hasRated = false;
+    let activeTasks = [], angle = 100, ytPlayer, musicPlaying = false, hasRated = false;
 
     function onYouTubeIframeAPIReady() {
-        ytPlayer = new YT.Player('yt-player', {
-            events: { 'onStateChange': (e) => { musicPlaying = (e.data == 1); } }
-        });
+        ytPlayer = new YT.Player('yt-player', { events: { 'onStateChange': (e) => { musicPlaying = (e.data == 1); } } });
     }
 
     function toggleMusic() {
@@ -175,83 +236,65 @@
     }
 
     function checkAccess() {
-        if (document.getElementById("uName").value.toLowerCase() === "belinay" && document.getElementById("uPass").value === "belinay123") {
+        const u = document.getElementById("uName").value.toLowerCase();
+        const p = document.getElementById("uPass").value;
+        if (u === "belinay" && p === "belinay123") {
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("guide-overlay").style.display = "flex";
-        } else { alert("Hatalı Giriş!"); }
+        } else { alert("Erişim Reddedildi! Şifre: belinay123"); }
     }
 
-    function toggleGuideBtn() {
-        document.getElementById("guide-start-btn").disabled = !document.getElementById("guide-check").checked;
-    }
+    function toggleGuideBtn() { document.getElementById("guide-start-btn").disabled = !document.getElementById("guide-check").checked; }
 
     function startPortal() {
         document.getElementById("guide-overlay").style.display = "none";
         document.getElementById("music-box").style.display = "flex";
         document.getElementById("mainMenu").style.display = "block";
         document.getElementById("cortisolHUD").style.display = "block";
-        drawMeter();
-    }
-
-    function setStar(n) { document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('active', i < n)); }
-    function saveRating() { alert("Puanın İçin Teşekkürler! ❤️"); hasRated = true; updateTask('puan'); goHome(); }
-
-    function show(id) { document.querySelectorAll('.card').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
-    
-    function goHome() { 
-        f1On = false; 
-        show("mainMenu");
-        if(activeTasks.length >= 3 && hasRated) {
-            setTimeout(() => {
-                alert("Harikasın Belinay! 🌟 Stresi sıfırladın ve portalı tamamladın!\n\nOktay, site hakkındaki düşüncelerini Instagram'dan ona iletmeni bekliyor. 😉\n\nİYİ Kİ DOĞDUN! 🎉🎂");
-            }, 500);
-        }
+        updateMeter();
     }
 
     function updateTask(id) {
         if(!activeTasks.includes(id)) {
             activeTasks.push(id);
-            angle = 60 - (activeTasks.length * 40);
-            if(activeTasks.length >= 3) { document.getElementById("stressStatus").innerText = "DURUM: HARİKA 😊"; document.getElementById("stressStatus").style.color = "#00ff88"; angle = -60; }
-            drawMeter();
+            updateMeter();
         }
     }
 
-    function drawMeter() {
-        const ctx = document.getElementById("meterCanvas").getContext("2d");
-        ctx.clearRect(0,0,300,100);
-        const colors = ["#00ff88", "#f1c40f", "#ff1493"];
-        [Math.PI, Math.PI*1.33, Math.PI*1.66].forEach((v, i) => {
-            ctx.beginPath(); ctx.arc(140, 90, 60, v, v + Math.PI*0.33);
-            ctx.lineWidth = 12; ctx.strokeStyle = colors[i]; ctx.stroke();
-        });
-        ctx.save(); ctx.translate(140, 90); ctx.rotate(angle * Math.PI / 180);
-        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-4, -50); ctx.lineTo(4, -50);
-        ctx.fillStyle = "white"; ctx.fill(); ctx.restore();
+    function updateMeter() {
+        const fill = document.getElementById("meter-fill");
+        const status = document.getElementById("stressStatus");
+        let percent = 100 - (activeTasks.length * 33.3);
+        if(percent < 0) percent = 0;
+
+        fill.style.width = percent + "%";
+        
+        if(percent > 60) {
+            status.innerText = "DURUM: KRİTİK (%" + Math.round(percent) + ")";
+            status.style.color = "#ff4444";
+        } else if (percent > 10) {
+            status.innerText = "DURUM: STABİL (%" + Math.round(percent) + ")";
+            status.style.color = "#ffd700";
+        } else {
+            status.innerText = "DURUM: MÜKEMMEL (%0)";
+            status.style.color = "#00ff88";
+            fill.style.filter = "drop-shadow(0 0 10px #00ff88)";
+        }
     }
 
-    function friendWin() { alert("DOĞRU! En iyi arkadaşın Oktay! ✨"); updateTask('friend'); goHome(); }
+    function show(id) { document.querySelectorAll('.card').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
+    function goHome() { show("mainMenu"); checkFinal(); }
+    function setStar(n) { document.querySelectorAll('.star').forEach((s, i) => s.style.color = i < n ? "var(--gold)" : "#444"); }
+    function saveRating() { hasRated = true; updateTask('puan'); alert("Puan Kaydedildi!"); goHome(); }
+    function friendWin() { updateTask('friend'); alert("DOĞRU!"); goHome(); }
 
-    let qIdx = 0; const qs = ["Karakterin Hashira mı?", "Ateş mi kullanıyor?", "'Umai!' der mi?", "Turuncu saçlı mı?"];
-    function startAnimeQuiz() { qIdx = 0; show('animeQuiz'); nextQ(); }
-    function nextQ() { if(qIdx < qs.length) { document.getElementById("qBox").innerText = qs[qIdx++]; } else { alert("RUH İKİZİN: KYOJURO RENGOKU! 🔥"); updateTask('anime'); goHome(); } }
-
-    function startF1() { show('f1Game'); f1On = true; score = 0; enemies = []; runF1(); }
-    function runF1() {
-        if(!f1On) return;
-        const ctx = document.getElementById("f1Canvas").getContext("2d");
-        ctx.fillStyle = "#000"; ctx.fillRect(0,0,300,400);
-        ctx.fillStyle = "hotpink"; ctx.fillRect(carX, 280, 30, 50);
-        if(Math.random() < 0.05) enemies.push({x: Math.random()*260, y: -50});
-        enemies.forEach((en, i) => {
-            en.y += 7; ctx.fillStyle = "gold"; ctx.fillRect(en.x, en.y, 25, 40);
-            if(en.y > 400) { enemies.splice(i,1); score++; document.getElementById("f1Score").innerText = score; }
-            if(en.y+40 > 280 && en.y < 330 && en.x+25 > carX && en.x < carX+30) { f1On = false; alert("Kaza! Skor: " + score); goHome(); }
-        });
-        if(score >= 20) updateTask('f1');
-        requestAnimationFrame(runF1);
+    function checkFinal() {
+        if(activeTasks.length >= 3 && hasRated) {
+            setTimeout(() => {
+                alert("Sistem Tamamlandı! 🌟 Belinay, tüm stresi yok ettin!\n\nOktay'a Instagram'dan mesaj atıp bu sürpriz hakkındaki düşüncelerini söylemeyi unutma!\n\nİYİ Kİ DOĞDUN! 🎉🎂");
+            }, 600);
+        }
     }
-    document.getElementById("f1Canvas").addEventListener("touchstart", (e) => { carX = (e.touches[0].clientX - e.target.getBoundingClientRect().left < 150) ? 50 : 220; });
 </script>
 </body>
 </html>
